@@ -6,7 +6,7 @@
             <div class="card column is-half">
                 <div class="card-content">
                     {{-- Card Title --}}
-                    <p class="has-text-weight-semibold" style="margin-bottom: 20px;">
+                    <p class="card-title">
                         LOGIN
                     </p>
 
@@ -20,7 +20,7 @@
                             <div class="control has-icons-left">
                                 <input id="email_or_username" class="input" autofocus type="text" name="email_or_username" value="{{ old('email_or_username') }}" placeholder="Email / Username">
                                 <span class="icon is-left">
-                                    <i class="fas fa-envelope"></i>
+                                    <i class="mdi mdi-email icon-in-form"></i>
                                 </span>
                             </div>
                             @error('email_or_username')
@@ -34,7 +34,7 @@
                             <div class="control has-icons-left">
                                 <input id="password" type="password" class="input" type="text" name="password" placeholder="Password">
                                 <span class="icon is-left">
-                                    <i class="fas fa-lock"></i>
+                                    <i class="mdi mdi-lock icon-in-form"></i>
                                 </span>
                             </div>
                             @error('password')
@@ -42,10 +42,14 @@
                             @enderror
                         </div>
 
-                        {{-- Register --}}
-                        <a href="/register" class="has-text-primary" style="margin-top:10px;">Don't have an account ?</a>
+                        <div class="is-inline-block">
+                            {{-- Register --}}
+                            <a href="{{route('register')}}" class="is-block has-text-primary" style="margin-top:10px;">Don't have an account ?</a>
+                            {{-- Forget Password --}}
+                            <a href="{{route('password.request')}}" class="has-text-primary" style="margin-top:10px;">Forget Password ?</a>
+                        </div>
                         {{-- Submit --}}
-                        <button type="submit" class="button is-primary is-rounded is-pulled-right">Login</button>
+                        <button type="submit" class="button is-primary is-rounded is-pulled-right" style="margin-top:20px;">Login</button>
                     </form>
                 </div>
             </div>

@@ -19,7 +19,7 @@
                             <div class="control has-icons-left">
                                 <input type="email" name="email" id="email" class="input" placeholder="E-Mail" value="{{ old('email') }}" autofocus>
                                 <span class="icon is-left">
-                                    <i class="fas fa-envelope"></i>
+                                    <i class="mdi mdi-email icon-in-form"></i>
                                 </span>
                             </div>
                             @error('email')
@@ -33,7 +33,7 @@
                             <div class="control has-icons-left">
                                 <input id="password" type="password" class="input" type="text" name="password" placeholder="Password">
                                 <span class="icon is-left">
-                                    <i class="fas fa-lock"></i>
+                                    <i class="mdi mdi-lock"></i>
                                 </span>
                             </div>
                             @error('password')
@@ -47,7 +47,7 @@
                             <div class="control has-icons-left">
                                 <input id="password_confirmation" type="password" class="input" type="text" name="password_confirmation" placeholder="Confirm Password">
                                 <span class="icon is-left">
-                                    <i class="fas fa-lock"></i>
+                                    <i class="mdi mdi-lock"></i>
                                 </span>
                             </div>
                             @error('password_confirmation')

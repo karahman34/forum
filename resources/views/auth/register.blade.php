@@ -6,7 +6,7 @@
         <div class="card column is-half is-offset-one-quarter">
             <div class="card-content">
                 {{-- Card Title --}}
-                <p class="has-text-weight-semibold" style="margin-bottom: 20px;">
+                <p class="card-title">
                     REGISTER
                 </p>
 
@@ -20,7 +20,7 @@
                         <div class="control has-icons-left">
                             <input id="username" class="input" autofocus type="text" name="username" value="{{ old('username') }}" placeholder="Username">
                             <span class="icon is-left">
-                                <i class="fas fa-user"></i>
+                                <i class="mdi mdi-account icon-in-form"></i>
                             </span>
                         </div>
                         @error('username')
@@ -34,7 +34,7 @@
                         <div class="control has-icons-left">
                             <input id="email" class="input" autofocus type="text" name="email" value="{{ old('email') }}" placeholder="E-Mail">
                             <span class="icon is-left">
-                                <i class="fas fa-envelope"></i>
+                                <i class="mdi mdi-email icon-in-form"></i>
                             </span>
                         </div>
                         @error('email')
@@ -48,7 +48,7 @@
                         <div class="control has-icons-left">
                             <input id="password" type="password" class="input" type="text" name="password" placeholder="Password">
                             <span class="icon is-left">
-                                <i class="fas fa-lock"></i>
+                                <i class="mdi mdi-lock icon-in-form"></i>
                             </span>
                         </div>
                         @error('password')
@@ -62,7 +62,7 @@
                         <div class="control has-icons-left">
                             <input id="password_confirmation" type="password" class="input" type="text" name="password_confirmation" placeholder="Confirm Password">
                             <span class="icon is-left">
-                                <i class="fas fa-lock"></i>
+                                <i class="mdi mdi-lock icon-in-form"></i>
                             </span>
                         </div>
                         @error('password_confirmation')

@@ -23,7 +23,7 @@
                             <div class="control has-icons-left">
                                 <input type="email" name="email" id="email" class="input" placeholder="E-Mail" autofocus>
                                 <span class="icon is-left">
-                                    <i class="fas fa-envelope"></i>
+                                    <i class="mdi mdi-email icon-in-form"></i>
                                 </span>
                             </div>
                             @error('email')

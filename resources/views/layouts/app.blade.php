@@ -15,12 +15,11 @@
 
     {{-- Bulma CSS --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+    {{-- Icons CSS --}}
+    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.9.95/css/materialdesignicons.min.css">
     
     {{-- Custom CSS --}}
     <link rel="stylesheet" href="/css/style.css">
-    
-    {{-- Icons JS --}}
-    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     
     {{-- Stack CSS --}}
     @stack('css')
