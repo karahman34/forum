@@ -15,7 +15,9 @@
 
     {{-- Custom CSS --}}
     <link rel="stylesheet" href="/css/app.css">
-    
+    {{-- Custom JS --}}
+    <script src="/js/app.js"></script>
+
     {{-- Stack CSS --}}
     @stack('css')
 </head>
