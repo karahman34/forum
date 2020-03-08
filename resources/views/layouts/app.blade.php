@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.9.95/css/materialdesignicons.min.css">
     
     {{-- Custom CSS --}}
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/app.css">
     
     {{-- Stack CSS --}}
     @stack('css')
@@ -32,9 +32,6 @@
         {{-- Content --}}
         @yield('content')
     </div>
-
-    {{-- Custom JS --}}
-    <script src="/js/custom.js"></script>
 
     {{-- Stack JS --}}
     @stack('js')

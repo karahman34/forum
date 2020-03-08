@@ -1,1 +1,9 @@
-//
+// Variables
+@import "variables";
+
+// Layout
+@import "layouts/app/app";
+
+// Navigations
+@import "layouts/app/navigations/top";
+@import "layouts/app/navigations/left";
