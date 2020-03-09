@@ -20,7 +20,7 @@
         'text' => 'Popular this week',
       ],
       [
-        'icon' => 'mdi mdi-memory',
+        'icon' => 'mdi mdi-folder-zip-outline',
         'text' => 'Saved Posts',
       ],
     ];
