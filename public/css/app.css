@@ -12000,6 +12000,7 @@ body {
 }
 
 .card-title {
+  font-size: 16px;
   font-weight: 600;
   margin-bottom: 20px;
 }
@@ -12021,6 +12022,18 @@ body {
   border-color: #00d1b2 !important;
 }
 
+#left-nav {
+  border-right: 1px solid rgba(128, 128, 128, 0.25);
+  height: 100% !important;
+}
+
+#left-nav-content {
+  position: -webkit-sticky;
+  /* Safari */
+  position: sticky;
+  top: 95px;
+}
+
 .left-nav-container {
   margin-top: 8px;
   color: grey;
@@ -12029,5 +12042,112 @@ body {
 .left-nav-icon {
   margin-right: 5px;
   font-size: 19px;
+}
+
+#post-header {
+  color: grey;
+  margin-bottom: 15px;
+}
+
+#post-author-avatar {
+  height: 55px;
+  border-radius: 50%;
+  vertical-align: top;
+}
+
+#post-author-username {
+  font-size: 18px;
+  font-weight: 600;
+  margin-left: 10px;
+  margin-bottom: 20px;
+}
+
+#post-divider {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  background: grey;
+  margin: 0px 5px 4px;
+  border-radius: 50%;
+}
+
+.post-misc {
+  margin-right: 10px;
+}
+
+#post-title {
+  color: black;
+  padding: 15px;
+  font-size: 20px;
+  border-radius: 4px;
+  background: #bbfaf2;
+}
+
+#post-body {
+  font-family: "Karla", sans-serif;
+  font-size: 18px;
+  word-spacing: 2px;
+  line-height: 200%;
+  margin-top: 10px;
+  margin-bottom: 15px;
+}
+
+.post-image {
+  max-width: 120px;
+  margin-right: 9px;
+  margin-bottom: 9px;
+  box-shadow: 2px 2px 5px grey;
+  cursor: pointer;
+}
+
+.post-card-avatar {
+  max-width: 38px;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+.post-card-username {
+  display: inline-block;
+  font-size: 19px;
+  margin-left: 8px;
+}
+
+.post-card-title {
+  display: block;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  color: black;
+  font-size: 21px;
+}
+
+.post-card-tag {
+  margin-right: 2px;
+  margin-bottom: 3px;
+}
+
+.post-card-misc-container {
+  margin-top: 10px;
+}
+
+.post-card-username-image-divider {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: grey;
+  margin: 0px 5px 4px;
+  border-radius: 50%;
+}
+
+.post-card-misc {
+  margin-right: 8px;
+}
+
+.options {
+  display: inline-block;
+  background: grey;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  margin-bottom: 3px;
 }
 
