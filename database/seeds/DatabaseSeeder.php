@@ -16,5 +16,8 @@ class DatabaseSeeder extends Seeder
         factory('App\Post', 30)->create();
 
         $this->call(TagSeeder::class);
+        $this->call(PostTagSeeder::class);
+        $this->call(PostSeenSeeder::class);
+        $this->call(PostImageSeeder::class);
     }
 }
