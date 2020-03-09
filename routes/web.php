@@ -35,4 +35,6 @@ Route::prefix('posts')->name('post.')->group(function () {
     
         Route::put('/{id}', 'PostController@update')->name('update');
     });
+
+    Route::get('/{id}', 'PostController@show')->name('show');
 });
