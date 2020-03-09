@@ -34,6 +34,8 @@ Route::prefix('posts')->name('post.')->group(function () {
         Route::post('/', 'PostController@store')->name('store');
     
         Route::put('/{id}', 'PostController@update')->name('update');
+
+        Route::delete('/{id}', 'PostController@destroy')->name('destroy');
     });
 
     Route::get('/{id}', 'PostController@show')->name('show');
