@@ -159,7 +159,13 @@ class PostController extends Controller
      */
     public function edit(int $id)
     {
+        // Get the post
         $post = Post::with(['tags:tags.name', 'images:post_id,image'])->findOrFail($id);
+
+        // Check authorization
+        $this->authorize('update', $post);
+
+        // Set the title & form
         $title = "Update {$post->title}";
         $method = 'PUT';
         $action = route('post.update', ['id' => $post->id]);
@@ -225,6 +231,9 @@ class PostController extends Controller
         // Get post
         $post = Post::findOrFail($id);
 
+        // Check authorization
+        $this->authorize('update', $post);
+
         // Update Post
         $post->update($payload);
 
@@ -255,7 +264,11 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        $post = Post::select('id')->findOrFail();
+        // Get the post
+        $post = Post::select('id')->where('id', $id)->findOrFail();
+
+        // Check authorization
+        $this->authorize('update', $post);
         
         if ($post->delete()) {
             $this->deletePostImage($post->image->pluck('image'));
