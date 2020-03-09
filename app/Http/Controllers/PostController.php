@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PostRequest;
 use App\Post;
+use App\PostImage;
 use App\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -99,6 +101,102 @@ class PostController extends Controller
 
         // Set flash message
         $request->session()->flash('success', 'Success to create Post.');
+
+        $nextUrl = route('post.show', ['id' => $post->id]);
+        return response()->json(['next_url' => $nextUrl], 201);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(int $id)
+    {
+        $post = Post::with(['tags:tags.name', 'images:post_id,image'])->findOrFail($id);
+        $title = "Update {$post->title}";
+        $method = 'PUT';
+        $action = route('post.update', ['id' => $post->id]);
+
+        return view('posts.form', compact('method', 'action', 'post', 'title'));
+    }
+
+    /**
+     * Delete Post Image
+     *
+     * @param   string|array  $image
+     *
+     * @return  void
+     */
+    private function deletePostImage($image)
+    {
+        Storage::delete($image);
+    }
+
+    /**
+     * Sync old Post images
+     *
+     * @param   Request  $request
+     * @param   Post     $post
+     *
+     * @return  void
+     */
+    private function syncOldImages(Request $request, Post $post)
+    {
+        $oldImages = $request->get('old_images', null);
+        if ($oldImages !== null && count($oldImages) > 0) {
+            $postImages = $post->images()->get();
+
+            $imageWillDelete = [];
+            foreach ($postImages as $postImage) {
+                if (!in_array($postImage->image, $oldImages)) {
+                    $imageWillDelete[] = $postImage->image;
+                }
+            }
+
+            if (count($imageWillDelete) > 0) {
+                // Delete post image from storage
+                $this->deletePostImage($imageWillDelete);
+
+                // Delete post image in db
+                PostImage::whereIn('image', $imageWillDelete)->delete();
+            }
+        }
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  PostRequest  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(PostRequest $request, $id)
+    {
+        // Get payload
+        $payload = $request->only('title', 'body');
+
+        // Get post
+        $post = Post::findOrFail($id);
+
+        // Update Post
+        $post->update($payload);
+
+        // Sync post tags
+        $this->syncTags($request, $post);
+
+        // Sync old images
+        $this->syncOldImages($request, $post);
+
+        // Upload images
+        if ($request->has('images')) {
+            $imageNames = $this->storeImages($request->file('images'));
+            $post->images()->createMany($imageNames);
+        }
+
+        // Set flash message
+        $request->session()->flash('success', 'Success to update Post.');
 
         $nextUrl = route('post.show', ['id' => $post->id]);
         return response()->json(['next_url' => $nextUrl], 201);
