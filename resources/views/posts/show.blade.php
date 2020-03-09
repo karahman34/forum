@@ -26,3 +26,20 @@
     }
   </style>
 @endpush
+
+@push('js')
+  <script>
+    function incrementPostSeen() {
+      const actionUrl = "{{ route('post.seen', ['id' => $post->id]) }}";
+      
+      axios.post(actionUrl)
+        .catch(err => {
+          throw Error(err);
+        });
+    }
+
+    window.addEventListener('load', () => {
+      incrementPostSeen();
+    });
+  </script>
+@endpush

@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PostRequest;
 use App\Post;
 use App\PostImage;
+use App\PostSeen;
 use App\Tag;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -134,6 +136,30 @@ class PostController extends Controller
         $title = $post->title;
 
         return view('posts.show', compact('post', 'title'));
+    }
+
+    /**
+     * Increment post seen.
+     *
+     * @param   int  $id
+     *
+     * @return  JsonResponse
+     */
+    public function incrementSeen(int $id)
+    {
+        $postSeen = PostSeen::where('post_id', $id)->first();
+        if ($postSeen) {
+            $postSeen->increment('count', 1);
+        } else {
+            $postSeen = PostSeen::create([
+                'post_id' => $id,
+                'count' => 1,
+            ]);
+        }
+
+        return response()->json([
+            'ok' => true
+        ], 202);
     }
 
     /**

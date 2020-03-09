@@ -39,4 +39,6 @@ Route::prefix('posts')->name('post.')->group(function () {
     });
 
     Route::get('/{id}', 'PostController@show')->name('show');
+
+    Route::post('/{id}/seen', 'PostController@incrementSeen')->name('seen');
 });
