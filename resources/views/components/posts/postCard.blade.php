@@ -29,7 +29,9 @@
       {{-- Seen Count --}}
       <span class="post-card-misc">
         <i class="mdi mdi-eye"></i>
-        <span>131</span>
+        <span>
+          {{ $post->seen->count ?? 0 }}
+        </span>
       </span>
 
       {{-- Comments Count --}}

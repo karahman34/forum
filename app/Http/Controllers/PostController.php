@@ -24,7 +24,12 @@ class PostController extends Controller
         // Get QS Options
         $limit = $request->get('limit', 15);
 
-        $posts = Post::with(['author:id,username,avatar', 'tags:name'])->paginate($limit);
+        $posts = Post::with([
+            'author:id,username,avatar',
+            'tags:name',
+            'seen:post_id,count',
+        ])
+        ->paginate($limit);
 
         return view('welcome', compact('posts'));
     }
@@ -132,8 +137,17 @@ class PostController extends Controller
     public function show(int $id)
     {
         // Get the post
-        $post = Post::with(['author:id,avatar,username', 'tags:name', 'images:post_id,image'])->findOrFail($id);
+        $post = Post::with([
+            'author:id,avatar,username',
+            'tags:name',
+            'images:post_id,image',
+            'seen:post_id,count'
+        ])
+        ->findOrFail($id);
+
+        // Set title
         $title = $post->title;
+
 
         return view('posts.show', compact('post', 'title'));
     }

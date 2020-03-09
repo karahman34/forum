@@ -13,7 +13,7 @@
     {{-- Seen Time Count --}}
     <span class="post-misc">
       <span class="mdi mdi-eye"></span>
-      200
+      {{ $post->seen->count ?? 0 }}
     </span>
 
     {{-- Comment Count --}}
@@ -39,7 +39,9 @@
 </div>
 
 {{-- Attached Images --}}
-<p class="title is-5" style="margin-bottom: 12px;">Attached images</p>
-@foreach ($post->images as $image)
-  <img src="{{ $image->getImage() }}" alt="{{ $image->getImage() }}" class="post-image">
-@endforeach
+@if (count($post->images) > 0)
+  <p class="title is-5" style="margin-bottom: 12px;">Attached images</p>
+  @foreach ($post->images as $image)
+    <img src="{{ $image->getImage() }}" alt="{{ $image->getImage() }}" class="post-image">
+  @endforeach
+@endif
