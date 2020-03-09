@@ -39,8 +39,10 @@
       </span>
 
       {{-- Options --}}
-      @component('components.posts.options', ['post' => $post])
-      @endcomponent
+      <span class="is-pulled-right">
+        @component('components.posts.options', ['post' => $post])
+        @endcomponent
+      </span>
     </div>
   </div>
 </div>
