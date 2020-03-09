@@ -39,25 +39,8 @@
       </span>
 
       {{-- Options --}}
-      <div class="dropdown is-hoverable is-pulled-right">
-        {{-- The Dots Trigger --}}
-        <div class="dropdown-trigger">
-            <span class="post-card-misc">
-              <span class="options"></span>
-              <span class="options"></span>
-              <span class="options"></span>
-            </span>
-        </div>
-
-        {{-- Dropdown Structure --}}
-        <div class="dropdown-menu">
-          <div class="dropdown-content">
-            <a href="#" class="dropdown-item">
-              Save
-            </a>
-          </div>
-        </div>
-      </div>
+      @component('components.posts.options', ['post' => $post])
+      @endcomponent
     </div>
   </div>
 </div>
