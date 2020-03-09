@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -46,5 +47,19 @@ class User extends Authenticatable implements MustVerifyEmail
     public function posts()
     {
         return $this->hasMany('App\Post');
+    }
+
+    /**
+     * Get formatted avatar url
+     *
+     * @return  string
+     */
+    public function getAvatar()
+    {
+        $defaultAvatar = 'img/avatars/default.png';
+
+        return $this->avatar === null
+            ? Storage::url($defaultAvatar)
+            : Storage::url($this->avatar);
     }
 }

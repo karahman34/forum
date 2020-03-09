@@ -13,6 +13,21 @@ use Illuminate\Support\Facades\Storage;
 class PostController extends Controller
 {
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function index(Request $request)
+    {
+        // Get QS Options
+        $limit = $request->get('limit', 15);
+
+        $posts = Post::with(['author:id,username,avatar', 'tags:name'])->paginate($limit);
+
+        return view('welcome', compact('posts'));
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -104,6 +119,36 @@ class PostController extends Controller
 
         $nextUrl = route('post.show', ['id' => $post->id]);
         return response()->json(['next_url' => $nextUrl], 201);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show(int $id)
+    {
+        $queryResult = Post::with(['author:id,avatar,username', 'tags:name', 'images:post_id,image'])->findOrFail($id);
+        $post = [
+            'id' => $queryResult->id,
+            'title' => $queryResult->title,
+            'body' => $queryResult->body,
+            'created_at' => $queryResult->created_at->diffForHumans(),
+            'author' => [
+                'id' => $queryResult->author->id,
+                'avatar' => $queryResult->author->getAvatar(),
+                'username' => $queryResult->author->username,
+            ],
+            'tags' => $queryResult->tags->pluck('name'),
+            'images' => $queryResult->images->map(function ($image) {
+                return $image->getImage();
+            }),
+        ];
+
+        $title = $post['title'];
+
+        return view('posts.show', compact('post', 'title'));
     }
 
     /**
@@ -200,5 +245,24 @@ class PostController extends Controller
 
         $nextUrl = route('post.show', ['id' => $post->id]);
         return response()->json(['next_url' => $nextUrl], 201);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $post = Post::select('id')->findOrFail();
+        
+        if ($post->delete()) {
+            $this->deletePostImage($post->image->pluck('image'));
+        }
+
+        session()->flash('success', 'Success to delete post.');
+
+        return back();
     }
 }
