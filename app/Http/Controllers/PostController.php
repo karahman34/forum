@@ -129,24 +129,9 @@ class PostController extends Controller
      */
     public function show(int $id)
     {
-        $queryResult = Post::with(['author:id,avatar,username', 'tags:name', 'images:post_id,image'])->findOrFail($id);
-        $post = [
-            'id' => $queryResult->id,
-            'title' => $queryResult->title,
-            'body' => $queryResult->body,
-            'created_at' => $queryResult->created_at->diffForHumans(),
-            'author' => [
-                'id' => $queryResult->author->id,
-                'avatar' => $queryResult->author->getAvatar(),
-                'username' => $queryResult->author->username,
-            ],
-            'tags' => $queryResult->tags->pluck('name'),
-            'images' => $queryResult->images->map(function ($image) {
-                return $image->getImage();
-            }),
-        ];
-
-        $title = $post['title'];
+        // Get the post
+        $post = Post::with(['author:id,avatar,username', 'tags:name', 'images:post_id,image'])->findOrFail($id);
+        $title = $post->title;
 
         return view('posts.show', compact('post', 'title'));
     }

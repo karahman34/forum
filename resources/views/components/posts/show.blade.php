@@ -1,13 +1,13 @@
 {{-- Post Header --}}
 <div id="post-header">
   {{-- Author Avatar --}}
-  <img id="post-author-avatar" src="{{ $post['author']['avatar'] }}" alt="{{ $post['author']['username'] }}">
+  <img id="post-author-avatar" src="{{ $post->author->getAvatar() }}" alt="{{ $post['author']['username'] }}">
   {{-- Author --}}
-  <span id="post-author-username">{{ $post['author']['username'] }}</span>
+  <span id="post-author-username">{{ $post->author->username }}</span>
   {{-- Post Circle divider --}}
   <span id="post-divider"></span>
   {{-- Post Created Time --}}
-  <span>{{ $post['created_at'] }}</span>
+  <span>{{ $post->created_at->diffForHumans() }}</span>
 
   <div class="is-pulled-right" style="padding-top: 2px;">
     {{-- Seen Time Count --}}
@@ -21,6 +21,10 @@
       <span class="mdi mdi-comment-text-multiple"></span>
       25
     </span>
+
+    {{-- Options --}}
+    @component('components.posts.options', ['post' => $post])
+    @endcomponent
   </div>
 </div>
 
@@ -36,6 +40,6 @@
 
 {{-- Attached Images --}}
 <p class="title is-5" style="margin-bottom: 12px;">Attached images</p>
-@foreach ($post['images'] as $image)
-  <img src="{{ $image }}" alt="{{ $image }}" class="post-image">
+@foreach ($post->images as $image)
+  <img src="{{ $image->getImage() }}" alt="{{ $image->getImage() }}" class="post-image">
 @endforeach
