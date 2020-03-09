@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Post extends Model
 {
     protected $fillable = [
-        'title', 'body'
+        'user_id', 'title', 'body'
     ];
 
     /**

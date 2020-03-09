@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
 
 class PostImage extends Model
 {
@@ -19,5 +20,15 @@ class PostImage extends Model
     public function post()
     {
         return $this->belongsTo('App\Post');
+    }
+
+    /**
+     * Return full url image path
+     *
+     * @return  string
+     */
+    public function getImage()
+    {
+        return Storage::url($this->image);
     }
 }

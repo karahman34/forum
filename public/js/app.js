@@ -2094,6 +2094,25 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
+/***/ "./resources/js/layouts/app/_global.js":
+/*!*********************************************!*\
+  !*** ./resources/js/layouts/app/_global.js ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+window.validateForm = function (errFields, fields) {
+  Object.keys(fields).map(function (field) {
+    if (errFields.hasOwnProperty(field)) {
+      fields[field] = errFields[field][0];
+    } else {
+      fields[field] = null;
+    }
+  });
+};
+
+/***/ }),
+
 /***/ "./resources/js/layouts/app/app.js":
 /*!*****************************************!*\
   !*** ./resources/js/layouts/app/app.js ***!
@@ -2103,6 +2122,8 @@ process.umask = function() { return 0; };
 
 // Use Axios
 window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+
+__webpack_require__(/*! ./_global */ "./resources/js/layouts/app/_global.js");
 
 /***/ }),
 

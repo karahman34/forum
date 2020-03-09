@@ -14,8 +14,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
+// Auth
 Auth::routes(['verify' => true]);
+
+// Index
+Route::get('/', 'PostController@index');
+
+/*
+|--------------------------------------------------------------------------
+| Posts Routes
+|--------------------------------------------------------------------------
+*/
+Route::prefix('posts')->name('post.')->group(function () {
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/create', 'PostController@create')->name('create');
+
+        Route::post('/', 'PostController@store')->name('store');
+    });
+});
