@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Post extends Model
 {
@@ -41,5 +42,15 @@ class Post extends Model
     public function tags()
     {
         return $this->belongsToMany('App\Tag', 'post_tags');
+    }
+
+    /**
+     * Relation one to one to post_seens table
+     *
+     * @return  HasOne
+     */
+    public function seen()
+    {
+        return $this->hasOne('App\PostSeen');
     }
 }
