@@ -1,12 +1,12 @@
 .navbar {
-    box-shadow: 0px 1px 4px grey;
+  box-shadow: 0px 1px 4px grey;
 }
 
 .navbar-item:hover,
 .navbar-link:hover {
-    color: hsl(171, 100%, 41%) !important;
+  color: hsl(171, 100%, 41%) !important;
 }
 
 .navbar-link:not(.is-arrowless)::after {
-    border-color: hsl(171, 100%, 41%) !important;
+  border-color: hsl(171, 100%, 41%) !important;
 }

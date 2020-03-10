@@ -1,20 +1,20 @@
 #left-nav {
-    border-right: 1px solid rgba(128, 128, 128, 0.25);
-    height: 100% !important;
+  border-right: 1px solid rgba(128, 128, 128, 0.25);
+  height: 100% !important;
 }
 
 #left-nav-content {
-    position: -webkit-sticky; /* Safari */
-    position: sticky;
-    top: 95px;
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 95px;
 }
 
 .left-nav-container {
-    margin-top: 8px;
-    color: grey;
+  margin-top: 8px;
+  color: grey;
 }
 
 .left-nav-icon {
-    margin-right: 5px;
-    font-size: 19px;
+  margin-right: 5px;
+  font-size: 19px;
 }

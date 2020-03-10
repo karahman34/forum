@@ -1,18 +1,21 @@
 // Variables
-@import "../../variables";
+@import '../../variables';
 
 // Icons
-@import url("https://cdn.materialdesignicons.com/4.9.95/css/materialdesignicons.min.css");
+@import url('https://cdn.materialdesignicons.com/4.9.95/css/materialdesignicons.min.css');
 
 // Bulma
-@import "~bulma/bulma";
+@import '~bulma/bulma';
 
 // Layout
-@import "global";
+@import 'global';
 
 // Navigations
-@import "navigations/top";
-@import "navigations/left";
+@import 'navigations/top';
+@import 'navigations/left';
 
 // Post
-@import "post/post";
+@import 'post/post';
+
+// Comment
+@import 'comment/comment.scss';
