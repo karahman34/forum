@@ -4,12 +4,12 @@
   <div class="container">
     <div class="columns">
       {{-- Left bar --}}
-      <div class="column is-2">
+      <div class="column is-3-tablet is-2-desktop">
         @include('partials.navigations.left')
       </div>
 
       {{-- Content --}}
-      <div id="main-content" class="column is-7">
+      <div id="main-content" class="column is-10-desktop is-9-widescreen is-8-fullhd">
         {{-- Post Component --}}
         @component('components.posts.show', ['post' => $post])
         @endcomponent
@@ -20,8 +20,10 @@
 
 @push('css')
   <style>
-    #main-content {
-      padding-left: 100px;
+    @media screen and (min-width: 1216px) {
+      #main-content {
+        padding-left: 100px;
+      }
     }
   </style>
 @endpush
