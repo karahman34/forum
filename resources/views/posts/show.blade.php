@@ -19,7 +19,6 @@
 @endsection
 
 @push('css')
-  <link href="https://fonts.googleapis.com/css?family=Karla:400,700&display=swap" rel="stylesheet">
   <style>
     #main-content {
       padding-left: 100px;
