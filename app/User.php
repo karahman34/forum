@@ -50,6 +50,16 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Relation one to many to comments table.
+     *
+     * @return  HasMany
+     */
+    public function comments()
+    {
+        return $this->hasMany('App\Comment');
+    }
+
+    /**
      * Get formatted avatar url
      *
      * @return  string

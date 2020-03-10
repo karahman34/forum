@@ -52,4 +52,14 @@ class Post extends Model
     {
         return $this->hasOne('App\PostSeen');
     }
+
+    /**
+     * Relation one to many to comments table.
+     *
+     * @return  HasMany
+     */
+    public function comments()
+    {
+        return $this->hasMany('App\Comment');
+    }
 }
