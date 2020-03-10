@@ -16,7 +16,7 @@
     {{-- Custom CSS --}}
     <link rel="stylesheet" href="/css/app.css">
     {{-- Custom JS --}}
-    <script src="/js/app.js"></script>
+    <script defer src="/js/app.js"></script>
 
     {{-- Stack CSS --}}
     @stack('css')
@@ -25,7 +25,7 @@
     {{-- Top Navigation --}}
     @include('partials.navigations.top')
 
-    <div class="content-section">
+    <div id="app" class="content-section">
         {{-- Content --}}
         @yield('content')
     </div>

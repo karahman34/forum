@@ -1,4 +1,12 @@
 // Use Axios
-window.axios = require("axios");
+window.axios = require('axios');
 
-require("./_global");
+// Require global config
+require('./_global');
+
+// Define Vue
+window.Vue = require('vue');
+
+const app = new Vue({
+  el: '#app',
+});
