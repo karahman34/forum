@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Comment;
 use App\Http\Requests\PostRequest;
+use App\Http\Resources\CommentsCollection;
 use App\Image;
 use App\Post;
 use App\PostSeen;
 use App\Tag;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -151,6 +154,22 @@ class PostController extends Controller
 
 
         return view('posts.show', compact('post', 'title'));
+    }
+
+    /**
+     * Get post of comments.
+     *
+     * @param   int  $id
+     *
+     * @return  LengthAwarePaginator
+     */
+    public function getComments(int $id)
+    {
+        $comments = Comment::with(['images:url,imageable_id,imageable_type', 'user:id,username,avatar'])
+                                ->where('post_id', $id)
+                                ->paginate();
+
+        return (new CommentsCollection($comments));
     }
 
     /**

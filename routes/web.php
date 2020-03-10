@@ -39,6 +39,7 @@ Route::prefix('posts')->name('post.')->group(function () {
     });
 
     Route::get('/{id}', 'PostController@show')->name('show');
+    Route::get('/{id}/comments', 'PostController@getComments')->name('comments');
 
     Route::post('/{id}/seen', 'PostController@incrementSeen')->name('seen');
 });

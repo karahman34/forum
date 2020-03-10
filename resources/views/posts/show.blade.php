@@ -13,6 +13,11 @@
         {{-- Post Component --}}
         @component('components.posts.show', ['post' => $post])
         @endcomponent
+
+        {{-- Comments Section --}}
+        <comment-list 
+          url="{{ route('post.comments', ['id' => $post->id]) }}"
+        ></comment-list>
       </div>
     </div>
   </div>
