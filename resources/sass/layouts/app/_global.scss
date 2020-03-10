@@ -6,7 +6,13 @@ body {
 }
 
 .content-section {
-  padding-top: 95px !important;
+  padding-top: 50px !important;
+}
+
+@media screen and (min-width: 769px) {
+  .content-section {
+    padding-top: 95px !important;
+  }
 }
 
 .text-main-color {
