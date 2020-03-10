@@ -6,20 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
 
-class PostImage extends Model
+class Image extends Model
 {
     protected $fillable = [
-        'post_id', 'image'
+        'url',
     ];
 
     /**
-     * Relation many to one to posts table
-     *
-     * @return  BelongsTo
+     * Get the owning imageable model.
      */
-    public function post()
+    public function imageable()
     {
-        return $this->belongsTo('App\Post');
+        return $this->morphTo();
     }
 
     /**
@@ -29,6 +27,6 @@ class PostImage extends Model
      */
     public function getImage()
     {
-        return Storage::url($this->image);
+        return Storage::url($this->url);
     }
 }

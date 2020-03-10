@@ -25,13 +25,12 @@ class Post extends Model
     }
 
     /**
-     * Relation one to many to post_images table
      *
-     * @return  HasMany
+     * Get all of the post's images.
      */
     public function images()
     {
-        return $this->hasMany('App\PostImage');
+        return $this->morphMany('App\Image', 'imageable');
     }
 
     /**

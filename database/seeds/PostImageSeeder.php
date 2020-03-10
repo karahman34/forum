@@ -19,6 +19,7 @@ class PostImageSeeder extends Seeder
             'seed-2.jpg',
             'seed-3.png',
         ]);
+        
         // Reformat the url
         $seedImages = $seedImages->map(function ($seedImage) {
             return 'img/posts/' . $seedImage;
@@ -34,7 +35,7 @@ class PostImageSeeder extends Seeder
             $payload = [];
             for ($i=0; $i < $howManyImage; $i++) {
                 $payload[] = [
-                    'image' => $seedImages->random(),
+                    'url' => $seedImages->random(),
                 ];
             }
 

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PostRequest;
+use App\Image;
 use App\Post;
-use App\PostImage;
 use App\PostSeen;
 use App\Tag;
 use Illuminate\Http\JsonResponse;
@@ -24,7 +24,8 @@ class PostController extends Controller
         // Get QS Options
         $limit = $request->get('limit', 15);
 
-        $posts = Post::with([
+        $posts = Post::select('id', 'user_id', 'title', 'created_at')
+        ->with([
             'author:id,username,avatar',
             'tags:name',
             'seen:post_id,count',
@@ -60,7 +61,7 @@ class PostController extends Controller
         $imageNames = [];
         foreach ($images as $image) {
             $imageNames[] = [
-                'image' => $image->store('/img/posts')
+                'url' => $image->store('img/posts')
             ];
         }
 
@@ -138,9 +139,9 @@ class PostController extends Controller
     {
         // Get the post
         $post = Post::with([
+            'images',
             'author:id,avatar,username',
             'tags:name',
-            'images:post_id,image',
             'seen:post_id,count'
         ])
         ->findOrFail($id);
@@ -185,7 +186,7 @@ class PostController extends Controller
     public function edit(int $id)
     {
         // Get the post
-        $post = Post::with(['tags:tags.name', 'images:post_id,image'])->findOrFail($id);
+        $post = Post::with(['tags:tags.name', 'images'])->findOrFail($id);
 
         // Check authorization
         $this->authorize('update', $post);
@@ -201,13 +202,17 @@ class PostController extends Controller
     /**
      * Delete Post Image
      *
-     * @param   string|array  $image
+     * @param   array  images
      *
      * @return  void
      */
-    private function deletePostImage($image)
+    private function deletePostImage(array $images)
     {
-        Storage::delete($image);
+        // Delete post images from storage.
+        Storage::delete($images);
+
+        // Delete post image from db.
+        Image::whereIn('url', $images)->delete();
     }
 
     /**
@@ -220,24 +225,27 @@ class PostController extends Controller
      */
     private function syncOldImages(Request $request, Post $post)
     {
-        $oldImages = $request->get('old_images', null);
-        if ($oldImages !== null && count($oldImages) > 0) {
-            $postImages = $post->images()->get();
+        // Get old images
+        $oldImages = $request->get('old_images', []);
+        // Get post images
+        $postImages = $post->images;
+        
+        // Array containing url of images
+        $imageWillDelete = [];
 
-            $imageWillDelete = [];
+        if (count($oldImages) === 0) {
+            $imageWillDelete = $postImages->pluck('url');
+        } else {
             foreach ($postImages as $postImage) {
-                if (!in_array($postImage->image, $oldImages)) {
-                    $imageWillDelete[] = $postImage->image;
+                if (!in_array($postImage->url, $oldImages)) {
+                    $imageWillDelete[] = $postImage->url;
                 }
             }
+        }
 
-            if (count($imageWillDelete) > 0) {
-                // Delete post image from storage
-                $this->deletePostImage($imageWillDelete);
-
-                // Delete post image in db
-                PostImage::whereIn('image', $imageWillDelete)->delete();
-            }
+        if (count($imageWillDelete) > 0) {
+            // Delete post image from storage
+            $this->deletePostImage($imageWillDelete->toArray());
         }
     }
 
@@ -296,7 +304,10 @@ class PostController extends Controller
         $this->authorize('update', $post);
         
         if ($post->delete()) {
-            $this->deletePostImage($post->image->pluck('image'));
+            // Get post images
+            $postImages = $post->images->pluck('url')->toArray();
+            // Delete post images from local
+            $this->deletePostImage($postImages);
         }
 
         session()->flash('success', 'Success to delete post.');

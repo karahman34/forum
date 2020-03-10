@@ -85,7 +85,7 @@
                 @mouseleave="image.active = false"
               >
                 {{-- The Image --}}
-                <img :src="image.src" :class="{'thumbnail-image-active': image.active}">
+                <img :src="image.src" class="post-image" :class="{'thumbnail-image-active': image.active}">
                 {{-- Delete Button --}}
                 <span class="delete is-medium" :class="{'thumbnail-delete-active': image.active}" @click="deleteThumbnail(image)"></span>
               </div>
@@ -151,13 +151,13 @@
             // Get post images
             const images = post.images.map(image => {
               // Format source image
-              const src = `/storage/${image.image}`;
+              const src = `/storage/${image.url}`;
               // Set image thumbnail preview
               this.selectedImages.push({
                 src,
                 file: null,
                 active: false,
-                originalSrc: image.image,
+                originalSrc: image.url,
               });
             });
           }
