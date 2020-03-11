@@ -14,10 +14,28 @@
         @component('components.posts.show', ['post' => $post])
         @endcomponent
 
+        @auth
+            {{-- Comment Create --}}
+          <comment-create 
+            avatar="{{  Auth::user()->getAvatar() }}"
+            url="{{ route('post.comments', ['id' => $post->id]) }}" 
+          ></comment-create>
+        @endauth
+
         {{-- Comments Section --}}
         <comment-list 
           url="{{ route('post.comments', ['id' => $post->id]) }}"
         ></comment-list>
+
+        @guest
+          <div class="has-text-centered title is-5" style="margin-top:30px; margin-bottom: 20px;">
+            Please
+            <a href="{{ route('login') }}" class="has-text-primary">Sign in</a>
+            or
+            <a href="{{ route('register') }}" class="has-text-primary">Sign up</a>
+            participate in this conversation.
+            </div>
+        @endguest
       </div>
     </div>
   </div>

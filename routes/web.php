@@ -36,6 +36,8 @@ Route::prefix('posts')->name('post.')->group(function () {
         Route::put('/{id}', 'PostController@update')->name('update');
 
         Route::delete('/{id}', 'PostController@destroy')->name('destroy');
+
+        Route::post('/{id}/comments', 'CommentController@store')->name('comments');
     });
 
     Route::get('/{id}', 'PostController@show')->name('show');

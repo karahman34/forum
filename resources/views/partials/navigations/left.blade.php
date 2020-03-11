@@ -1,4 +1,4 @@
-<div id="left-nav">
+<div id="left-nav" class="is-hidden-mobile">
   <div id="left-nav-content">
     {{-- Create Button --}}
     <a 
