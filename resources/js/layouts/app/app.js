@@ -7,7 +7,10 @@ require('./_global');
 // Define Vue
 window.Vue = require('vue');
 
-// Comment List
+// Posts
+Vue.component('post-form', require('./posts/form.vue').default);
+
+// Comments
 Vue.component('comment-list', require('./comments/list.vue').default);
 
 // Create vue instance
