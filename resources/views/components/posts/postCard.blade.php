@@ -37,7 +37,7 @@
       {{-- Comments Count --}}
       <span class="post-card-misc">
         <i class="mdi mdi-comment-text-multiple"></i>
-        <span>31</span>
+        <span>{{ $post->comments_count ?? 0 }}</span>
       </span>
 
       {{-- Options --}}

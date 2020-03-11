@@ -33,6 +33,7 @@ class PostController extends Controller
             'tags:name',
             'seen:post_id,count',
         ])
+        ->withCount('comments')
         ->paginate($limit);
 
         return view('welcome', compact('posts'));
@@ -147,6 +148,7 @@ class PostController extends Controller
             'tags:name',
             'seen:post_id,count'
         ])
+        ->withCount('comments')
         ->findOrFail($id);
 
         // Set title

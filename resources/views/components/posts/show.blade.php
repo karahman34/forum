@@ -19,7 +19,7 @@
     {{-- Comment Count --}}
     <span class="post-misc">
       <span class="mdi mdi-comment-text-multiple"></span>
-      25
+      {{ $post->comments_count }}
     </span>
 
     {{-- Options --}}
