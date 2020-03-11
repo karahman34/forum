@@ -1,29 +1,23 @@
 <template>
-  <nav
-    class="pagination comment-pagination"
-    role="navigation"
-    aria-label="pagination"
-  >
+  <nav class="pagination comment-pagination" role="navigation" aria-label="pagination">
     <!-- Previos -->
     <a
       class="pagination-previous"
       :disabled="prev === false"
       @click="changePage(currentPage - 1)"
-      >Previous</a
-    >
+    >Previous</a>
     <!-- Next -->
     <a
       class="pagination-next"
       :disabled="next === false"
       @click="changePage(currentPage + 1)"
-      >Next page</a
-    >
+    >Next page</a>
     <ul class="pagination-list">
       <!-- First Page -->
       <template v-if="currentPage !== 1">
         <!-- The Page -->
         <li>
-          <a class="pagination-link" aria-label="Goto page 1">1</a>
+          <a class="pagination-link" aria-label="Goto page 1" @click="changePage(1)">1</a>
         </li>
         <!-- The Ellipsis -->
         <li>
@@ -37,23 +31,21 @@
           :class="{ 'is-current is-primary': page === currentPage }"
           :aria-label="`Goto page ${page}`"
           @click="changePage(page)"
-          >{{ page }}</a
-        >
+        >{{ page }}</a>
       </li>
       <!-- Last Page -->
-      <template
-        v-if="currentPage !== lastPage"
-        class="is-marginless is-paddingless"
-      >
+      <template v-if="currentPage !== lastPage" class="is-marginless is-paddingless">
         <!-- The Ellipsis -->
         <li>
           <span class="pagination-ellipsis">&hellip;</span>
         </li>
         <!-- The Page -->
         <li>
-          <a class="pagination-link" :aria-label="`Goto page ${lastPage}`">{{
-            lastPage
-          }}</a>
+          <a
+            class="pagination-link"
+            :aria-label="`Goto page ${lastPage}`"
+            @click="changePage(lastPage)"
+          >{{ lastPage }}</a>
         </li>
       </template>
     </ul>

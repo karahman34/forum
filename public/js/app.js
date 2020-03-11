@@ -2828,14 +2828,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     currentPage: {
@@ -5790,7 +5782,25 @@ var render = function() {
         { staticClass: "pagination-list" },
         [
           _vm.currentPage !== 1
-            ? [_vm._m(0), _vm._v(" "), _vm._m(1)]
+            ? [
+                _c("li", [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "pagination-link",
+                      attrs: { "aria-label": "Goto page 1" },
+                      on: {
+                        click: function($event) {
+                          return _vm.changePage(1)
+                        }
+                      }
+                    },
+                    [_vm._v("1")]
+                  )
+                ]),
+                _vm._v(" "),
+                _vm._m(0)
+              ]
             : _vm._e(),
           _vm._v(" "),
           _vm._l(_vm.lastPage, function(page) {
@@ -5814,14 +5824,19 @@ var render = function() {
           _vm._v(" "),
           _vm.currentPage !== _vm.lastPage
             ? [
-                _vm._m(2),
+                _vm._m(1),
                 _vm._v(" "),
                 _c("li", [
                   _c(
                     "a",
                     {
                       staticClass: "pagination-link",
-                      attrs: { "aria-label": "Goto page " + _vm.lastPage }
+                      attrs: { "aria-label": "Goto page " + _vm.lastPage },
+                      on: {
+                        click: function($event) {
+                          return _vm.changePage(_vm.lastPage)
+                        }
+                      }
                     },
                     [_vm._v(_vm._s(_vm.lastPage))]
                   )
@@ -5835,21 +5850,6 @@ var render = function() {
   )
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", [
-      _c(
-        "a",
-        {
-          staticClass: "pagination-link",
-          attrs: { "aria-label": "Goto page 1" }
-        },
-        [_vm._v("1")]
-      )
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
