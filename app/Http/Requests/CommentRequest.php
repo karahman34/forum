@@ -33,7 +33,7 @@ class CommentRequest extends FormRequest
             return $rules;
         } else {
             $rules['old_images'] = 'array';
-            $rules['old_images.*'] = 'image|mimes:png,jpg,jpeg,gif|max:4096';
+            $rules['old_images.*'] = 'string|max:255';
 
             return $rules;
         }

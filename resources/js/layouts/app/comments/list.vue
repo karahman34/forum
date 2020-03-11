@@ -14,7 +14,7 @@
         </span>
       </div>
 
-      <!-- Comment List -->
+      <!-- Comment List Container -->
       <div v-for="comment in comments" :key="comment.id" class="comment-container">
         <!-- Comment Header -->
         <div class="comment-header">
@@ -29,6 +29,15 @@
 
           <!-- Created Time -->
           <span class="comment-created-time">{{ comment.created_at }}</span>
+
+          <!-- Options Menu -->
+          <span class="is-pulled-right">
+            <menus
+              v-if="user !== null && comment.user_id === user.id"
+              :comment="comment"
+              @deleted="deleteComment"
+            ></menus>
+          </span>
         </div>
 
         <!-- Comment Body -->
@@ -57,13 +66,19 @@
 </template>
 
 <script>
+import Menus from './menus.vue';
 import Pagination from './pagination.vue';
 
 export default {
   components: {
+    Menus,
     Pagination,
   },
   props: {
+    user: {
+      type: Object,
+      default: null,
+    },
     url: {
       type: String,
       required: true,
@@ -107,6 +122,13 @@ export default {
         throw Error(err);
       } finally {
         this.loading = false;
+      }
+    },
+    deleteComment(comment) {
+      const commentIndex = this.comments.findIndex(c => c.id === comment.id);
+      if (commentIndex !== -1) {
+        this.comments.splice(commentIndex, 1);
+        this.total -= 1;
       }
     },
     changePage(page) {

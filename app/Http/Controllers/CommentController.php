@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Comment;
 use App\Http\Requests\CommentRequest;
+use App\Image;
 use App\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class CommentController extends Controller
 {
@@ -66,19 +68,99 @@ class CommentController extends Controller
      */
     public function edit($id)
     {
-        //
+        $comment = Comment::with('images')->findOrFail($id);
+
+        // Check Authorization
+        $this->authorize('update', $comment);
+
+        $title = 'Edit Comment';
+
+        return view('comments.edit', compact('comment', 'title'));
+    }
+
+    /**
+     * Delete comment images
+     *
+     * @param   array  $images
+     *
+     * @return  void
+     */
+    private function deleteCommentImages(array $images)
+    {
+        // Delete from local storage
+        Storage::delete($images);
+
+        // Delete from DB
+        Image::whereIn('url', $images)->delete();
+    }
+
+    /**
+     * Sync comment old images
+     *
+     * @param   Request  $request
+     * @param   Comment  $comment
+     *
+     * @return  void
+     */
+    private function syncOldImages(Request $request, Comment $comment)
+    {
+        // Get old images
+        $old_images = $request->get('old_images', []);
+
+        // Get comment images
+        $comment_images = $comment->images->pluck('url');
+
+        // Contains images to be deleted
+        $imageWillDelete = [];
+
+        if (count($old_images) > 0) {
+            foreach ($comment_images as $comment_image) {
+                if (!in_array($comment_image, $old_images)) {
+                    $imageWillDelete[] = $comment_image;
+                }
+            }
+        } else {
+            $imageWillDelete = $comment_images->toArray();
+        }
+
+        // Delete Comment images
+        $this->deleteCommentImages($imageWillDelete);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  CommentRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CommentRequest $request, $id)
     {
-        //
+        // Get Comment
+        $comment = Comment::select('id', 'user_id')->where('id', $id)->firstOrFail();
+
+        // Check Authorization
+        $this->authorize('update', $comment);
+
+        // Get payload
+        $payload = [
+            'body' => $request->get('body'),
+        ];
+
+        // Update comment
+        $comment->update($payload);
+
+        // Sync old images
+        $this->syncOldImages($request, $comment);
+
+        // Store images
+        if ($request->has('images')) {
+            $this->storeImages($request->file('images'), $comment);
+        }
+
+        return response()->json([
+            'ok' => true,
+        ], 202);
     }
 
     /**
@@ -89,6 +171,23 @@ class CommentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // Get comment
+        $comment = Comment::select('id', 'user_id')->where('id', $id)->firstOrFail();
+
+        // Check Authorization
+        $this->authorize('delete', $comment);
+
+        if ($comment->delete()) {
+            // Delete comment images
+            $this->deleteCommentImages($comment->images->pluck('url')->toArray());
+
+            return response()->json([
+                'ok' => true,
+            ], 202);
+        }
+
+        return response()->json([
+            'ok' => false,
+        ], 500);
     }
 }

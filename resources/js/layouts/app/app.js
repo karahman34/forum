@@ -13,6 +13,7 @@ Vue.component('post-form', require('./posts/form.vue').default);
 // Comments
 Vue.component('comment-list', require('./comments/list.vue').default);
 Vue.component('comment-create', require('./comments/create.vue').default);
+Vue.component('comment-edit', require('./comments/edit.vue').default);
 
 // Create vue instance
 const app = new Vue({

@@ -24,6 +24,7 @@
 
         {{-- Comments Section --}}
         <comment-list 
+          @if (Auth::check()) :user="{{ Auth::user()->toJson() }}" @endif
           url="{{ route('post.comments', ['id' => $post->id]) }}"
         ></comment-list>
 

@@ -319,7 +319,7 @@ class PostController extends Controller
     public function destroy($id)
     {
         // Get the post
-        $post = Post::select('id')->where('id', $id)->findOrFail();
+        $post = Post::select('id', 'user_id')->where('id', $id)->findOrFail();
 
         // Check authorization
         $this->authorize('update', $post);

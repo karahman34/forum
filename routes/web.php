@@ -45,3 +45,18 @@ Route::prefix('posts')->name('post.')->group(function () {
 
     Route::post('/{id}/seen', 'PostController@incrementSeen')->name('seen');
 });
+
+/*
+|--------------------------------------------------------------------------
+| Coments Routes
+|--------------------------------------------------------------------------
+*/
+Route::prefix('comments')->name('comment.')->group(function () {
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/{id}/edit', 'CommentController@edit')->name('edit');
+
+        Route::put('/{id}', 'CommentController@update')->name('update');
+        
+        Route::delete('/{id}', 'CommentController@destroy')->name('destroy');
+    });
+});
