@@ -75,7 +75,7 @@ export default {
         this.loading = true;
         // Set payload
         const formData = new FormData();
-        formData.append('body', this.body);
+        if (this.body !== null) formData.append('body', this.body);
         // Set for images
         for (const image of this.selectedImages) {
           formData.append('images[]', image.file);
