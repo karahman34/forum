@@ -23,7 +23,7 @@
     </span>
 
     {{-- Options --}}
-    @component('components.posts.options', ['post' => $post])
+    @component('components.posts.menus', ['post' => $post])
     @endcomponent
   </div>
 </div>

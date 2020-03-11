@@ -12147,24 +12147,6 @@ body {
   margin-right: 8px;
 }
 
-.post-dropdown-trigger {
-  display: inline-block;
-  background: grey;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  margin-bottom: 3px;
-}
-
-.post-dropdown-content {
-  width: auto;
-  max-width: 100px;
-}
-
-.post-dropdown-content i {
-  margin-right: 3px;
-}
-
 .comment-filter-container {
   margin-top: 7px;
   margin-bottom: 5px;

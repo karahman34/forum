@@ -42,7 +42,7 @@
 
       {{-- Options --}}
       <span class="is-pulled-right">
-        @component('components.posts.options', ['post' => $post])
+        @component('components.posts.menus', ['post' => $post])
         @endcomponent
       </span>
     </div>

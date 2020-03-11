@@ -2,20 +2,3 @@
 @import 'show';
 // Use Post Card
 @import 'postCard';
-
-.post-dropdown-trigger {
-  display: inline-block;
-  background: grey;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  margin-bottom: 3px;
-}
-
-.post-dropdown-content {
-  width: auto;
-  max-width: 100px;
-}
-.post-dropdown-content i {
-  margin-right: 3px;
-}
