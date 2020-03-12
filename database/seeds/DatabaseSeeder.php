@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(UserSeeder::class);
 
-        factory('App\Post', 30)->create();
+        factory('App\Post', 100)->create();
 
         $this->call(TagSeeder::class);
         $this->call(PostTagSeeder::class);
