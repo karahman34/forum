@@ -27,11 +27,14 @@ class UserSeeder extends Seeder
         ]);
 
         $users = $userNames->map(function ($username) {
+            $time_now = Carbon::now();
             return [
                 'username' => $username,
                 'email' => $username. "@example.com",
                 'password' => '$2y$10$zBybZ74F/ZlkwaCXwczd4.TsjDwOQhDu4YzDr9/O0VKDFtQpUBhjq', // password
-                'email_verified_at' => Carbon::now(),
+                'email_verified_at' => $time_now,
+                'created_at' => $time_now,
+                'updated_at' => $time_now,
             ];
         });
 
