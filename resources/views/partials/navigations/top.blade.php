@@ -1,4 +1,4 @@
-<nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation" style="margin-bottom: 30px;">
+<nav id="top-nav" class="navbar" role="navigation" aria-label="main navigation">
   <div class="container">
     {{-- Navbar Brand --}}
     <div class="navbar-brand">

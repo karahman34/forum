@@ -22,12 +22,14 @@
     @stack('css')
 </head>
 <body>
-    {{-- Top Navigation --}}
-    @include('partials.navigations.top')
+    <div class="is-relative">
+        {{-- Top Navigation --}}
+        @include('partials.navigations.top')
 
-    <div id="app" class="content-section">
-        {{-- Content --}}
-        @yield('content')
+        <div id="app" class="content-section">
+            {{-- Content --}}
+            @yield('content')
+        </div>
     </div>
 
     {{-- Stack JS --}}
