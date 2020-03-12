@@ -44,7 +44,7 @@ class UserController extends Controller
                         ->where('username', $username)
                         ->firstOrFail();
 
-        $title = 'Update '. $user->username;
+        $title = 'Edit '. $user->username;
 
         return view('users.edit', compact('user', 'title'));
     }
