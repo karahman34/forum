@@ -5,7 +5,7 @@
       <img src="{{ $post->author->getAvatar() }}" class="post-card-avatar">
 
       {{-- Username --}}
-      <span class="post-card-username">{{ $post->author->username }}</span>
+      <a href="{{ route('user.profile', ['username' => $post->author->username]) }}" class="post-card-username">{{  $post->author->username }}</a>
 
       {{-- Dot --}}
       <span class="post-card-username-image-divider"></span>

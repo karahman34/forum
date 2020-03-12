@@ -11991,14 +11991,16 @@ body {
   background: #f8fafc;
 }
 
-.content-section {
-  padding-top: 50px !important;
+@media screen and (max-width: 769px) {
+  .section {
+    padding-top: 15px !important;
+  }
 }
 
-@media screen and (min-width: 769px) {
-  .content-section {
-    padding-top: 95px !important;
-  }
+.notification.custom {
+  padding: 13px !important;
+  font-weight: 700;
+  color: white;
 }
 
 .text-main-color {
@@ -12013,6 +12015,12 @@ body {
 
 .icon-in-form {
   font-size: 19px;
+}
+
+#top-nav {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0% !important;
 }
 
 .navbar {
@@ -12061,6 +12069,7 @@ body {
 }
 
 #post-author-username {
+  color: grey;
   font-size: 18px;
   font-weight: 600;
   margin-left: 10px;
@@ -12113,6 +12122,7 @@ body {
 
 .post-card-username {
   display: inline-block;
+  color: #4d4848;
   font-size: 19px;
   margin-left: 8px;
 }
@@ -12168,6 +12178,7 @@ body {
 }
 
 .comment-container .comment-header .comment-username {
+  color: grey;
   font-size: 18px;
   font-weight: 600;
   margin-left: 5px;
@@ -12199,5 +12210,21 @@ body {
 
 .comment-pagination {
   margin-top: 25px;
+}
+
+.pagination.with-shadow .pagination-link {
+  background-color: white;
+  box-shadow: 1px 1px 6px rgba(128, 128, 128, 0.5) !important;
+}
+
+.pagination.with-shadow .pagination-previous,
+.pagination.with-shadow .pagination-next {
+  background-color: white;
+  box-shadow: 1px 1px 6px rgba(128, 128, 128, 0.5) !important;
+}
+
+.pagination-link.is-current {
+  background: #00d1b2 !important;
+  border-color: #00d1b2 !important;
 }
 

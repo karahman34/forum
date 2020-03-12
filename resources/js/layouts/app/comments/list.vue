@@ -22,7 +22,10 @@
           <img :src="comment.user.avatar" :alt="comment.user.avatar" class="comment-user-avatar" />
 
           <!-- Username -->
-          <span class="comment-username">{{ comment.user.username }}</span>
+          <a
+            :href="`/users/${comment.user.username}`"
+            class="comment-username"
+          >{{ comment.user.username }}</a>
 
           <!-- Divider -->
           <span class="comment-header-divider"></span>

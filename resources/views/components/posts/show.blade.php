@@ -3,7 +3,7 @@
   {{-- Author Avatar --}}
   <img id="post-author-avatar" src="{{ $post->author->getAvatar() }}" alt="{{ $post['author']['username'] }}">
   {{-- Author --}}
-  <span id="post-author-username">{{ $post->author->username }}</span>
+  <a href="{{ route('user.profile', ['username' => $post->author->username]) }}" id="post-author-username">{{  $post->author->username }}</a>
   {{-- Post Circle divider --}}
   <span id="post-divider"></span>
   {{-- Post Created Time --}}
