@@ -1,4 +1,4 @@
-<div class="dropdown is-hoverable">
+<div class="dropdown is-hoverable @isset($right) is-right @endisset">
   {{-- The Dots Trigger --}}
   <div class="dropdown-trigger">
     <span class="options-dropdown-trigger"></span>
@@ -31,6 +31,15 @@
     }
     .options-dropdown-content i {
       margin-right: 3px;
+    }
+
+    .dropdown.is-right .dropdown-menu {
+      display: none;
+      justify-content: flex-end !important;
+    }
+
+    .dropdown.is-right:hover .dropdown-menu {
+      display: flex !important;
     }
   </style>
 @endpush

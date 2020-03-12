@@ -1,4 +1,4 @@
-@component('components.options')
+@component('components.options', ['right' => true])
   @auth
     @can('update', $post)
       {{-- Edit --}}
