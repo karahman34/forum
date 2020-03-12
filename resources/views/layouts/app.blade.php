@@ -26,7 +26,7 @@
         {{-- Top Navigation --}}
         @include('partials.navigations.top')
 
-        <div id="app" class="content-section">
+        <div id="app" class="section">
             {{-- Content --}}
             @yield('content')
         </div>

@@ -5,14 +5,16 @@ body {
   background: $body-bg;
 }
 
-.content-section {
-  padding-top: 17px;
+@media screen and (max-width: 769px) {
+  .section {
+    padding-top: 15px !important;
+  }
 }
 
-@media screen and (min-width: 769px) {
-  .content-section {
-    padding-top: 35px !important;
-  }
+.notification.custom {
+  padding: 13px !important;
+  font-weight: 700;
+  color: white;
 }
 
 .text-main-color {
