@@ -45,6 +45,9 @@
 
             {{-- Dropdown Structure --}}
             <div class="navbar-dropdown is-right">
+              {{-- Profile --}}
+              <a class="navbar-item" href="{{ route('user.profile', ['username' => Auth::user()->username]) }}">Profile</a>
+              {{-- Logout --}}
               <a class="navbar-item" onclick="logoutHandler()">
                 <form id="logout-form" method="POST" action="{{route('logout')}}">
                   @csrf

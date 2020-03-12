@@ -60,3 +60,18 @@ Route::prefix('comments')->name('comment.')->group(function () {
         Route::delete('/{id}', 'CommentController@destroy')->name('destroy');
     });
 });
+
+/*
+|--------------------------------------------------------------------------
+| Users Routes
+|--------------------------------------------------------------------------
+*/
+Route::prefix('users')->name('user.')->group(function () {
+    Route::get('/{username}', 'UserController@show')->name('profile');
+
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/{username}/edit', 'UserController@edit')->name('edit');
+        
+        Route::put('/{id}', 'UserController@update')->name('update');
+    });
+});

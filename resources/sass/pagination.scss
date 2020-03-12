@@ -1,0 +1,17 @@
+.pagination.with-shadow {
+  .pagination-link {
+    background-color: white;
+    box-shadow: 1px 1px 6px rgba(128, 128, 128, 0.5) !important;
+  }
+
+  .pagination-previous,
+  .pagination-next {
+    background-color: white;
+    box-shadow: 1px 1px 6px rgba(128, 128, 128, 0.5) !important;
+  }
+}
+
+.pagination-link.is-current {
+  background: hsl(171, 100%, 41%) !important;
+  border-color: hsl(171, 100%, 41%) !important;
+}
