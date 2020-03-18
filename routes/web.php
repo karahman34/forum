@@ -75,3 +75,7 @@ Route::prefix('users')->name('user.')->group(function () {
         Route::put('/{id}', 'UserController@update')->name('update');
     });
 });
+
+Route::prefix('tags')->name('tag.')->group(function () {
+    Route::get('/', 'TagController@index')->name('index');
+});
