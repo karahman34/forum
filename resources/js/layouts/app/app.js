@@ -1,6 +1,22 @@
 // Use Axios
 window.axios = require('axios');
 
+// Use bulma toast
+bulmaToast = require('bulma-toast').toast;
+window.toast = options => {
+  const defaultOptions = {
+    closeOnClick: false,
+    pauseOnHover: true,
+    dismissible: true,
+    position: 'bottom-left',
+    duration: '3000',
+  };
+
+  const finalOptions = { ...defaultOptions, ...options };
+
+  bulmaToast(finalOptions);
+};
+
 // Require global config
 require('./_global');
 
@@ -10,6 +26,7 @@ window.Vue = require('vue');
 // Posts
 Vue.component('post-form', require('./posts/form.vue').default);
 Vue.component('post-filter', require('./posts/postFilter.vue').default);
+Vue.component('post-menus', require('./posts/menus.vue').default);
 
 // Comments
 Vue.component('comment-list', require('./comments/list.vue').default);
