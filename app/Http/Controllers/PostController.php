@@ -408,7 +408,7 @@ class PostController extends Controller
     public function destroy($id)
     {
         // Get the post
-        $post = Post::select('id', 'user_id')->where('id', $id)->findOrFail();
+        $post = Post::select('id', 'user_id')->where('id', $id)->firstOrFail();
 
         // Check authorization
         $this->authorize('update', $post);
@@ -420,8 +420,9 @@ class PostController extends Controller
             $this->deletePostImage($postImages);
         }
 
-        session()->flash('success', 'Success to delete post.');
-
-        return back();
+        return response()->json([
+            'ok' => true,
+            'message' => 'Success to delete post.',
+        ], 202);
     }
 }

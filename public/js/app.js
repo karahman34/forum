@@ -3269,6 +3269,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     post: {
@@ -3282,7 +3288,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   data: function data() {
     return {
-      saveLoading: false
+      saveLoading: false,
+      deleteLoading: false
     };
   },
   methods: {
@@ -3317,7 +3324,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 if (ok) {
                   _this.post.saved = 1;
                   toast({
-                    message: 'Post Saved.',
+                    message: 'Post saved.',
                     type: 'is-success'
                   });
                 }
@@ -3367,11 +3374,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 if (ok) {
                   _this2.post.saved = 0;
                   toast({
-                    message: 'Post Unsaved.',
+                    message: 'Post unsaved.',
                     type: 'is-success'
                   });
 
-                  _this2.removePost();
+                  _this2.removePost('unsave');
                 }
 
                 _context2.next = 12;
@@ -3398,8 +3405,60 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee2, null, [[0, 9, 12, 15]]);
       }))();
     },
-    removePost: function removePost() {
-      var event = new CustomEvent('post-unsave');
+    deletePost: function deletePost() {
+      var _this3 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
+        var res, ok;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.prev = 0;
+                _this3.deleteLoading = true;
+                _context3.next = 4;
+                return axios["delete"]("/posts/".concat(_this3.post.id));
+
+              case 4:
+                res = _context3.sent;
+                ok = res.data.ok;
+
+                if (ok) {
+                  _this3.post.saved = 1;
+                  toast({
+                    message: 'Post deleted.',
+                    type: 'is-success'
+                  });
+
+                  _this3.removePost('delete');
+                }
+
+                _context3.next = 12;
+                break;
+
+              case 9:
+                _context3.prev = 9;
+                _context3.t0 = _context3["catch"](0);
+                toast({
+                  message: 'Failed to delete post.',
+                  type: 'is-danger'
+                });
+
+              case 12:
+                _context3.prev = 12;
+                _this3.deleteLoading = false;
+                return _context3.finish(12);
+
+              case 15:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, null, [[0, 9, 12, 15]]);
+      }))();
+    },
+    removePost: function removePost(context) {
+      var event = new CustomEvent("post-".concat(context));
       event.postId = this.post.id;
       window.dispatchEvent(event);
     }
@@ -3774,7 +3833,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, ".save-loading-icon[data-v-312a2194] {\n  font-size: 18px;\n}", ""]);
+exports.push([module.i, ".loading-icon[data-v-312a2194] {\n  font-size: 18px;\n}\n.dropdown-item[data-v-312a2194] {\n  cursor: pointer;\n}\n.dropdown-item[data-v-312a2194]:hover {\n  background: rgba(184, 180, 180, 0.3);\n}", ""]);
 
 // exports
 
@@ -6863,15 +6922,11 @@ var render = function() {
     _vm.auth !== null
       ? _c(
           "div",
-          {
-            staticClass: "dropdown-item",
-            staticStyle: { cursor: "pointer" },
-            on: { click: _vm.toggleSave }
-          },
+          { staticClass: "dropdown-item", on: { click: _vm.toggleSave } },
           [
             _vm.saveLoading
               ? _c("i", {
-                  staticClass: "mdi mdi-loading mdi-spin save-loading-icon"
+                  staticClass: "mdi mdi-loading mdi-spin loading-icon"
                 })
               : _c("span", [
                   _vm.isSaved()
@@ -6879,6 +6934,21 @@ var render = function() {
                     : _c("i", { staticClass: "mdi mdi-close" })
                 ]),
             _vm._v("\n    Save\n  ")
+          ]
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.auth !== null && _vm.auth.id === _vm.post.user_id
+      ? _c(
+          "div",
+          { staticClass: "dropdown-item", on: { click: _vm.deletePost } },
+          [
+            _vm.deleteLoading
+              ? _c("i", {
+                  staticClass: "mdi mdi-loading mdi-spin loading-icon"
+                })
+              : _c("i", { staticClass: "mdi mdi-trash-can" }),
+            _vm._v("\n    Delete\n  ")
           ]
         )
       : _vm._e()

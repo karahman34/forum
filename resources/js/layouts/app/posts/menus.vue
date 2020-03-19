@@ -11,17 +11,9 @@
     </a>
 
     <!-- Save -->
-    <div
-      v-if="auth !== null"
-      class="dropdown-item"
-      style="cursor: pointer;"
-      @click="toggleSave"
-    >
+    <div v-if="auth !== null" class="dropdown-item" @click="toggleSave">
       <!-- Save Loading Icon -->
-      <i
-        v-if="saveLoading"
-        class="mdi mdi-loading mdi-spin save-loading-icon"
-      ></i>
+      <i v-if="saveLoading" class="mdi mdi-loading mdi-spin loading-icon"></i>
 
       <span v-else>
         <!-- Saved Icon -->
@@ -30,6 +22,20 @@
         <i v-else class="mdi mdi-close"></i>
       </span>
       Save
+    </div>
+
+    <!-- Delete -->
+    <div
+      v-if="auth !== null && auth.id === post.user_id"
+      class="dropdown-item"
+      @click="deletePost"
+    >
+      <!-- Save Loading Icon -->
+      <i v-if="deleteLoading" class="mdi mdi-loading mdi-spin loading-icon"></i>
+
+      <!-- Delete Icon -->
+      <i v-else class="mdi mdi-trash-can"></i>
+      Delete
     </div>
   </div>
 </template>
@@ -49,6 +55,7 @@ export default {
   data() {
     return {
       saveLoading: false,
+      deleteLoading: false,
     };
   },
   methods: {
@@ -73,7 +80,7 @@ export default {
           this.post.saved = 1;
 
           toast({
-            message: 'Post Saved.',
+            message: 'Post saved.',
             type: 'is-success',
           });
         }
@@ -96,11 +103,11 @@ export default {
         if (ok) {
           this.post.saved = 0;
           toast({
-            message: 'Post Unsaved.',
+            message: 'Post unsaved.',
             type: 'is-success',
           });
 
-          this.removePost();
+          this.removePost('unsave');
         }
       } catch (err) {
         toast({
@@ -111,8 +118,33 @@ export default {
         this.saveLoading = false;
       }
     },
-    removePost() {
-      const event = new CustomEvent('post-unsave');
+    async deletePost() {
+      try {
+        this.deleteLoading = true;
+
+        const res = await axios.delete(`/posts/${this.post.id}`);
+        const { ok } = res.data;
+
+        if (ok) {
+          this.post.saved = 1;
+          toast({
+            message: 'Post deleted.',
+            type: 'is-success',
+          });
+
+          this.removePost('delete');
+        }
+      } catch (err) {
+        toast({
+          message: 'Failed to delete post.',
+          type: 'is-danger',
+        });
+      } finally {
+        this.deleteLoading = false;
+      }
+    },
+    removePost(context) {
+      const event = new CustomEvent(`post-${context}`);
       event.postId = this.post.id;
       window.dispatchEvent(event);
     },
@@ -121,7 +153,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.save-loading-icon {
+.loading-icon {
   font-size: 18px;
+}
+
+.dropdown-item {
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background: rgba(184, 180, 180, 0.3);
 }
 </style>

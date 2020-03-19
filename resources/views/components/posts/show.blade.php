@@ -23,8 +23,11 @@
     </span>
 
     {{-- Options --}}
-    @component('components.posts.menus', ['post' => $post])
-    @endcomponent
+    <span class="is-pulled-right">
+      @component('components.options', ['right' => true])
+        <post-menus :post="{{ $post }}" @auth :auth="{{ auth()->user() }}" @endauth></post-menus>
+      @endcomponent
+    </span>
   </div>
 </div>
 
@@ -45,3 +48,11 @@
     <img src="{{ $image->getImage() }}" alt="{{ $image->getImage() }}" class="post-image">
   @endforeach
 @endif
+
+@push('js')
+  <script>
+    window.addEventListener('post-delete', ({ postId }) => {
+      window.location.href = "/users/{{ $post->author->username }}";
+    });
+  </script>
+@endpush
