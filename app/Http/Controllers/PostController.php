@@ -9,6 +9,7 @@ use App\Image;
 use App\Post;
 use App\PostSeen;
 use App\Tag;
+use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -26,15 +27,55 @@ class PostController extends Controller
     {
         // Get QS Options
         $limit = $request->get('limit', 15);
+        $q = $request->get('q', null);
+        $popular = $request->get('popular', 0);
+        $tags = $request->get('tags', null);
+        $sort = $request->get('sort', null);
 
-        $posts = Post::select('id', 'user_id', 'title', 'created_at')
-        ->with([
-            'author:id,username,avatar',
-            'tags:name',
-            'seen:post_id,count',
-        ])
-        ->withCount('comments')
-        ->paginate($limit);
+        $query = Post::select(
+            'posts.id',
+            'user_id',
+            'title',
+            'posts.created_at',
+            'post_seens.count as seens_count',
+        )
+                ->with([
+                    'author:id,username,avatar',
+                    'tags:name',
+                ])
+                ->join('post_seens', 'posts.id', 'post_seens.post_id')
+                ->withCount('comments');
+
+        // Apply search
+        if ($q !== null) {
+            $query->where('posts.title', 'like', "%{$q}%");
+        }
+
+        // Apply Popular
+        if ($popular == '1') {
+            $now = Carbon::now();
+            $weekBefore = Carbon::now()->subDays(7);
+ 
+            $query->whereBetween('posts.created_at', [$weekBefore, $now])
+                    ->orderBy('post_seens.count', 'DESC');
+        }
+
+        // Apply tags filter
+        if ($tags !== null) {
+            $tags = explode(',', $tags);
+            $query->join('post_tags', 'post_tags.post_id', 'posts.id')
+                    ->join('tags', 'tags.id', 'post_tags.tag_id')
+                    ->whereIn('tags.name', $tags);
+        }
+
+        // Apply sort query
+        if ($sort !== null) {
+            $sort = ($sort === 'new') ? 'desc' : 'asc';
+            $query->orderBy('posts.created_at', $sort);
+        }
+
+        // Get the posts
+        $posts = $query->paginate($limit);
 
         return view('welcome', compact('posts'));
     }

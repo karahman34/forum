@@ -12050,7 +12050,14 @@ body {
 
 .left-nav-container {
   margin-top: 8px;
+}
+
+.left-nav-container * {
   color: grey;
+}
+
+.left-nav-container .current-menu * {
+  color: #00d1b2;
 }
 
 .left-nav-icon {

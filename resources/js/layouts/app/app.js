@@ -9,6 +9,7 @@ window.Vue = require('vue');
 
 // Posts
 Vue.component('post-form', require('./posts/form.vue').default);
+Vue.component('post-filter', require('./posts/postFilter.vue').default);
 
 // Comments
 Vue.component('comment-list', require('./comments/list.vue').default);

@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 Auth::routes(['verify' => true]);
 
 // Index
-Route::get('/', 'PostController@index');
+Route::get('/', 'PostController@index')->name('welcome');
 
 /*
 |--------------------------------------------------------------------------

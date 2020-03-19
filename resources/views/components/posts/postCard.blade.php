@@ -30,7 +30,11 @@
       <span class="post-card-misc">
         <i class="mdi mdi-eye"></i>
         <span>
-          {{ $post->seen->count ?? 0 }}
+          @if ($post->seens_count && $post->seens_count >= 0)
+            {{ $post->seens_count }}
+          @else
+            {{ $post->seen->count ?? 0 }}
+          @endif
         </span>
       </span>
 

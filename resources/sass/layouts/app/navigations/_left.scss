@@ -11,7 +11,14 @@
 
 .left-nav-container {
   margin-top: 8px;
-  color: grey;
+
+  * {
+    color: grey;
+  }
+
+  .current-menu * {
+    color: $primary;
+  }
 }
 
 .left-nav-icon {
