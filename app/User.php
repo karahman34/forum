@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -57,6 +58,16 @@ class User extends Authenticatable implements MustVerifyEmail
     public function comments()
     {
         return $this->hasMany('App\Comment');
+    }
+
+    /**
+     * Relation many to mant to posts table
+     *
+     * @return  BelongsToMany
+     */
+    public function savedPosts()
+    {
+        return $this->belongsToMany('App\Post', 'saved_posts')->withTimestamps();
     }
 
     /**

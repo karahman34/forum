@@ -62,4 +62,16 @@ class Post extends Model
     {
         return $this->hasMany('App\Comment');
     }
+
+    /**
+     * Relation many to many to users table
+     *
+     * @return  BelongsToMany
+     */
+    public function savedFromUser()
+    {
+        return $this->belongsToMany('App\User', 'saved_posts')
+                        ->withTimestamps()
+                        ->withPivot('created_at', 'updated_at');
+    }
 }
