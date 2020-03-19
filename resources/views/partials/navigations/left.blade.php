@@ -26,7 +26,8 @@
       [
         'icon' => 'mdi mdi-folder-zip-outline',
         'text' => 'Saved Posts',
-        'href' => '#',
+        'href' => route('user.saved_posts'),
+        'current' => (route('user.saved_posts') === url()->current()),
       ],
     ];
     @endphp

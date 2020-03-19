@@ -1,6 +1,11 @@
-<div class="card">
+<div class="card post-card">
   <div class="card-content">
     <div class="post-card-header">
+      {{-- Header --}}
+      @isset($header)
+        {{ $header }}
+      @endisset
+
       {{-- User Image --}}
       <img src="{{ $post->author->getAvatar() }}" class="post-card-avatar">
 
@@ -46,7 +51,8 @@
 
       {{-- Options --}}
       <span class="is-pulled-right">
-        @component('components.posts.menus', ['post' => $post])
+        @component('components.options', ['right' => true])
+          <post-menus :post="{{ $post }}" @auth :auth="{{ auth()->user() }}" @endauth></post-menus>
         @endcomponent
       </span>
     </div>

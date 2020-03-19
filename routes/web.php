@@ -32,12 +32,13 @@ Route::prefix('posts')->name('post.')->group(function () {
         Route::get('/{id}/edit', 'PostController@edit')->name('edit');
 
         Route::post('/', 'PostController@store')->name('store');
+        Route::post('/{id}/save', 'PostController@savePost')->name('save');
+        Route::post('/{id}/unsave', 'PostController@unSavePost')->name('unsave');
+        Route::post('/{id}/comments', 'CommentController@store')->name('comments');
     
         Route::put('/{id}', 'PostController@update')->name('update');
 
         Route::delete('/{id}', 'PostController@destroy')->name('destroy');
-
-        Route::post('/{id}/comments', 'CommentController@store')->name('comments');
     });
 
     Route::get('/{id}', 'PostController@show')->name('show');
@@ -67,13 +68,14 @@ Route::prefix('comments')->name('comment.')->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::prefix('users')->name('user.')->group(function () {
-    Route::get('/{username}', 'UserController@show')->name('profile');
-
     Route::middleware(['auth'])->group(function () {
+        Route::get('/saved-posts', 'UserController@getSavedPosts')->name('saved_posts');
         Route::get('/{username}/edit', 'UserController@edit')->name('edit');
         
         Route::put('/{id}', 'UserController@update')->name('update');
     });
+
+    Route::get('/{username}', 'UserController@show')->name('profile');
 });
 
 Route::prefix('tags')->name('tag.')->group(function () {

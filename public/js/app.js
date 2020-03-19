@@ -3370,6 +3370,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                     message: 'Post Unsaved.',
                     type: 'is-success'
                   });
+
+                  _this2.removePost();
                 }
 
                 _context2.next = 12;
@@ -3395,6 +3397,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee2, null, [[0, 9, 12, 15]]);
       }))();
+    },
+    removePost: function removePost() {
+      var event = new CustomEvent('post-unsave');
+      event.postId = this.post.id;
+      window.dispatchEvent(event);
     }
   }
 });

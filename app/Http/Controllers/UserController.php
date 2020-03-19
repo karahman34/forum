@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Post;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -29,6 +30,26 @@ class UserController extends Controller
         $title = $user->username . " Profile";
 
         return view('users.profile', compact('user', 'posts', 'title'));
+    }
+
+    /**
+     * Get user saved posts.
+     *
+     * @return  \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function getSavedPosts()
+    {
+        $user = auth()->user();
+        $saved_posts = $user->savedPosts()
+                            ->select('posts.id', 'posts.user_id', 'title', 'posts.created_at')
+                            ->with(['author:id,username,avatar', 'tags:name'])
+                            ->paginate(10);
+
+        foreach ($saved_posts as &$post) {
+            $post['saved'] = 1;
+        }
+
+        return view('users.saved_posts', ['title' => 'saved Posts', 'posts' => $saved_posts]);
     }
 
     /**

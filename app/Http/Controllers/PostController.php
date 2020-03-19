@@ -11,9 +11,11 @@ use App\PostSeen;
 use App\Tag;
 use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
@@ -32,6 +34,12 @@ class PostController extends Controller
         $tags = $request->get('tags', null);
         $sort = $request->get('sort', null);
 
+        // Get user id
+        $userId = -1;
+        if (auth()->check()) {
+            $userId = auth()->id();
+        }
+
         $query = Post::select(
             'posts.id',
             'user_id',
@@ -44,7 +52,9 @@ class PostController extends Controller
                     'tags:name',
                 ])
                 ->join('post_seens', 'posts.id', 'post_seens.post_id')
-                ->withCount('comments');
+                ->withCount(['comments', 'savedFromUser AS saved' => function (Builder $query) use ($userId) {
+                    $query->where('saved_posts.user_id', $userId);
+                }]);
 
         // Apply search
         if ($q !== null) {
@@ -73,11 +83,49 @@ class PostController extends Controller
             $sort = ($sort === 'new') ? 'desc' : 'asc';
             $query->orderBy('posts.created_at', $sort);
         }
-
+        
         // Get the posts
         $posts = $query->paginate($limit);
 
         return view('welcome', compact('posts'));
+    }
+
+    /**
+     * Save post
+     *
+     * @param   int  $id
+     *
+     * @return  \Illuminate\Http\Response|\Illuminate\Contracts\Routing\ResponseFactory
+     */
+    public function savePost(int $id)
+    {
+        $post = Post::select('id')->findOrFail($id);
+        $user = auth()->user();
+        $user->savedPosts()->attach($post->id);
+
+        return response()->json([
+            'ok' => true,
+            'message' => 'Success to save post.',
+        ], 201);
+    }
+
+    /**
+     * Unsave post
+     *
+     * @param   int  $id
+     *
+     * @return  \Illuminate\Http\Response|\Illuminate\Contracts\Routing\ResponseFactory
+     */
+    public function unSavePost(int $id)
+    {
+        $post = Post::select('id')->findOrFail($id);
+        $user = auth()->user();
+        $user->savedPosts()->detach($post->id);
+
+        return response()->json([
+            'ok' => true,
+            'message' => 'Success to unsave post.',
+        ], 201);
     }
 
     /**
