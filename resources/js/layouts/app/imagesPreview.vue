@@ -53,6 +53,13 @@ export default {
   margin-right: 10px;
 }
 
+.the-image {
+  max-height: 150px;
+  max-width: 150px;
+  object-fit: cover;
+  box-shadow: 0px 4px 8px gray;
+}
+
 .image-preview {
   position: relative;
 }
@@ -65,8 +72,8 @@ export default {
 .image-preview .delete {
   display: none;
   position: absolute;
-  top: 35%;
-  right: 44%;
+  top: 36%;
+  right: 45%;
   z-index: 99999;
   background: black;
   opacity: 60%;
