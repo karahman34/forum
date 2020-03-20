@@ -250,15 +250,24 @@ class PostController extends Controller
     /**
      * Get post of comments.
      *
-     * @param   int  $id
+     * @param   Request $request
+     * @param   int     $id
      *
      * @return  LengthAwarePaginator
      */
-    public function getComments(int $id)
+    public function getComments(Request $request, int $id)
     {
-        $comments = Comment::with(['images:url,imageable_id,imageable_type', 'user:id,username,avatar'])
-                                ->where('post_id', $id)
-                                ->paginate();
+        $sort = $request->get('sort', null);
+        $query = Comment::with(['images:url,imageable_id,imageable_type', 'user:id,username,avatar'])
+                                ->where('post_id', $id);
+
+        // Apply sort
+        if ($sort !== null) {
+            $sort = ($sort === 'new') ? 'desc' : 'asc';
+            $query->orderBy('comments.created_at', $sort);
+        }
+
+        $comments = $query->paginate();
 
         return (new CommentsCollection($comments));
     }

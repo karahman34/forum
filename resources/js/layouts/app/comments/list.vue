@@ -7,11 +7,38 @@
     <div v-else id="comment-section">
       <!-- Comment Filter -->
       <div class="comment-filter-container">
-        <!-- Comment Total -->
-        <span class="title is-4">
-          {{ total }}
-          Comments
-        </span>
+        <div class="level">
+          <!-- Left -->
+          <div class="level-left">
+            <div class="level-item">
+              <!-- Comment Total -->
+              <span class="title is-4">
+                {{ total }}
+                Comments
+              </span>
+            </div>
+          </div>
+
+          <!-- Right -->
+          <div class="level-right">
+            <div class="level-item">
+              <!-- Sort -->
+              <div class="field">
+                <div class="control has-icons-left">
+                  <div class="select primary is-rounded">
+                    <select v-model="selectedSort" @change="sortComments">
+                      <option value="new" selected>New</option>
+                      <option value="old">Old</option>
+                    </select>
+                  </div>
+                  <div class="icon is-small is-left">
+                    <i class="mdi mdi-sort icon-filter"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Comment List Container -->
@@ -96,12 +123,21 @@ export default {
       prev_url: null,
       next_url: null,
       total: null,
+      selectedSort: 'new',
     };
   },
   created() {
+    this.bindCurrentFilter();
     this.getComments();
   },
   methods: {
+    bindCurrentFilter() {
+      const urlParams = new URLSearchParams(window.location.search);
+
+      if (urlParams.has('sort')) {
+        this.selectedSort = urlParams.get('sort');
+      }
+    },
     async getComments() {
       try {
         // Turn on loading
@@ -110,6 +146,7 @@ export default {
         const res = await axios.get(this.url, {
           params: {
             page: this.current_page,
+            sort: this.selectedSort,
           },
         });
         // Fetch Result
@@ -126,6 +163,9 @@ export default {
       } finally {
         this.loading = false;
       }
+    },
+    sortComments() {
+      this.getComments();
     },
     deleteComment(comment) {
       const commentIndex = this.comments.findIndex(c => c.id === comment.id);

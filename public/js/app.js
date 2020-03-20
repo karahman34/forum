@@ -2568,6 +2568,33 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2593,13 +2620,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       last_page: null,
       prev_url: null,
       next_url: null,
-      total: null
+      total: null,
+      selectedSort: 'new'
     };
   },
   created: function created() {
+    this.bindCurrentFilter();
     this.getComments();
   },
   methods: {
+    bindCurrentFilter: function bindCurrentFilter() {
+      var urlParams = new URLSearchParams(window.location.search);
+
+      if (urlParams.has('sort')) {
+        this.selectedSort = urlParams.get('sort');
+      }
+    },
     getComments: function getComments() {
       var _this = this;
 
@@ -2617,7 +2653,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _context.next = 4;
                 return axios.get(_this.url, {
                   params: {
-                    page: _this.current_page
+                    page: _this.current_page,
+                    sort: _this.selectedSort
                   }
                 });
 
@@ -2651,6 +2688,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee, null, [[0, 14, 17, 20]]);
       }))();
+    },
+    sortComments: function sortComments() {
+      this.getComments();
     },
     deleteComment: function deleteComment(comment) {
       var commentIndex = this.comments.findIndex(function (c) {
@@ -3635,22 +3675,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3872,7 +3896,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, ".level[data-v-39e9ad34] {\n  margin-bottom: 17px !important;\n}\n.icon-filter[data-v-39e9ad34] {\n  font-size: 22px;\n}\n.select[data-v-39e9ad34]:not(.is-multiple):not(.is-loading)::after {\n  border-color: #00d1b2;\n}\n.search-input:focus + .icon[data-v-39e9ad34] {\n  color: #00d1b2;\n}", ""]);
+exports.push([module.i, ".level[data-v-39e9ad34] {\n  margin-bottom: 17px !important;\n}\n.icon-filter[data-v-39e9ad34] {\n  font-size: 22px;\n}", ""]);
 
 // exports
 
@@ -6263,12 +6287,80 @@ var render = function() {
           { attrs: { id: "comment-section" } },
           [
             _c("div", { staticClass: "comment-filter-container" }, [
-              _c("span", { staticClass: "title is-4" }, [
-                _vm._v(
-                  "\n        " +
-                    _vm._s(_vm.total) +
-                    "\n        Comments\n      "
-                )
+              _c("div", { staticClass: "level" }, [
+                _c("div", { staticClass: "level-left" }, [
+                  _c("div", { staticClass: "level-item" }, [
+                    _c("span", { staticClass: "title is-4" }, [
+                      _vm._v(
+                        "\n              " +
+                          _vm._s(_vm.total) +
+                          "\n              Comments\n            "
+                      )
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "level-right" }, [
+                  _c("div", { staticClass: "level-item" }, [
+                    _c("div", { staticClass: "field" }, [
+                      _c("div", { staticClass: "control has-icons-left" }, [
+                        _c(
+                          "div",
+                          { staticClass: "select primary is-rounded" },
+                          [
+                            _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.selectedSort,
+                                    expression: "selectedSort"
+                                  }
+                                ],
+                                on: {
+                                  change: [
+                                    function($event) {
+                                      var $$selectedVal = Array.prototype.filter
+                                        .call($event.target.options, function(
+                                          o
+                                        ) {
+                                          return o.selected
+                                        })
+                                        .map(function(o) {
+                                          var val =
+                                            "_value" in o ? o._value : o.value
+                                          return val
+                                        })
+                                      _vm.selectedSort = $event.target.multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    },
+                                    _vm.sortComments
+                                  ]
+                                }
+                              },
+                              [
+                                _c(
+                                  "option",
+                                  { attrs: { value: "new", selected: "" } },
+                                  [_vm._v("New")]
+                                ),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "old" } }, [
+                                  _vm._v("Old")
+                                ])
+                              ]
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _vm._m(0)
+                      ])
+                    ])
+                  ])
+                ])
               ])
             ]),
             _vm._v(" "),
@@ -6346,7 +6438,16 @@ var render = function() {
         )
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "icon is-small is-left" }, [
+      _c("i", { staticClass: "mdi mdi-sort icon-filter" })
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -7010,7 +7111,7 @@ var render = function() {
       _c("div", { staticClass: "level-item" }, [
         _c("div", { staticClass: "field" }, [
           _c("div", { staticClass: "control has-icons-left" }, [
-            _c("div", { staticClass: "select is-rounded" }, [
+            _c("div", { staticClass: "select primary is-rounded" }, [
               _c(
                 "select",
                 {
@@ -7167,11 +7268,7 @@ var render = function() {
                               staticClass: "has-text-centered has-text-grey",
                               staticStyle: { "margin-top": "10px" }
                             },
-                            [
-                              _vm._v(
-                                "\n                  No Result.\n                "
-                              )
-                            ]
+                            [_vm._v("No Result.")]
                           )
                     ]),
                 _vm._v(" "),
@@ -7182,7 +7279,7 @@ var render = function() {
                       staticClass: "button is-primary",
                       on: { click: _vm.reloadWithQS }
                     },
-                    [_vm._v("\n                  Apply\n                ")]
+                    [_vm._v("Apply")]
                   )
                 ])
               ])

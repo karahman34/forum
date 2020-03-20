@@ -6,15 +6,14 @@
         <!-- Select Sort -->
         <div class="field">
           <div class="control has-icons-left">
-            <div class="select is-rounded">
+            <div class="select primary is-rounded">
               <select v-model="selectedSort" @change="reloadWithQS">
                 <option
                   v-for="sort in sortOptions"
                   class="sort-options is-capitalized"
                   :key="sort.value"
                   :value="sort.value"
-                  >{{ sort.text }}</option
-                >
+                >{{ sort.text }}</option>
               </select>
             </div>
             <div class="icon is-small is-left">
@@ -33,10 +32,7 @@
         </button>
         <!-- The Modal -->
         <div ref="filterTagsModal" class="modal">
-          <div
-            class="modal-background"
-            @click="toggleFilterTagsModal(false)"
-          ></div>
+          <div class="modal-background" @click="toggleFilterTagsModal(false)"></div>
           <div class="modal-content">
             <!-- The Card -->
             <div class="card">
@@ -64,11 +60,7 @@
                 </div>
                 <div v-else>
                   <!-- Tags List -->
-                  <span
-                    v-if="tags.length"
-                    class="tags"
-                    style="margin-bottom:5px;"
-                  >
+                  <span v-if="tags.length" class="tags" style="margin-bottom:5px;">
                     <span
                       v-for="(tag, i) in tags"
                       :key="i"
@@ -77,11 +69,7 @@
                       style="cursor:pointer;"
                     >
                       <span @click="addTag(tag)">{{ tag.name }}</span>
-                      <button
-                        v-if="tagSelected(tag)"
-                        class="delete"
-                        @click="removeTag(tag)"
-                      ></button>
+                      <button v-if="tagSelected(tag)" class="delete" @click="removeTag(tag)"></button>
                     </span>
                   </span>
 
@@ -90,16 +78,12 @@
                     v-else
                     class="has-text-centered has-text-grey"
                     style="margin-top: 10px;"
-                  >
-                    No Result.
-                  </div>
+                  >No Result.</div>
                 </div>
 
                 <!-- Apply Query -->
                 <div class="has-text-right">
-                  <button class="button is-primary" @click="reloadWithQS">
-                    Apply
-                  </button>
+                  <button class="button is-primary" @click="reloadWithQS">Apply</button>
                 </div>
               </div>
             </div>
@@ -260,13 +244,5 @@ export default {
 
 .icon-filter {
   font-size: 22px;
-}
-
-.select:not(.is-multiple):not(.is-loading)::after {
-  border-color: hsl(171, 100%, 41%);
-}
-
-.search-input:focus + .icon {
-  color: hsl(171, 100%, 41%);
 }
 </style>

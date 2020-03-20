@@ -30,3 +30,7 @@ body {
 .icon-in-form {
   font-size: 19px;
 }
+
+.select.primary:not(.is-multiple):not(.is-loading)::after {
+  border-color: $primary;
+}

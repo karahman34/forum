@@ -12017,6 +12017,10 @@ body {
   font-size: 19px;
 }
 
+.select.primary:not(.is-multiple):not(.is-loading)::after {
+  border-color: #00d1b2;
+}
+
 #top-nav {
   position: -webkit-sticky;
   position: sticky;
@@ -12168,8 +12172,8 @@ body {
 }
 
 .comment-filter-container {
-  margin-top: 7px;
-  margin-bottom: 5px;
+  margin-top: 13px;
+  margin-bottom: 10px;
 }
 
 .comment-container {
