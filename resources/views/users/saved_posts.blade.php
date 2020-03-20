@@ -29,11 +29,11 @@
                 @endcomponent 
               </div>
             @endforeach
+
+            {{-- Pagination --}}
+            {{ $posts->onEachSide(4)->links('components.pagination') }}
           @endif
         </div>
-
-        {{-- Pagination --}}
-        {{ $posts->onEachSide(4)->links('components.pagination') }}
       </div>
     </div>
   </div>
