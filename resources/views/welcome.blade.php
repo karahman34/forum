@@ -30,6 +30,9 @@
                         @endforeach
                     @endif
                 </div>
+
+                {{-- Pagination --}}
+                {{ $posts->onEachSide(4)->links('components.pagination') }}
             </div>
         </div>
     </div>
