@@ -3,43 +3,63 @@
     <!-- Header Text -->
     <p class="title is-5">Write Comment</p>
 
-    <div class="comment-form-container">
-      <!-- Avatar -->
-      <img :src="avatar" :alt="avatar" class="comment-form-avatar" />
+    <article class="media comment-container">
+      <!-- User Avatar -->
+      <figure class="media-left">
+        <p class="image is-48x48">
+          <img class="is-rounded" :src="avatar" :alt="avatar" />
+        </p>
+      </figure>
 
-      <span id="comment-form-content">
-        <!-- Body Field -->
-        <span class="field is-inline-block">
-          <textarea
-            v-model="body"
-            class="textarea"
-            :class="{'is-danger': formError !== null}"
-            name="body"
-            cols="67"
-            rows="3"
-            placeholder="Write Comment.."
-            style="width:100% !important;"
-          ></textarea>
-          <span v-if="formError !== null" class="help is-danger">{{ formError }}</span>
+      <!-- Media Content -->
+      <div class="media-content">
+        <!-- Input -->
+        <div class="field">
+          <div class="control">
+            <textarea
+              v-model="body"
+              class="textarea"
+              :class="{'is-danger': formError}"
+              placeholder="Write Comment.."
+            ></textarea>
+            <span v-if="formError" class="help is-danger">{{ formError }}</span>
+          </div>
+        </div>
 
-          <!-- Upload Image Icon -->
-          <i ref="imageInput" class="mdi mdi-camera upload-icon" @click="openInputImage"></i>
-          <!-- Submit button -->
-          <span
-            class="button is-primary is-pulled-right"
-            :class="{'is-loading': loading }"
-            style="margin-top: 9px;"
-            @click="createCommentHandler"
-          >Submit</span>
+        <!-- Level -->
+        <div class="level is-mobile">
+          <!-- Left -->
+          <div class="level-left">
+            <div class="level-item">
+              <!-- Upload Image Icon -->
+              <i ref="imageInput" class="mdi mdi-camera upload-icon" @click="openInputImage"></i>
+              <!-- Hidden input field -->
+              <input
+                ref="imageInput"
+                class="is-hidden"
+                type="file"
+                multiple
+                @change="fileChangeHandler"
+              />
+            </div>
+          </div>
+          <!-- Right -->
+          <div class="level-right">
+            <div class="level-item">
+              <!-- Submit button -->
+              <button
+                class="button is-primary is-pulled-right"
+                :class="{'is-loading': loading }"
+                @click="createCommentHandler"
+              >Submit</button>
+            </div>
+          </div>
+        </div>
 
-          <!-- Thumbnail images -->
-          <image-preview :images="selectedImages" @delete="deleteImage" style="margin-top:24px;"></image-preview>
-        </span>
-
-        <!-- Hidden input field -->
-        <input ref="imageInput" class="is-hidden" type="file" multiple @change="fileChangeHandler" />
-      </span>
-    </div>
+        <!-- Thumbnail images -->
+        <image-preview :images="selectedImages" @delete="deleteImage" style="margin-top:10px;"></image-preview>
+      </div>
+    </article>
   </div>
 </template>
 
@@ -139,26 +159,9 @@ export default {
     font-size: 22px !important;
   }
 
-  .comment-form-container {
-    padding: 10px 0px;
-
-    @media screen and (min-width: 1048px) {
-      .comment-form-avatar {
-        margin-right: 12px;
-      }
-    }
-
-    @media screen and (max-width: 859px) {
-      .comment-form-avatar {
-        display: none;
-      }
-    }
-
-    .comment-form-avatar {
-      height: 45px;
-      border-radius: 50%;
-      vertical-align: top;
-    }
+  .comment-container {
+    border: none;
+    margin-top: 5px;
   }
 }
 </style>

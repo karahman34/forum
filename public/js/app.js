@@ -1974,6 +1974,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -3795,7 +3815,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "#root-div[data-v-06811f16] {\n  padding-top: 10px;\n  border-top: 1px solid rgba(128, 128, 128, 0.5);\n}\n#root-div .title[data-v-06811f16] {\n  margin-bottom: 6px !important;\n}\n#root-div .upload-icon[data-v-06811f16] {\n  cursor: pointer;\n  font-size: 22px !important;\n}\n#root-div .comment-form-container[data-v-06811f16] {\n  padding: 10px 0px;\n}\n@media screen and (min-width: 1048px) {\n#root-div .comment-form-container .comment-form-avatar[data-v-06811f16] {\n    margin-right: 12px;\n}\n}\n@media screen and (max-width: 859px) {\n#root-div .comment-form-container .comment-form-avatar[data-v-06811f16] {\n    display: none;\n}\n}\n#root-div .comment-form-container .comment-form-avatar[data-v-06811f16] {\n  height: 45px;\n  border-radius: 50%;\n  vertical-align: top;\n}", ""]);
+exports.push([module.i, "#root-div[data-v-06811f16] {\n  padding-top: 10px;\n  border-top: 1px solid rgba(128, 128, 128, 0.5);\n}\n#root-div .title[data-v-06811f16] {\n  margin-bottom: 6px !important;\n}\n#root-div .upload-icon[data-v-06811f16] {\n  cursor: pointer;\n  font-size: 22px !important;\n}\n#root-div .comment-container[data-v-06811f16] {\n  border: none;\n  margin-top: 5px;\n}", ""]);
 
 // exports
 
@@ -3909,7 +3929,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n#images-preview-container[data-v-01e3b3a4] {\n  margin: 10px 0px;\n}\n@media screen and (max-width: 768px) {\n#images-preview-container .the-image[data-v-01e3b3a4] {\n    max-height: 97px !important;\n}\n}\n#images-preview-container .the-image[data-v-01e3b3a4] {\n  max-height: 110px;\n  width: auto !important;\n  margin-right: 10px;\n}\n.image-preview[data-v-01e3b3a4] {\n  position: relative;\n}\n.image-active[data-v-01e3b3a4] {\n  -webkit-filter: blur(1px);\n          filter: blur(1px);\n  transition: -webkit-filter 0.2s ease-in-out;\n  transition: filter 0.2s ease-in-out;\n  transition: filter 0.2s ease-in-out, -webkit-filter 0.2s ease-in-out;\n}\n.image-preview .delete[data-v-01e3b3a4] {\n  display: none;\n  position: absolute;\n  top: 35%;\n  right: 44%;\n  z-index: 99999;\n  background: black;\n  opacity: 60%;\n}\n.image-delete-active[data-v-01e3b3a4] {\n  display: inline !important;\n}\n", ""]);
+exports.push([module.i, "\n#images-preview-container[data-v-01e3b3a4] {\n  margin: 10px 0px;\n}\n@media screen and (max-width: 768px) {\n#images-preview-container .the-image[data-v-01e3b3a4] {\n    max-height: 97px !important;\n}\n}\n#images-preview-container .the-image[data-v-01e3b3a4] {\n  max-height: 110px;\n  width: auto !important;\n  margin-right: 10px;\n}\n.the-image[data-v-01e3b3a4] {\n  max-height: 150px;\n  max-width: 150px;\n  -o-object-fit: cover;\n     object-fit: cover;\n  box-shadow: 0px 4px 8px gray;\n}\n.image-preview[data-v-01e3b3a4] {\n  position: relative;\n}\n.image-active[data-v-01e3b3a4] {\n  -webkit-filter: blur(1px);\n          filter: blur(1px);\n  transition: -webkit-filter 0.2s ease-in-out;\n  transition: filter 0.2s ease-in-out;\n  transition: filter 0.2s ease-in-out, -webkit-filter 0.2s ease-in-out;\n}\n.image-preview .delete[data-v-01e3b3a4] {\n  display: none;\n  position: absolute;\n  top: 36%;\n  right: 45%;\n  z-index: 99999;\n  background: black;\n  opacity: 60%;\n}\n.image-delete-active[data-v-01e3b3a4] {\n  display: inline !important;\n}\n", ""]);
 
 // exports
 
@@ -5948,85 +5968,94 @@ var render = function() {
   return _c("div", { attrs: { id: "root-div" } }, [
     _c("p", { staticClass: "title is-5" }, [_vm._v("Write Comment")]),
     _vm._v(" "),
-    _c("div", { staticClass: "comment-form-container" }, [
-      _c("img", {
-        staticClass: "comment-form-avatar",
-        attrs: { src: _vm.avatar, alt: _vm.avatar }
-      }),
+    _c("article", { staticClass: "media comment-container" }, [
+      _c("figure", { staticClass: "media-left" }, [
+        _c("p", { staticClass: "image is-48x48" }, [
+          _c("img", {
+            staticClass: "is-rounded",
+            attrs: { src: _vm.avatar, alt: _vm.avatar }
+          })
+        ])
+      ]),
       _vm._v(" "),
-      _c("span", { attrs: { id: "comment-form-content" } }, [
-        _c(
-          "span",
-          { staticClass: "field is-inline-block" },
-          [
-            _c("textarea", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.body,
-                  expression: "body"
-                }
-              ],
-              staticClass: "textarea",
-              class: { "is-danger": _vm.formError !== null },
-              staticStyle: { width: "100% !important" },
-              attrs: {
-                name: "body",
-                cols: "67",
-                rows: "3",
-                placeholder: "Write Comment.."
-              },
-              domProps: { value: _vm.body },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
+      _c(
+        "div",
+        { staticClass: "media-content" },
+        [
+          _c("div", { staticClass: "field" }, [
+            _c("div", { staticClass: "control" }, [
+              _c("textarea", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.body,
+                    expression: "body"
                   }
-                  _vm.body = $event.target.value
+                ],
+                staticClass: "textarea",
+                class: { "is-danger": _vm.formError },
+                attrs: { placeholder: "Write Comment.." },
+                domProps: { value: _vm.body },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.body = $event.target.value
+                  }
                 }
-              }
-            }),
+              }),
+              _vm._v(" "),
+              _vm.formError
+                ? _c("span", { staticClass: "help is-danger" }, [
+                    _vm._v(_vm._s(_vm.formError))
+                  ])
+                : _vm._e()
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "level is-mobile" }, [
+            _c("div", { staticClass: "level-left" }, [
+              _c("div", { staticClass: "level-item" }, [
+                _c("i", {
+                  ref: "imageInput",
+                  staticClass: "mdi mdi-camera upload-icon",
+                  on: { click: _vm.openInputImage }
+                }),
+                _vm._v(" "),
+                _c("input", {
+                  ref: "imageInput",
+                  staticClass: "is-hidden",
+                  attrs: { type: "file", multiple: "" },
+                  on: { change: _vm.fileChangeHandler }
+                })
+              ])
+            ]),
             _vm._v(" "),
-            _vm.formError !== null
-              ? _c("span", { staticClass: "help is-danger" }, [
-                  _vm._v(_vm._s(_vm.formError))
-                ])
-              : _vm._e(),
-            _vm._v(" "),
-            _c("i", {
-              ref: "imageInput",
-              staticClass: "mdi mdi-camera upload-icon",
-              on: { click: _vm.openInputImage }
-            }),
-            _vm._v(" "),
-            _c(
-              "span",
-              {
-                staticClass: "button is-primary is-pulled-right",
-                class: { "is-loading": _vm.loading },
-                staticStyle: { "margin-top": "9px" },
-                on: { click: _vm.createCommentHandler }
-              },
-              [_vm._v("Submit")]
-            ),
-            _vm._v(" "),
-            _c("image-preview", {
-              staticStyle: { "margin-top": "24px" },
-              attrs: { images: _vm.selectedImages },
-              on: { delete: _vm.deleteImage }
-            })
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c("input", {
-          ref: "imageInput",
-          staticClass: "is-hidden",
-          attrs: { type: "file", multiple: "" },
-          on: { change: _vm.fileChangeHandler }
-        })
-      ])
+            _c("div", { staticClass: "level-right" }, [
+              _c("div", { staticClass: "level-item" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "button is-primary is-pulled-right",
+                    class: { "is-loading": _vm.loading },
+                    on: { click: _vm.createCommentHandler }
+                  },
+                  [_vm._v("Submit")]
+                )
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("image-preview", {
+            staticStyle: { "margin-top": "10px" },
+            attrs: { images: _vm.selectedImages },
+            on: { delete: _vm.deleteImage }
+          })
+        ],
+        1
+      )
     ])
   ])
 }
