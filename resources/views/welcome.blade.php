@@ -9,7 +9,7 @@
             </div>
 
             {{-- Main Content --}}
-            <div class="column is-10">
+            <div class="column is-10" style="padding-top:0px !important;">
                 {{-- Filter --}}
                 <post-filter></post-filter>
                 
