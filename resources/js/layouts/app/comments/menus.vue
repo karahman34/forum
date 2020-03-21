@@ -54,9 +54,17 @@ export default {
 
         if (res.data.ok) {
           this.$emit('deleted', this.comment);
+
+          toast({
+            type: 'is-success',
+            message: 'Comment deleted.',
+          });
         }
       } catch (err) {
-        throw Error(err);
+        toast({
+          type: 'is-danger',
+          message: 'Failed to delete comment.',
+        });
       } finally {
         this.deleteLoading = false;
       }
