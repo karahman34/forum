@@ -3,7 +3,9 @@
 }
 
 #post-author-avatar {
-  height: 48px;
+  height: 49px;
+  width: 49px;
+  object-fit: cover;
   border-radius: 50%;
   vertical-align: top;
 }

@@ -12074,7 +12074,10 @@ body {
 }
 
 #post-author-avatar {
-  height: 48px;
+  height: 49px;
+  width: 49px;
+  -o-object-fit: cover;
+     object-fit: cover;
   border-radius: 50%;
   vertical-align: top;
 }
@@ -12186,7 +12189,10 @@ body {
 }
 
 .comment-container .comment-header .comment-user-avatar {
-  height: 45px;
+  width: 42px;
+  height: 42px;
+  -o-object-fit: cover;
+     object-fit: cover;
   border-radius: 50%;
   vertical-align: top;
 }

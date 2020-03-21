@@ -11,7 +11,9 @@
     color: grey;
 
     .comment-user-avatar {
-      height: 45px;
+      width: 42px;
+      height: 42px;
+      object-fit: cover;
       border-radius: 50%;
       vertical-align: top;
     }
