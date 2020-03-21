@@ -54,7 +54,7 @@ class UserController extends Controller
             $post['saved'] = 1;
         }
 
-        return view('users.saved_posts', ['title' => 'saved Posts', 'posts' => $saved_posts]);
+        return view('users.saved_posts', ['title' => 'Saved Posts', 'posts' => $saved_posts]);
     }
 
     /**
