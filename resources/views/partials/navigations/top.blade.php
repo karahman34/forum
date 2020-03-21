@@ -22,7 +22,7 @@
       {{-- Right Menus --}}
       <div class="navbar-end">
         {{-- Unauthorize Menus --}}
-        @if (!Auth::check())
+        @guest
           <div class="navbar-item">
             <div class="buttons">
               <a href="{{ route('register') }}" class="button is-primary">
@@ -33,14 +33,26 @@
               </a>
             </div>
           </div>
-        @else
+        @endguest
+
+        {{-- Authorize Menus --}}
+        @auth
           {{-- Home --}}
           <a href="/" class="navbar-item">
             Home
           </a>
 
-          {{-- Authorize Menus --}}
+          {{-- Special menu only on mobile --}}
+          <span class="is-inline-mobile is-hidden-tablet">
+            {{-- Popular --}}
+            <a href="{{ route('welcome') }}" class="navbar-item">Popular this week</a>
+            {{-- Saved Posts --}}
+            <a href="{{ route('user.saved_posts') }}" class="navbar-item">Saved Posts</a>
+          </span>
+
+          {{-- Dropdown --}}
           <div class="navbar-item has-dropdown is-hoverable">
+            {{-- Dropdown Activator --}}
             <a class="navbar-link dropdown-toggle">
               {{ Auth::user()->username }}
             </a>
@@ -60,7 +72,7 @@
               </a>
             </div>
           </div>
-        @endif
+        @endauth
       </div>
     </div>
   </div>

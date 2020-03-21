@@ -4,7 +4,7 @@
   <div class="container">
     <div class="columns">
       {{-- Left bar --}}
-      <div class="column is-3-tablet is-2-desktop">
+      <div class="column is-3-tablet is-2-desktop hidden-mobile">
         @include('partials.navigations.left')
       </div>
 
