@@ -7,11 +7,18 @@
   .pagination-previous,
   .pagination-next {
     background-color: white;
-    box-shadow: 1px 1px 6px rgba(128, 128, 128, 0.5) !important;
+    box-shadow: 0px 4px 6px rgba(128, 128, 128, 0.25) !important;
   }
 }
 
+.pagination-next:hover,
+.pagination-link:hover,
+.pagination-previous:hover {
+  color: white;
+  background-color: $primary !important;
+}
+
 .pagination-link.is-current {
-  background: hsl(171, 100%, 41%) !important;
-  border-color: hsl(171, 100%, 41%) !important;
+  background: $primary !important;
+  border-color: $primary !important;
 }
