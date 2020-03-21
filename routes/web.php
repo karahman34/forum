@@ -74,8 +74,10 @@ Route::prefix('users')->name('user.')->group(function () {
     Route::middleware(['auth'])->group(function () {
         Route::get('/saved-posts', 'UserController@getSavedPosts')->name('saved_posts');
         Route::get('/{username}/edit', 'UserController@edit')->name('edit');
+        Route::get('/{username}/password', 'UserController@editPassword')->name('edit_password');
         
         Route::put('/{id}', 'UserController@update')->name('update');
+        Route::put('/{username}/password', 'UserController@updatePassword')->name('update_password');
     });
 
     Route::get('/{username}', 'UserController@show')->name('profile');

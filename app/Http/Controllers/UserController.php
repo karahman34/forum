@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Post;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
@@ -129,5 +130,53 @@ class UserController extends Controller
         $user->update($payload);
 
         return redirect()->route('user.edit', ['username' => $user->username])->with('success', 'Success to update user.');
+    }
+
+    /**
+     * Show edit password form.
+     *
+     * @param   string  $username
+     *
+     * @return  \Illuminate\View\View
+     */
+    public function editPassword(string $username)
+    {
+        $title = 'Update Password';
+
+        return view('users.edit_password', compact('title', 'username'));
+    }
+
+    /**
+     * Update user password.
+     *
+     * @param   Request  $request
+     * @param   string   $username
+     *
+     * @return  \Illuminate\Routing\Redirector
+     */
+    public function updatePassword(Request $request, string $username)
+    {
+        $payload = $request->validate([
+            'old_password' => 'required|string|max:255',
+            'password' => 'required|string|min:8|max:255|confirmed',
+        ]);
+
+        // Get user
+        $user = User::select('id', 'password')->where('username', $username)->firstOrFail();
+
+        // Make password visible
+        $user = $user->makeVisible('password');
+
+        // Check old password
+        if (!Hash::check($payload['old_password'], $user->password)) {
+            return redirect()->back()->with('failed', 'The old password is not match.');
+        }
+
+        // Update password
+        $user->update([
+            'password' => Hash::make($payload['password']),
+        ]);
+
+        return redirect()->back()->with('success', 'Success to update password.');
     }
 }
