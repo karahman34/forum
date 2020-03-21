@@ -41,6 +41,10 @@ class UserController extends Controller
     public function getSavedPosts()
     {
         $user = auth()->user();
+
+        // Authorize
+        $this->authorize('savedPosts', $user);
+
         $saved_posts = $user->savedPosts()
                             ->select('posts.id', 'posts.user_id', 'title', 'posts.created_at')
                             ->with(['author:id,username,avatar', 'tags:name'])
@@ -65,6 +69,9 @@ class UserController extends Controller
         $user = User::select('id', 'avatar', 'email', 'username')
                         ->where('username', $username)
                         ->firstOrFail();
+                
+        // Authorize
+        $this->authorize('update', $user);
 
         $title = 'Edit '. $user->username;
 
@@ -116,6 +123,9 @@ class UserController extends Controller
                         ->where('id', $id)
                         ->firstOrFail();
 
+        // Authorize
+        $this->authorize('update', $user);
+
         // Get the payload
         $payload = $request->only('username', 'email');
         
@@ -141,6 +151,12 @@ class UserController extends Controller
      */
     public function editPassword(string $username)
     {
+        // Get User
+        $user = User::select('id', 'username')->where('username', $username)->firstOrFail();
+        // Authorize
+        $this->authorize('update', $user);
+
+        // Set window title
         $title = 'Update Password';
 
         return view('users.edit_password', compact('title', 'username'));
@@ -163,6 +179,9 @@ class UserController extends Controller
 
         // Get user
         $user = User::select('id', 'password')->where('username', $username)->firstOrFail();
+
+        // Authorize
+        $this->authorize('update', $user);
 
         // Make password visible
         $user = $user->makeVisible('password');
