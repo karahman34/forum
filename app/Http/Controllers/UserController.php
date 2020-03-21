@@ -48,7 +48,7 @@ class UserController extends Controller
         $saved_posts = $user->savedPosts()
                             ->select('posts.id', 'posts.user_id', 'title', 'posts.created_at')
                             ->with(['author:id,username,avatar', 'tags:name'])
-                            ->paginate(10);
+                            ->paginate(14);
 
         foreach ($saved_posts as &$post) {
             $post['saved'] = 1;
