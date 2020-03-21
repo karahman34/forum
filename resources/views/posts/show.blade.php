@@ -23,13 +23,13 @@
         @endauth
 
         {{-- Comments Section --}}
-        <comment-list
+        <comment-section
           @auth 
-            :user="{{ Auth::user()->toJson() }}"
+            :auth="{{ Auth::user()->toJson() }}"
             post-author="{{ $post->user_id === Auth::id() ? 'y' : 'n' }}" 
           @endauth
           url="{{ route('post.comments', ['id' => $post->id]) }}"
-        ></comment-list>
+        ></comment-section>
 
         @guest
           <div class="has-text-centered title is-5" style="margin-top:30px; margin-bottom: 20px;">
