@@ -15,7 +15,7 @@
     <div v-else id="comment-section">
       <!-- Top -->
       <div class="comment-filter-container">
-        <div class="level">
+        <div class="level is-mobile">
           <!-- Left -->
           <div class="level-left">
             <div class="level-item">

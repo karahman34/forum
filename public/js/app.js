@@ -6932,7 +6932,7 @@ var render = function() {
             { attrs: { id: "comment-section" } },
             [
               _c("div", { staticClass: "comment-filter-container" }, [
-                _c("div", { staticClass: "level" }, [
+                _c("div", { staticClass: "level is-mobile" }, [
                   _c("div", { staticClass: "level-left" }, [
                     _c("div", { staticClass: "level-item" }, [
                       _c("span", { staticClass: "title is-4" }, [
