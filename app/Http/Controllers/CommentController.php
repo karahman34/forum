@@ -81,9 +81,17 @@ class CommentController extends Controller
      */
     private function updatePin(int $id, string $val)
     {
-        $comment = Comment::select('id')
+        // Get comment
+        $comment = Comment::select('id', 'post_id')
                             ->where('id', $id)
                             ->firstOrFail();
+
+        // Get post
+        $post = $comment->post()->select('id', 'user_id')->firstOrFail();
+
+        // Authorize action
+        $this->authorize('pin', $post);
+
         return $comment->update([
             'pinned' => $val,
         ]);

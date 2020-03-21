@@ -33,4 +33,17 @@ class PostPolicy
     {
         return $user->id === $post->user_id;
     }
+
+    /**
+     * Determine whether the user can pin the comment.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Post  $post
+     * @return mixed
+     */
+    public function pin(User $user, Post $post)
+    {
+        return true;
+        return $user->id === $post->user_id;
+    }
 }
