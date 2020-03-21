@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Nunito+Sans:300,600&display=swap');
+
 #top-nav {
   position: sticky;
   top: 0% !important;
@@ -5,13 +7,25 @@
 
 .navbar {
   box-shadow: 0px 1px 4px grey;
-}
 
-.navbar-item:hover,
-.navbar-link:hover {
-  color: hsl(171, 100%, 41%) !important;
-}
+  .navbar-brand .navbar-item {
+    font-size: 21px;
+    font-family: 'Nunito Sans', sans-serif;
+  }
 
-.navbar-link:not(.is-arrowless)::after {
-  border-color: hsl(171, 100%, 41%) !important;
+  .navbar-brand .navbar-item #kuy {
+    margin-left: 4px;
+    font-weight: 300 !important;
+  }
+
+  .navbar-item:hover,
+  .navbar-item:focus,
+  .navbar-link:hover,
+  .navbar-link:focus {
+    color: $primary !important;
+  }
+
+  .navbar-link:not(.is-arrowless)::after {
+    border-color: $primary !important;
+  }
 }
