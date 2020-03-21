@@ -3891,9 +3891,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -4115,7 +4112,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, ".level[data-v-39e9ad34] {\n  margin-bottom: 17px !important;\n}\n.icon-filter[data-v-39e9ad34] {\n  font-size: 22px;\n}", ""]);
+exports.push([module.i, ".level[data-v-39e9ad34] {\n  margin-bottom: 0px !important;\n}\n@media screen and (max-width: 769px) {\n.level[data-v-39e9ad34] {\n    margin-bottom: 11px !important;\n}\n.level-right[data-v-39e9ad34] {\n    margin-top: 0px !important;\n}\n}\n.icon-filter[data-v-39e9ad34] {\n  font-size: 22px;\n}\n.sort-input[data-v-39e9ad34] {\n  margin-top: 12px;\n  margin-right: 6px;\n}", ""]);
 
 // exports
 
@@ -7443,7 +7440,7 @@ var render = function() {
   return _c("nav", { staticClass: "level" }, [
     _c("div", { staticClass: "level-left" }, [
       _c("div", { staticClass: "level-item" }, [
-        _c("div", { staticClass: "field" }, [
+        _c("div", { staticClass: "field sort-input" }, [
           _c("div", { staticClass: "control has-icons-left" }, [
             _c("div", { staticClass: "select primary is-rounded" }, [
               _c(
@@ -7493,10 +7490,8 @@ var render = function() {
             _vm._v(" "),
             _vm._m(0)
           ])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "level-item" }, [
+        ]),
+        _vm._v(" "),
         _c(
           "button",
           {

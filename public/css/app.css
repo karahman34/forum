@@ -11993,7 +11993,7 @@ body {
 
 @media screen and (max-width: 769px) {
   .section {
-    padding-top: 15px !important;
+    padding-top: 0px !important;
   }
 }
 

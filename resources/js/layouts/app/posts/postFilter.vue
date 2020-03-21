@@ -4,7 +4,7 @@
     <div class="level-left">
       <div class="level-item">
         <!-- Select Sort -->
-        <div class="field">
+        <div class="field sort-input">
           <div class="control has-icons-left">
             <div class="select primary is-rounded">
               <select v-model="selectedSort" @change="reloadWithQS">
@@ -21,10 +21,7 @@
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Filter Tags -->
-      <div class="level-item">
         <!-- The Activator -->
         <button class="button is-rounded" @click="toggleFilterTagsModal(true)">
           <i class="mdi mdi-tag-text-outline"></i>
@@ -239,10 +236,25 @@ export default {
 
 <style lang="scss" scoped>
 .level {
-  margin-bottom: 17px !important;
+  margin-bottom: 0px !important;
+}
+
+@media screen and (max-width: 769px) {
+  .level {
+    margin-bottom: 11px !important;
+  }
+
+  .level-right {
+    margin-top: 0px !important;
+  }
 }
 
 .icon-filter {
   font-size: 22px;
+}
+
+.sort-input {
+  margin-top: 12px;
+  margin-right: 6px;
 }
 </style>
