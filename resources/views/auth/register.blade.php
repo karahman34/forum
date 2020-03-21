@@ -18,7 +18,7 @@
                     <div class="field">
                         <label for="username" class="label">Username</label>
                         <div class="control has-icons-left">
-                            <input id="username" class="input" autofocus type="text" name="username" value="{{ old('username') }}" placeholder="Username">
+                            <input id="username" class="input @error('username') is-danger @enderror" autofocus type="text" name="username" value="{{ old('username') }}" placeholder="Username">
                             <span class="icon is-left">
                                 <i class="mdi mdi-account icon-in-form"></i>
                             </span>
@@ -32,7 +32,7 @@
                     <div class="field">
                         <label for="email" class="label">E-Mail</label>
                         <div class="control has-icons-left">
-                            <input id="email" class="input" autofocus type="text" name="email" value="{{ old('email') }}" placeholder="E-Mail">
+                            <input id="email" class="input @error('email') is-danger @enderror" autofocus type="text" name="email" value="{{ old('email') }}" placeholder="E-Mail">
                             <span class="icon is-left">
                                 <i class="mdi mdi-email icon-in-form"></i>
                             </span>
@@ -46,7 +46,7 @@
                     <div class="field">
                         <label for="password" class="label">Password</label>
                         <div class="control has-icons-left">
-                            <input id="password" type="password" class="input" type="text" name="password" placeholder="Password">
+                            <input id="password" type="password" class="input @error('password') is-danger @enderror" type="text" name="password" placeholder="Password">
                             <span class="icon is-left">
                                 <i class="mdi mdi-lock icon-in-form"></i>
                             </span>

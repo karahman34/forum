@@ -17,7 +17,7 @@
                         <div class="field">
                             <label for="email" class="label">E-Mail</label>
                             <div class="control has-icons-left">
-                                <input type="email" name="email" id="email" class="input" placeholder="E-Mail" value="{{ old('email') }}" autofocus>
+                                <input type="email" name="email" id="email" class="input @error('email') is-danger @enderror"" placeholder="E-Mail" value="{{ old('email') }}" autofocus>
                                 <span class="icon is-left">
                                     <i class="mdi mdi-email icon-in-form"></i>
                                 </span>
@@ -31,7 +31,7 @@
                         <div class="field">
                             <label for="password" class="label">Password</label>
                             <div class="control has-icons-left">
-                                <input id="password" type="password" class="input" type="text" name="password" placeholder="Password">
+                                <input id="password" type="password" class="input @error('password') is-danger @enderror" type="text" name="password" placeholder="Password">
                                 <span class="icon is-left">
                                     <i class="mdi mdi-lock"></i>
                                 </span>

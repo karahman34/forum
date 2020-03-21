@@ -21,7 +21,7 @@
                         <div class="field">
                             <label for="email" class="label">E-Mail</label>
                             <div class="control has-icons-left">
-                                <input type="email" name="email" id="email" class="input" placeholder="E-Mail" autofocus>
+                                <input type="email" name="email" id="email" class="input @error('email') is-danger @enderror" placeholder="E-Mail" autofocus>
                                 <span class="icon is-left">
                                     <i class="mdi mdi-email icon-in-form"></i>
                                 </span>
