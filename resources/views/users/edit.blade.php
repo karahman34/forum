@@ -48,6 +48,11 @@
                   @enderror
               </div>
 
+              {{-- Avatar Preview --}}
+              <figure class="image is-96x96 image-preview @if ($user->avatar === null) is-hidden @endif">
+                <img src="{{ $user->getAvatar() }}" alt="{{ $user->getAvatar() }}">
+              </figure>
+
               <!-- Avatar Field -->
               <div class="file has-name" style="margin-top:20px;">
                 <label class="file-label">
@@ -89,14 +94,41 @@
 
 @push('js')
   <script>
+    function setImagePreview(src) {
+      const imagePreview = document.querySelector('.image-preview');
+      if (src === null) {
+        imagePreview.classList.add('is-hidden');
+      } else {
+        imagePreview.classList.remove('is-hidden');
+
+        const img = imagePreview.getElementsByTagName('img')[0];
+        img.setAttribute('src', src);
+      }
+    }
+
     function avatarOnChange(files) {
       const fileName = document.querySelector('.file-name');
       if (files.length === 0) {
         fileName.innerHTML = 'No File Selected.';
+
+        // Remove current preview img
+        setImagePreview(null);
       } else {
         const file = files[0];
         fileName.innerHTML = file.name;
+
+        // Set Preview Image
+        const src = URL.createObjectURL(file);
+        setImagePreview(src);
       }
     }
   </script>
+@endpush
+
+@push('css')
+  <style>
+    .image-preview img {
+      box-shadow: 0px 6px 8px rgba(128, 128, 128, 0.75);
+    }
+  </style>
 @endpush
