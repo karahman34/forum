@@ -1,7 +1,12 @@
 <template>
   <div id="comment-app">
     <!-- Create Comment -->
-    <comment-create :avatar="auth.avatar" :post-id="postId" @create="commentCreatedHandler"></comment-create>
+    <comment-create
+      v-if="auth !== null"
+      :avatar="auth.avatar"
+      :post-id="postId"
+      @create="commentCreatedHandler"
+    ></comment-create>
 
     <!-- Loading -->
     <div v-if="loading" id="comment-loading" class="has-text-centered">Getting comments data..</div>

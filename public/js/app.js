@@ -2998,6 +2998,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -6909,10 +6914,12 @@ var render = function() {
     "div",
     { attrs: { id: "comment-app" } },
     [
-      _c("comment-create", {
-        attrs: { avatar: _vm.auth.avatar, "post-id": _vm.postId },
-        on: { create: _vm.commentCreatedHandler }
-      }),
+      _vm.auth !== null
+        ? _c("comment-create", {
+            attrs: { avatar: _vm.auth.avatar, "post-id": _vm.postId },
+            on: { create: _vm.commentCreatedHandler }
+          })
+        : _vm._e(),
       _vm._v(" "),
       _vm.loading
         ? _c(

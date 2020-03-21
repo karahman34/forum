@@ -13,10 +13,13 @@
         {{-- Post Component --}}
         @component('components.posts.show', ['post' => $post])
         @endcomponent
-
+        
         @php
-          $auth = Auth::user();
-          $auth['avatar'] = $auth->getAvatar();
+          $auth = null;
+          if (Auth::check()) {
+            $auth = Auth::user();
+            $auth['avatar'] = $auth->getAvatar();
+          }
         @endphp
 
         {{-- Comments Section --}}
