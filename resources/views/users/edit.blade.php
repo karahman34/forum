@@ -70,7 +70,7 @@
                     </span>
                     <span class="file-label">Choose a avatar..</span>
                   </span>
-                  <span id="file-input-name" class="file-name">
+                  <span class="file-name">
                     No File Selected.
                   </span>
                 </label>
@@ -80,7 +80,7 @@
                 <p class="help is-danger">{{ $message }}</p>
               @enderror
 
-              <div class="is-flex" style="justify-content: flex-end;">
+              <div class="is-flex" style="justify-content: flex-end;margin-top:12px;">
                 {{-- Submit --}}
                 <button type="submit" class="button is-primary is-rounded">Update</button>
               </div>
@@ -129,6 +129,11 @@
   <style>
     .image-preview img {
       box-shadow: 0px 6px 8px rgba(128, 128, 128, 0.75);
+    }
+
+    .file-name {
+      max-width: none;
+      width: auto !important;
     }
   </style>
 @endpush

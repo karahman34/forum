@@ -71,7 +71,7 @@
                     </div>
 
                     {{-- Register --}}
-                    <a href="/register" class="has-text-primary">Already have an account ?</a>
+                    <a href="/login" class="has-text-primary">Already have an account ?</a>
                     {{-- Submit --}}
                     <button type="submit" class="button is-primary is-rounded is-pulled-right">Register</button>
                 </form>
