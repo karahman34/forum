@@ -23,8 +23,11 @@
         @endauth
 
         {{-- Comments Section --}}
-        <comment-list 
-          @if (Auth::check()) :user="{{ Auth::user()->toJson() }}" @endif
+        <comment-list
+          @auth 
+            :user="{{ Auth::user()->toJson() }}"
+            post-author="{{ $post->user_id === Auth::id() ? 'y' : 'n' }}" 
+          @endauth
           url="{{ route('post.comments', ['id' => $post->id]) }}"
         ></comment-list>
 

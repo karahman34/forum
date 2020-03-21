@@ -20,6 +20,7 @@ class CommentsCollection extends ResourceCollection
                 'user_id' => $comment->user_id,
                 'post_id' => $comment->post_id,
                 'body' => $comment->body,
+                'pinned' => $comment->pinned,
                 'created_at' => $comment->created_at->diffForHumans(),
                 'updated_at' => $comment->updated_at->diffForHumans(),
                 'images' => $comment->images->map(function ($image) {

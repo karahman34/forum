@@ -12207,6 +12207,23 @@ body {
   margin: 0px 5px 3px;
 }
 
+.comment-container .comment-header .pinned-button {
+  font-size: 15px;
+  margin-right: 10px;
+}
+
+.comment-container .comment-header .pinned-button i {
+  margin-right: 2px;
+}
+
+.comment-container .comment-header .unpinned {
+  opacity: 0.5;
+}
+
+.comment-container .comment-header .unpinned:hover {
+  opacity: 1;
+}
+
 .comment-container .comment-body {
   margin-top: 9px;
   font-size: 18px;

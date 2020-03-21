@@ -60,8 +60,27 @@
           <!-- Created Time -->
           <span class="comment-created-time">{{ comment.created_at }}</span>
 
-          <!-- Options Menu -->
           <span class="is-pulled-right">
+            <!-- Pin Comment Button -->
+            <button
+              v-if="postAuthor === 'y'"
+              class="button is-rounded is-primary pinned-button"
+              :class="[{'unpinned': comment.pinned === 'n'}, {'is-loading': focusComment !== null && focusComment.id === comment.id && pinLoading}]"
+              @click="togglePin(comment)"
+            >
+              <i class="mdi mdi-pin"></i>
+              <span>Pinned</span>
+            </button>
+
+            <!-- Pinned Comment -->
+            <div v-else>
+              <button v-if="comment.pinned === 'y'" class="button is-rounded is-primary pinned-button">
+                <i class="mdi mdi-pin"></i>
+                <span>Pinned</span>
+              </button>
+            </div>
+
+            <!-- Options Menu -->
             <menus
               v-if="user !== null && comment.user_id === user.id"
               :comment="comment"
@@ -113,9 +132,15 @@ export default {
       type: String,
       required: true,
     },
+    postAuthor: {
+      type: String,
+      default: 'n',
+    },
   },
   data() {
     return {
+      pinLoading: false,
+      focusComment: null,
       loading: true,
       comments: [],
       current_page: 1,
@@ -163,6 +188,70 @@ export default {
       } finally {
         this.loading = false;
       }
+    },
+    togglePin(comment) {
+      // Set focus comment
+      this.focusComment = comment;
+
+      if (comment.pinned === 'y') {
+        this.unpinComment(comment.id);
+      } else {
+        this.pinComment(comment.id);
+      }
+    },
+    pinComment(commentId) {
+      // Turn on loading
+      this.pinLoading = true;
+
+      // Fetch
+      axios
+        .post(`/comments/${commentId}/pin`, {})
+        .then(({ data }) => {
+          if (data.ok) {
+            this.updatePinComment(commentId, 'y');
+
+            toast({
+              message: 'Comment pinned.',
+              type: 'is-success',
+            });
+          }
+        })
+        .catch(err => {
+          toast({
+            message: 'Failed to pin comment.',
+            type: 'is-danger',
+          });
+        })
+        .finally(() => (this.pinLoading = false));
+    },
+    unpinComment(commentId) {
+      // Turn on loading
+      this.pinLoading = true;
+
+      // Fetch
+      axios
+        .post(`/comments/${commentId}/unpin`, {})
+        .then(({ data }) => {
+          if (data.ok) {
+            this.updatePinComment(commentId, 'n');
+
+            toast({
+              message: 'Comment unpinned.',
+              type: 'is-success',
+            });
+          }
+        })
+        .catch(err => {
+          toast({
+            message: 'Failed to unpin comment.',
+            type: 'is-danger',
+          });
+        })
+        .finally(() => (this.pinLoading = false));
+    },
+    updatePinComment(commentId, val) {
+      const comment = this.comments.find(comment => comment.id === commentId);
+      comment.pinned = val.toLowerCase();
     },
     sortComments() {
       this.getComments();

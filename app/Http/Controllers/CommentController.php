@@ -61,6 +61,58 @@ class CommentController extends Controller
     }
 
     /**
+     * Update comment pin.
+     *
+     * @param   int     $id
+     * @param   string  $val
+     *
+     * @return  Boolean
+     */
+    private function updatePin(int $id, string $val)
+    {
+        $comment = Comment::select('id')
+                            ->where('id', $id)
+                            ->firstOrFail();
+        return $comment->update([
+            'pinned' => $val,
+        ]);
+    }
+
+    /**
+     * Pin Comment.
+     *
+     * @param   int  $id
+     *
+     * @return  \Illuminate\Http\Response
+     */
+    public function pin(int $id)
+    {
+        $this->updatePin($id, 'y');
+
+        return response()->json([
+            'ok' => true,
+            'message' => 'Comment pinned.',
+        ], 202);
+    }
+
+    /**
+     * Unpin Comment.
+     *
+     * @param   int  $id
+     *
+     * @return  \Illuminate\Http\Response
+     */
+    public function unpin(int $id)
+    {
+        $this->updatePin($id, 'n');
+
+        return response()->json([
+            'ok' => true,
+            'message' => 'Comment unpinned.',
+        ], 202);
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id

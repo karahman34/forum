@@ -2595,6 +2595,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2610,10 +2629,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     url: {
       type: String,
       required: true
+    },
+    postAuthor: {
+      type: String,
+      "default": 'n'
     }
   },
   data: function data() {
     return {
+      pinLoading: false,
+      focusComment: null,
       loading: true,
       comments: [],
       current_page: 1,
@@ -2688,6 +2713,74 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee, null, [[0, 14, 17, 20]]);
       }))();
+    },
+    togglePin: function togglePin(comment) {
+      // Set focus comment
+      this.focusComment = comment;
+
+      if (comment.pinned === 'y') {
+        this.unpinComment(comment.id);
+      } else {
+        this.pinComment(comment.id);
+      }
+    },
+    pinComment: function pinComment(commentId) {
+      var _this2 = this;
+
+      // Turn on loading
+      this.pinLoading = true; // Fetch
+
+      axios.post("/comments/".concat(commentId, "/pin"), {}).then(function (_ref) {
+        var data = _ref.data;
+
+        if (data.ok) {
+          _this2.updatePinComment(commentId, 'y');
+
+          toast({
+            message: 'Comment pinned.',
+            type: 'is-success'
+          });
+        }
+      })["catch"](function (err) {
+        toast({
+          message: 'Failed to pin comment.',
+          type: 'is-danger'
+        });
+      })["finally"](function () {
+        return _this2.pinLoading = false;
+      });
+    },
+    unpinComment: function unpinComment(commentId) {
+      var _this3 = this;
+
+      // Turn on loading
+      this.pinLoading = true; // Fetch
+
+      axios.post("/comments/".concat(commentId, "/unpin"), {}).then(function (_ref2) {
+        var data = _ref2.data;
+
+        if (data.ok) {
+          _this3.updatePinComment(commentId, 'n');
+
+          toast({
+            message: 'Comment unpinned.',
+            type: 'is-success'
+          });
+        }
+      })["catch"](function (err) {
+        toast({
+          message: 'Failed to unpin comment.',
+          type: 'is-danger'
+        });
+      })["finally"](function () {
+        return _this3.pinLoading = false;
+      });
+    },
+    updatePinComment: function updatePinComment(commentId, val) {
+      var comment = this.comments.find(function (comment) {
+        return comment.id === commentId;
+      });
+      comment.pinned = val.toLowerCase();
     },
     sortComments: function sortComments() {
       this.getComments();
@@ -6397,6 +6490,50 @@ var render = function() {
                       "span",
                       { staticClass: "is-pulled-right" },
                       [
+                        _vm.postAuthor === "y"
+                          ? _c(
+                              "button",
+                              {
+                                staticClass:
+                                  "button is-rounded is-primary pinned-button",
+                                class: [
+                                  { unpinned: comment.pinned === "n" },
+                                  {
+                                    "is-loading":
+                                      _vm.focusComment !== null &&
+                                      _vm.focusComment.id === comment.id &&
+                                      _vm.pinLoading
+                                  }
+                                ],
+                                on: {
+                                  click: function($event) {
+                                    return _vm.togglePin(comment)
+                                  }
+                                }
+                              },
+                              [
+                                _c("i", { staticClass: "mdi mdi-pin" }),
+                                _vm._v(" "),
+                                _c("span", [_vm._v("Pinned")])
+                              ]
+                            )
+                          : _c("div", [
+                              comment.pinned === "y"
+                                ? _c(
+                                    "button",
+                                    {
+                                      staticClass:
+                                        "button is-rounded is-primary pinned-button"
+                                    },
+                                    [
+                                      _c("i", { staticClass: "mdi mdi-pin" }),
+                                      _vm._v(" "),
+                                      _c("span", [_vm._v("Pinned")])
+                                    ]
+                                  )
+                                : _vm._e()
+                            ]),
+                        _vm._v(" "),
                         _vm.user !== null && comment.user_id === _vm.user.id
                           ? _c("menus", {
                               attrs: { comment: comment },

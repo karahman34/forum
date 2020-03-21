@@ -259,7 +259,8 @@ class PostController extends Controller
     {
         $sort = $request->get('sort', null);
         $query = Comment::with(['images:url,imageable_id,imageable_type', 'user:id,username,avatar'])
-                                ->where('post_id', $id);
+                                ->where('post_id', $id)
+                                ->orderBy('pinned', 'asc');
 
         // Apply sort
         if ($sort !== null) {

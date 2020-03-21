@@ -20,6 +20,7 @@ class CreateCommentsTable extends Migration
             $table->unsignedBigInteger('post_id');
             $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
             $table->longText('body');
+            $table->enum('pinned', ['y', 'n'])->default('n');
             $table->timestamps();
         });
     }

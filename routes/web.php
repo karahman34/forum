@@ -56,6 +56,9 @@ Route::prefix('comments')->name('comment.')->group(function () {
     Route::middleware(['auth'])->group(function () {
         Route::get('/{id}/edit', 'CommentController@edit')->name('edit');
 
+        Route::post('/{id}/pin', 'CommentController@pin')->name('pin');
+        Route::post('/{id}/unpin', 'CommentController@unpin')->name('unpin');
+
         Route::put('/{id}', 'CommentController@update')->name('update');
         
         Route::delete('/{id}', 'CommentController@destroy')->name('destroy');
