@@ -14,21 +14,18 @@
         @component('components.posts.show', ['post' => $post])
         @endcomponent
 
-        @auth
-            {{-- Comment Create --}}
-          <comment-create 
-            avatar="{{  Auth::user()->getAvatar() }}"
-            url="{{ route('post.comments', ['id' => $post->id]) }}" 
-          ></comment-create>
-        @endauth
+        @php
+          $auth = Auth::user();
+          $auth['avatar'] = $auth->getAvatar();
+        @endphp
 
         {{-- Comments Section --}}
         <comment-section
           @auth 
-            :auth="{{ Auth::user()->toJson() }}"
+            :auth="{{ $auth }}"
             post-author="{{ $post->user_id === Auth::id() ? 'y' : 'n' }}" 
           @endauth
-          url="{{ route('post.comments', ['id' => $post->id]) }}"
+          post-id="{{ $post->id }}"
         ></comment-section>
 
         @guest

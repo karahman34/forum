@@ -49,14 +49,25 @@ class CommentController extends Controller
         $comment = $post->comments()->create([
             'user_id' => Auth::id(),
             'body' => $request->get('body'),
+            'pinned' => 'n',
         ]);
 
+        // Store images
         if ($request->has('images')) {
             $this->storeImages($request->file('images'), $comment);
         }
 
+        // Get the user
+        $auth = auth()->user();
+        $comment['user'] = [
+            'id' => $auth->id,
+            'username' => $auth->username,
+            'avatar' => $auth->getAvatar(),
+        ];
+
         return response()->json([
             'ok' => true,
+            'data' => $comment,
         ], 201);
     }
 

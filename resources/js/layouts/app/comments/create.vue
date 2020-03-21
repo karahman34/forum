@@ -71,11 +71,11 @@ export default {
     ImagePreview,
   },
   props: {
-    avatar: {
-      type: String,
+    postId: {
+      type: [String, Number],
       required: true,
     },
-    url: {
+    avatar: {
       type: String,
       required: true,
     },
@@ -101,15 +101,23 @@ export default {
           formData.append('images[]', image.file);
         }
         // Fetch Api
-        const res = await axios.post(this.url, formData);
+        const res = await axios.post(
+          `/posts/${this.postId}/comments`,
+          formData
+        );
         // Result Api
-        const { ok } = res.data;
+        const { ok, data } = res.data;
 
         if (ok) {
-          const query = ['sort=new'];
-          const { origin, pathname } = window.location;
+          // Reset form
+          this.body = null;
+          // Emit create event
+          this.$emit('create', data);
 
-          window.location.href = `${origin}${pathname}?${query}`;
+          toast({
+            type: 'is-success',
+            message: 'Comment created.',
+          });
         }
       } catch (err) {
         const errCode = err.response && err.response.status;
@@ -117,8 +125,12 @@ export default {
         if (errCode === 422) {
           this.formError = err.response.data.errors.body[0];
         } else {
-          throw Error(err);
           this.formError = err;
+
+          toast({
+            type: 'is-danger',
+            message: 'Failed to create comment.',
+          });
         }
       } finally {
         this.loading = false;

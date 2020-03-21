@@ -2163,11 +2163,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     ImagePreview: _imagesPreview_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   props: {
-    avatar: {
-      type: String,
+    postId: {
+      type: [String, Number],
       required: true
     },
-    url: {
+    avatar: {
       type: String,
       required: true
     }
@@ -2185,7 +2185,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-        var formData, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, image, res, ok, query, _window$location, origin, pathname, errCode;
+        var formData, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, image, res, _res$data, ok, data, errCode;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
@@ -2244,20 +2244,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 23:
                 _context.next = 25;
-                return axios.post(_this.url, formData);
+                return axios.post("/posts/".concat(_this.postId, "/comments"), formData);
 
               case 25:
                 res = _context.sent;
                 // Result Api
-                ok = res.data.ok;
+                _res$data = res.data, ok = _res$data.ok, data = _res$data.data;
 
                 if (ok) {
-                  query = ['sort=new'];
-                  _window$location = window.location, origin = _window$location.origin, pathname = _window$location.pathname;
-                  window.location.href = "".concat(origin).concat(pathname, "?").concat(query);
+                  // Reset form
+                  _this.body = null; // Emit create event
+
+                  _this.$emit('create', data);
+
+                  toast({
+                    type: 'is-success',
+                    message: 'Comment created.'
+                  });
                 }
 
-                _context.next = 39;
+                _context.next = 34;
                 break;
 
               case 30:
@@ -2265,29 +2271,27 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _context.t1 = _context["catch"](0);
                 errCode = _context.t1.response && _context.t1.response.status;
 
-                if (!(errCode === 422)) {
-                  _context.next = 37;
-                  break;
+                if (errCode === 422) {
+                  _this.formError = _context.t1.response.data.errors.body[0];
+                } else {
+                  _this.formError = _context.t1;
+                  toast({
+                    type: 'is-danger',
+                    message: 'Failed to create comment.'
+                  });
                 }
 
-                _this.formError = _context.t1.response.data.errors.body[0];
-                _context.next = 39;
-                break;
+              case 34:
+                _context.prev = 34;
+                _this.loading = false;
+                return _context.finish(34);
 
               case 37:
-                throw Error(_context.t1);
-
-              case 39:
-                _context.prev = 39;
-                _this.loading = false;
-                return _context.finish(39);
-
-              case 42:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 30, 39, 42], [7, 11, 15, 23], [16,, 18, 22]]);
+        }, _callee, null, [[0, 30, 34, 37], [7, 11, 15, 23], [16,, 18, 22]]);
       }))();
     },
     openInputImage: function openInputImage() {
@@ -2929,7 +2933,8 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _pagination_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./pagination.vue */ "./resources/js/layouts/app/comments/pagination.vue");
+/* harmony import */ var _create_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./create.vue */ "./resources/js/layouts/app/comments/create.vue");
+/* harmony import */ var _pagination_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./pagination.vue */ "./resources/js/layouts/app/comments/pagination.vue");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -2990,19 +2995,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    Pagination: _pagination_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+    'comment-create': _create_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    Pagination: _pagination_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   props: {
+    postId: {
+      type: [String, Number],
+      required: true
+    },
     auth: {
       type: Object,
       "default": null
-    },
-    url: {
-      type: String,
-      required: true
     },
     postAuthor: {
       type: String,
@@ -3048,7 +3058,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this.loading = true; // Fetch comments
 
                 _context.next = 4;
-                return axios.get(_this.url, {
+                return axios.get("/posts/".concat(_this.postId, "/comments"), {
                   params: {
                     page: _this.current_page,
                     sort: _this.selectedSort
@@ -3071,7 +3081,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 14:
                 _context.prev = 14;
                 _context.t0 = _context["catch"](0);
-                throw Error(_context.t0);
+                toast({
+                  type: 'is-danger',
+                  message: 'Failed to get comments data.'
+                });
 
               case 17:
                 _context.prev = 17;
@@ -3085,6 +3098,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee, null, [[0, 14, 17, 20]]);
       }))();
+    },
+    commentCreatedHandler: function commentCreatedHandler(comment) {
+      this.comments.unshift(comment);
     },
     updatePinComment: function updatePinComment(_ref) {
       var commentId = _ref.commentId,
@@ -6889,86 +6905,96 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { attrs: { id: "comment-app" } }, [
-    _vm.loading
-      ? _c(
-          "div",
-          {
-            staticClass: "has-text-centered",
-            attrs: { id: "comment-loading" }
-          },
-          [_vm._v("Getting comments data..")]
-        )
-      : _c(
-          "div",
-          { attrs: { id: "comment-section" } },
-          [
-            _c("div", { staticClass: "comment-filter-container" }, [
-              _c("div", { staticClass: "level" }, [
-                _c("div", { staticClass: "level-left" }, [
-                  _c("div", { staticClass: "level-item" }, [
-                    _c("span", { staticClass: "title is-4" }, [
-                      _vm._v(
-                        "\n              " +
-                          _vm._s(_vm.total) +
-                          "\n              Comments\n            "
-                      )
+  return _c(
+    "div",
+    { attrs: { id: "comment-app" } },
+    [
+      _c("comment-create", {
+        attrs: { avatar: _vm.auth.avatar, "post-id": _vm.postId },
+        on: { create: _vm.commentCreatedHandler }
+      }),
+      _vm._v(" "),
+      _vm.loading
+        ? _c(
+            "div",
+            {
+              staticClass: "has-text-centered",
+              attrs: { id: "comment-loading" }
+            },
+            [_vm._v("Getting comments data..")]
+          )
+        : _c(
+            "div",
+            { attrs: { id: "comment-section" } },
+            [
+              _c("div", { staticClass: "comment-filter-container" }, [
+                _c("div", { staticClass: "level" }, [
+                  _c("div", { staticClass: "level-left" }, [
+                    _c("div", { staticClass: "level-item" }, [
+                      _c("span", { staticClass: "title is-4" }, [
+                        _vm._v(
+                          "\n              " +
+                            _vm._s(_vm.total) +
+                            "\n              Comments\n            "
+                        )
+                      ])
                     ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "level-right" }, [
+                    _c(
+                      "div",
+                      { staticClass: "level-item" },
+                      [
+                        _c("comment-filter", {
+                          attrs: { "selected-sort": _vm.selectedSort },
+                          on: {
+                            "update:selectedSort": function($event) {
+                              _vm.selectedSort = $event
+                            },
+                            "update:selected-sort": function($event) {
+                              _vm.selectedSort = $event
+                            },
+                            filter: _vm.sortComments
+                          }
+                        })
+                      ],
+                      1
+                    )
                   ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "level-right" }, [
-                  _c(
-                    "div",
-                    { staticClass: "level-item" },
-                    [
-                      _c("comment-filter", {
-                        attrs: { "selected-sort": _vm.selectedSort },
-                        on: {
-                          "update:selectedSort": function($event) {
-                            _vm.selectedSort = $event
-                          },
-                          "update:selected-sort": function($event) {
-                            _vm.selectedSort = $event
-                          },
-                          filter: _vm.sortComments
-                        }
-                      })
-                    ],
-                    1
-                  )
                 ])
-              ])
-            ]),
-            _vm._v(" "),
-            _vm._l(_vm.comments, function(comment) {
-              return _c("comment", {
-                key: comment.id,
+              ]),
+              _vm._v(" "),
+              _vm._l(_vm.comments, function(comment) {
+                return _c("comment", {
+                  key: comment.id,
+                  attrs: {
+                    auth: _vm.auth,
+                    comment: comment,
+                    "can-pin": _vm.postAuthor === "y"
+                  },
+                  on: {
+                    delete: _vm.deleteComment,
+                    "pin-update": _vm.updatePinComment
+                  }
+                })
+              }),
+              _vm._v(" "),
+              _c("pagination", {
                 attrs: {
-                  auth: _vm.auth,
-                  comment: comment,
-                  "can-pin": _vm.postAuthor === "y"
+                  next: _vm.next_url,
+                  prev: _vm.prev_url,
+                  "last-page": _vm.last_page,
+                  "current-page": _vm.current_page
                 },
-                on: {
-                  "pin-update": _vm.updatePinComment,
-                  delete: _vm.deleteComment
-                }
+                on: { click: _vm.changePage }
               })
-            }),
-            _vm._v(" "),
-            _c("pagination", {
-              attrs: {
-                next: _vm.next_url,
-                prev: _vm.prev_url,
-                "last-page": _vm.last_page,
-                "current-page": _vm.current_page
-              },
-              on: { click: _vm.changePage }
-            })
-          ],
-          2
-        )
-  ])
+            ],
+            2
+          )
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

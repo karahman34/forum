@@ -1,5 +1,8 @@
 <template>
   <div id="comment-app">
+    <!-- Create Comment -->
+    <comment-create :avatar="auth.avatar" :post-id="postId" @create="commentCreatedHandler"></comment-create>
+
     <!-- Loading -->
     <div v-if="loading" id="comment-loading" class="has-text-centered">Getting comments data..</div>
 
@@ -36,8 +39,8 @@
         :auth="auth"
         :comment="comment"
         :can-pin="postAuthor === 'y'"
-        @pin-update="updatePinComment"
         @delete="deleteComment"
+        @pin-update="updatePinComment"
       ></comment>
 
       <!-- Pagination -->
@@ -53,20 +56,22 @@
 </template>
 
 <script>
+import Create from './create.vue';
 import Pagination from './pagination.vue';
 
 export default {
   components: {
+    'comment-create': Create,
     Pagination,
   },
   props: {
+    postId: {
+      type: [String, Number],
+      required: true,
+    },
     auth: {
       type: Object,
       default: null,
-    },
-    url: {
-      type: String,
-      required: true,
     },
     postAuthor: {
       type: String,
@@ -102,7 +107,7 @@ export default {
         // Turn on loading
         this.loading = true;
         // Fetch comments
-        const res = await axios.get(this.url, {
+        const res = await axios.get(`/posts/${this.postId}/comments`, {
           params: {
             page: this.current_page,
             sort: this.selectedSort,
@@ -118,10 +123,16 @@ export default {
         this.prev_url = links.prev === null ? false : true;
         this.next_url = links.next === null ? false : true;
       } catch (err) {
-        throw Error(err);
+        toast({
+          type: 'is-danger',
+          message: 'Failed to get comments data.',
+        });
       } finally {
         this.loading = false;
       }
+    },
+    commentCreatedHandler(comment) {
+      this.comments.unshift(comment);
     },
     updatePinComment({ commentId, val }) {
       const comment = this.comments.find(comment => comment.id === commentId);
