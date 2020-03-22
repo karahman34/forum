@@ -28,11 +28,13 @@
                                 @endcomponent
                             </div>
                         @endforeach
+
+                        <div class="column is-12">
+                            {{-- Pagination --}}
+                            {{ $posts->onEachSide(4)->links('components.pagination') }}
+                        </div>
                     @endif
                 </div>
-
-                {{-- Pagination --}}
-                {{ $posts->onEachSide(4)->links('components.pagination') }}
             </div>
         </div>
     </div>
