@@ -56,7 +56,11 @@
       :src="image.src"
       :alt="image.src"
       class="comment-image"
+      @click="showImage = image.src"
     />
+
+    <!-- Modal Image -->
+    <image-modal v-if="showImage !== null" :image="showImage" @close="showImage = null"></image-modal>
   </div>
 </template>
 
@@ -83,6 +87,7 @@ export default {
   },
   data() {
     return {
+      showImage: null,
       pinLoading: false,
     };
   },

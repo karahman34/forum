@@ -23,6 +23,9 @@ require('./_global');
 // Define Vue
 window.Vue = require('vue');
 
+// Images
+Vue.component('image-modal', require('./components/imageModal.vue').default);
+
 // Posts
 Vue.component('post-form', require('./posts/form.vue').default);
 Vue.component('post-filter', require('./posts/postFilter.vue').default);

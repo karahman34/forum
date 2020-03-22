@@ -9,7 +9,9 @@
     ></comment-create>
 
     <!-- Loading -->
-    <div v-if="loading" id="comment-loading" class="has-text-centered">Getting comments data..</div>
+    <div v-if="loading" id="comment-loading" class="has-text-centered">
+      Getting comments data..
+    </div>
 
     <!-- Comment Section -->
     <div v-else id="comment-section">
@@ -31,7 +33,10 @@
           <div class="level-right">
             <div class="level-item">
               <!-- Comment Filter -->
-              <comment-filter :selected-sort.sync="selectedSort" @filter="sortComments"></comment-filter>
+              <comment-filter
+                :selected-sort.sync="selectedSort"
+                @filter="sortComments"
+              ></comment-filter>
             </div>
           </div>
         </div>
