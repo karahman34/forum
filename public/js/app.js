@@ -3008,11 +3008,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3116,6 +3111,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     commentCreatedHandler: function commentCreatedHandler(comment) {
       this.comments.unshift(comment);
+      this.total += 1;
     },
     updatePinComment: function updatePinComment(_ref) {
       var commentId = _ref.commentId,
@@ -7133,7 +7129,7 @@ var render = function() {
               staticClass: "has-text-centered",
               attrs: { id: "comment-loading" }
             },
-            [_vm._v("\n    Getting comments data..\n  ")]
+            [_vm._v("Getting comments data..")]
           )
         : _c(
             "div",
