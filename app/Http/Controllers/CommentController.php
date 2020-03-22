@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Comment;
 use App\Http\Requests\CommentRequest;
+use App\Http\Resources\CommentResource;
 use App\Image;
 use App\Post;
 use Illuminate\Http\Request;
@@ -15,7 +16,7 @@ class CommentController extends Controller
     /**
      * Store commenet images.
      *
-     * @param   array   $images
+     * @param   array    $images
      * @param   Comment  $comment
      *
      * @return  void
@@ -56,19 +57,11 @@ class CommentController extends Controller
         if ($request->has('images')) {
             $this->storeImages($request->file('images'), $comment);
         }
-
-        // Get the user
-        $auth = auth()->user();
-        $comment['user'] = [
-            'id' => $auth->id,
-            'username' => $auth->username,
-            'avatar' => $auth->getAvatar(),
-        ];
-
-        return response()->json([
-            'ok' => true,
-            'data' => $comment,
-        ], 201);
+    
+        return (new CommentResource($comment))
+                ->additional([
+                    'ok' => true,
+                ]);
     }
 
     /**
