@@ -10,10 +10,6 @@
 
       {{-- Content --}}
       <div id="main-content" class="column is-10-desktop is-9-widescreen is-8-fullhd">
-        {{-- Post Component --}}
-        @component('components.posts.show', ['post' => $post])
-        @endcomponent
-        
         @php
           $auth = null;
           if (Auth::check()) {
@@ -22,13 +18,16 @@
           }
         @endphp
 
+        {{-- Post Component --}}
+        <post :post="{{ json_encode($post) }}" @auth :auth="{{ $auth }}" @endauth></post>
+
         {{-- Comments Section --}}
         <comment-section
           @auth 
             :auth="{{ $auth }}"
-            post-author="{{ $post->user_id === Auth::id() ? 'y' : 'n' }}" 
+            post-author="{{ $post['author']['id'] === Auth::id() ? 'y' : 'n' }}" 
           @endauth
-          post-id="{{ $post->id }}"
+          post-id="{{ $post['id'] }}"
         ></comment-section>
 
         @guest
@@ -58,7 +57,7 @@
 @push('js')
   <script>
     function incrementPostSeen() {
-      const actionUrl = "{{ route('post.seen', ['id' => $post->id]) }}";
+      const actionUrl = "{{ route('post.seen', ['id' => $post['id']]) }}";
       
       axios.post(actionUrl)
         .catch(err => {

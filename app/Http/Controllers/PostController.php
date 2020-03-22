@@ -231,7 +231,7 @@ class PostController extends Controller
     public function show(int $id)
     {
         // Get the post
-        $post = Post::with([
+        $qResult = Post::with([
             'images',
             'author:id,avatar,username',
             'tags:name',
@@ -241,8 +241,35 @@ class PostController extends Controller
         ->findOrFail($id);
 
         // Set title
-        $title = $post->title;
+        $title = $qResult->title;
 
+        $post = [
+            'id' => $qResult->id,
+            'title' => $qResult->title,
+            'body' => $qResult->body,
+            'created_at' => $qResult->created_at->diffForHumans(),
+            'updated_at' => $qResult->updated_at->diffForHumans(),
+            'comments_count' => $qResult->comments_count,
+            'seen' => [
+                'count' => $qResult->seen->count,
+            ],
+            'images' => $qResult->images->map(function ($image) {
+                return [
+                    'src' => $image->getImage(),
+                    'original' => $image->src,
+                ];
+            }),
+            'author' => [
+                'id' => $qResult->author->id,
+                'avatar' => $qResult->author->getAvatar(),
+                'username' => $qResult->author->username,
+            ],
+            'tags' => $qResult->tags->map(function ($tag) {
+                return [
+                    'name' => $tag->name,
+                ];
+            }),
+        ];
 
         return view('posts.show', compact('post', 'title'));
     }

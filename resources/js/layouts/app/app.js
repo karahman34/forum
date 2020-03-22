@@ -27,6 +27,7 @@ window.Vue = require('vue');
 Vue.component('image-modal', require('./components/imageModal.vue').default);
 
 // Posts
+Vue.component('post', require('./posts/post.vue').default);
 Vue.component('post-form', require('./posts/form.vue').default);
 Vue.component('post-filter', require('./posts/postFilter.vue').default);
 Vue.component('post-menus', require('./posts/menus.vue').default);
