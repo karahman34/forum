@@ -1,2 +1,4 @@
-*
+avatars/
+posts/
+comments/
 !.gitignore
