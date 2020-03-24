@@ -29,12 +29,12 @@
                 @endcomponent 
               </div>
             @endforeach
-          @endif
 
-          <div class="column is-12-mobile has-text-centered">
+            <div class="column is-12-mobile has-text-centered">
             {{-- Pagination --}}
             {{ $posts->onEachSide(4)->links('components.pagination') }}
           </div>
+          @endif
         </div>
       </div>
     </div>
