@@ -77,7 +77,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getAvatar()
     {
-        $defaultAvatar = 'img/avatars/default.png';
+        $defaultAvatar = 'img/default/avatar.png';
 
         return $this->avatar === null
             ? Storage::url($defaultAvatar)
