@@ -13,6 +13,9 @@ window.Vue = require('vue');
 // Images
 Vue.component('image-modal', require('./components/imageModal.vue').default);
 
+// Logout
+Vue.component('logout', require('./components/logout.vue').default);
+
 // Posts
 Vue.component('post', require('./posts/post.vue').default);
 Vue.component('post-form', require('./posts/form.vue').default);

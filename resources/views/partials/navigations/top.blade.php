@@ -37,11 +37,6 @@
 
         {{-- Authorize Menus --}}
         @auth
-          {{-- Home --}}
-          <a href="/" class="navbar-item">
-            Home
-          </a>
-
           {{-- Special menu only on mobile --}}
           <span class="is-inline-mobile is-hidden-tablet">
             {{-- Popular --}}
@@ -64,12 +59,7 @@
               {{-- Password --}}
               <a class="navbar-item" href="{{ route('user.edit_password', ['username' => Auth::user()->username]) }}">Password</a>
               {{-- Logout --}}
-              <a class="navbar-item" onclick="logoutHandler()">
-                <form id="logout-form" method="POST" action="{{route('logout')}}">
-                  @csrf
-                </form>
-                Logout
-              </a>
+              <logout></logout>
             </div>
           </div>
         @endauth
@@ -77,31 +67,3 @@
     </div>
   </div>
 </nav>
-
-<script>
-  function logoutHandler() {
-    const logoutForm = document.getElementById('logout-form');
-    logoutForm.submit();
-  }
-
-  function toggleBurger() {
-    let navBurgerActive = false;
-    const navBurger = document.querySelector('.navbar-burger.burger');
-    const navBarMenu = document.querySelector('.navbar-menu');
-    navBurger.addEventListener('click', () => {
-      if (!navBurgerActive) {
-        navBurgerActive = true;
-
-        navBurger.classList.add('is-active');
-        navBarMenu.classList.add('is-active');
-      } else {
-        navBurgerActive = false;
-
-        navBurger.classList.remove('is-active');
-        navBarMenu.classList.remove('is-active');
-      }
-    });
-  }
-
-  toggleBurger();
-</script>
