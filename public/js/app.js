@@ -20301,30 +20301,10 @@ window.validateForm = function (errFields, fields) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 // Use Axios
-window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js"); // Use bulma toast
+window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js"); // Use Bulma Toast
 
-bulmaToast = __webpack_require__(/*! bulma-toast */ "./node_modules/bulma-toast/dist/bulma-toast.min.js").toast;
-
-window.toast = function (options) {
-  var defaultOptions = {
-    closeOnClick: false,
-    pauseOnHover: true,
-    dismissible: true,
-    position: 'bottom-left',
-    duration: '3000'
-  };
-
-  var finalOptions = _objectSpread({}, defaultOptions, {}, options);
-
-  bulmaToast(finalOptions);
-}; // Require global config
+__webpack_require__(/*! ./plugins/bulmaToast */ "./resources/js/layouts/app/plugins/bulmaToast.js"); // Require global config
 
 
 __webpack_require__(/*! ./_global */ "./resources/js/layouts/app/_global.js"); // Define Vue
@@ -21110,6 +21090,38 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_imagesPreview_vue_vue_type_template_id_01e3b3a4_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
+
+/***/ }),
+
+/***/ "./resources/js/layouts/app/plugins/bulmaToast.js":
+/*!********************************************************!*\
+  !*** ./resources/js/layouts/app/plugins/bulmaToast.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+// Use bulma toast
+bulmaToast = __webpack_require__(/*! bulma-toast */ "./node_modules/bulma-toast/dist/bulma-toast.min.js").toast;
+
+window.toast = function (options) {
+  var defaultOptions = {
+    closeOnClick: false,
+    pauseOnHover: true,
+    dismissible: true,
+    position: 'bottom-left',
+    duration: '3000'
+  };
+
+  var finalOptions = _objectSpread({}, defaultOptions, {}, options);
+
+  bulmaToast(finalOptions);
+};
 
 /***/ }),
 
