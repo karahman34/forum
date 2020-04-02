@@ -4,7 +4,6 @@
     <div class="navbar-brand">
       {{-- The Brand --}}
       <a class="navbar-item" href="/">
-        {{-- <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28"> --}}
         <span class="has-text-weight-semibold">Diskusi</span>
         <span id="kuy">Kuy!</span>
       </a>
@@ -37,6 +36,9 @@
 
         {{-- Authorize Menus --}}
         @auth
+          {{-- Notification Count --}}
+          <notification-count :auth="{{ auth()->user() }}"></notification-count>
+
           {{-- Special menu only on mobile --}}
           <span class="is-inline-mobile is-hidden-tablet">
             {{-- Popular --}}

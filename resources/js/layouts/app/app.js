@@ -32,6 +32,12 @@ Vue.component('comment-filter', require('./comments/filter.vue').default);
 Vue.component('comment-create', require('./comments/create.vue').default);
 Vue.component('comment-edit', require('./comments/edit.vue').default);
 
+// Notifications
+Vue.component(
+  'notification-count',
+  require('./notifications/navbar-count.vue').default
+);
+
 // Create vue instance
 const app = new Vue({
   el: '#app',

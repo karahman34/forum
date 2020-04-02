@@ -35,7 +35,7 @@ Route::prefix('posts')->name('post.')->group(function () {
         Route::post('/{id}/save', 'PostController@savePost')->name('save');
         Route::post('/{id}/unsave', 'PostController@unSavePost')->name('unsave');
         Route::post('/{id}/comments', 'CommentController@store')->name('comments');
-    
+
         Route::put('/{id}', 'PostController@update')->name('update');
 
         Route::delete('/{id}', 'PostController@destroy')->name('destroy');
@@ -60,7 +60,7 @@ Route::prefix('comments')->name('comment.')->group(function () {
         Route::post('/{id}/unpin', 'CommentController@unpin')->name('unpin');
 
         Route::put('/{id}', 'CommentController@update')->name('update');
-        
+
         Route::delete('/{id}', 'CommentController@destroy')->name('destroy');
     });
 });
@@ -75,7 +75,7 @@ Route::prefix('users')->name('user.')->group(function () {
         Route::get('/saved-posts', 'UserController@getSavedPosts')->name('saved_posts');
         Route::get('/{username}/edit', 'UserController@edit')->name('edit');
         Route::get('/{username}/password', 'UserController@editPassword')->name('edit_password');
-        
+
         Route::put('/{id}', 'UserController@update')->name('update');
         Route::put('/{username}/password', 'UserController@updatePassword')->name('update_password');
     });
@@ -85,4 +85,13 @@ Route::prefix('users')->name('user.')->group(function () {
 
 Route::prefix('tags')->name('tag.')->group(function () {
     Route::get('/', 'TagController@index')->name('index');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Notifications Routes
+|--------------------------------------------------------------------------
+*/
+Route::prefix('notifications')->name('notification.')->group(function () {
+    Route::get('/count', 'NotificationController@count')->name('count');
 });
