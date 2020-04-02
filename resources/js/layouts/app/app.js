@@ -4,6 +4,9 @@ window.axios = require('axios');
 // Use Bulma Toast
 require('./plugins/bulmaToast');
 
+// Use Laravel Echo
+require('../../plugins/laravel-echo');
+
 // Require global config
 require('./_global');
 
