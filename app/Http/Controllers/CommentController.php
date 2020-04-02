@@ -6,6 +6,8 @@ use App\Comment;
 use App\Http\Requests\CommentRequest;
 use App\Http\Resources\CommentResource;
 use App\Image;
+use App\Jobs\DeletePostNotificationJob;
+use App\Notifications\PostReactNotification;
 use App\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -44,7 +46,7 @@ class CommentController extends Controller
     public function store(CommentRequest $request, int $postId)
     {
         // Get Post
-        $post = Post::select('id')->where('id', $postId)->firstOrFail();
+        $post = Post::select('id', 'user_id')->where('id', $postId)->firstOrFail();
 
         // Create Comment
         $comment = $post->comments()->create([
@@ -57,11 +59,15 @@ class CommentController extends Controller
         if ($request->has('images')) {
             $this->storeImages($request->file('images'), $comment);
         }
-    
+
+        // Notif post author
+        $from = auth()->user();
+        $post->author()->select('id')->firstOrFail()->notify(new PostReactNotification($post->id, $from));
+
         return (new CommentResource($comment))
-                ->additional([
-                    'ok' => true,
-                ]);
+            ->additional([
+                'ok' => true,
+            ]);
     }
 
     /**
@@ -76,8 +82,8 @@ class CommentController extends Controller
     {
         // Get comment
         $comment = Comment::select('id', 'post_id')
-                            ->where('id', $id)
-                            ->firstOrFail();
+            ->where('id', $id)
+            ->firstOrFail();
 
         // Get post
         $post = $comment->post()->select('id', 'user_id')->firstOrFail();
@@ -236,7 +242,7 @@ class CommentController extends Controller
     public function destroy($id)
     {
         // Get comment
-        $comment = Comment::select('id', 'user_id')->where('id', $id)->firstOrFail();
+        $comment = Comment::select('id', 'post_id', 'user_id')->where('id', $id)->firstOrFail();
 
         // Check Authorization
         $this->authorize('delete', $comment);
@@ -244,6 +250,10 @@ class CommentController extends Controller
         if ($comment->delete()) {
             // Delete comment images
             $this->deleteCommentImages($comment->images->pluck('url')->toArray());
+
+            // Delete notification from post author
+            $auth = auth()->user();
+            dispatch(new DeletePostNotificationJob($comment->post_id, $auth));
 
             return response()->json([
                 'ok' => true,
