@@ -93,6 +93,8 @@ Route::prefix('tags')->name('tag.')->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::prefix('notifications')->name('notification.')->group(function () {
+    Route::get('/', 'NotificationController@index')->name('index');
+    Route::get('/data', 'NotificationController@getNotifications')->name('data');
     Route::get('/count', 'NotificationController@count')->name('count');
 
     Route::post('/count/reset', 'NotificationController@countReset')->name('count.reset');
