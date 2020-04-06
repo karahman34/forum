@@ -1,14 +1,14 @@
 // Use the Karla font
 @import url('https://fonts.googleapis.com/css?family=Karla:400,700&display=swap');
 
-// Variables
-@import '../../variables';
-
 // Icons
 @import url('https://cdn.materialdesignicons.com/4.9.95/css/materialdesignicons.min.css');
 
+// Variables
+@import '../../variables';
+
 // Bulma
-@import '~bulma/bulma';
+@import 'bulma';
 
 // Layout
 @import 'global';

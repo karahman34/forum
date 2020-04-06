@@ -1,0 +1,9 @@
+@import '../../../../node_modules/bulma/sass/utilities/_all.sass';
+
+$tabs-link-active-color: $primary;
+$tabs-link-active-border-bottom-color: $primary;
+$tabs-toggle-link-active-border-color: $primary;
+$tabs-toggle-link-active-background-color: $primary;
+$tabs-link-hover-border-bottom-color: hsl(0, 2%, 42%);
+
+@import '../../../../node_modules/bulma/bulma.sass';
