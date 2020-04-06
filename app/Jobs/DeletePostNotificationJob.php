@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\NotifCount;
 use App\Notification;
 use App\User;
 use Illuminate\Bus\Queueable;
@@ -38,16 +39,34 @@ class DeletePostNotificationJob implements ShouldQueue
     }
 
     /**
+     * Decrement user notif count
+     *
+     * @return  void
+     */
+    private function decrementNotifCount()
+    {
+        $notif = NotifCount::where('user_id', $this->auth->id)->first();
+        if ($notif->count > 0) {
+            $notif->update([
+                'count' => $notif->count - 1,
+            ]);
+        }
+    }
+
+    /**
      * Execute the job.
      *
      * @return void
      */
     public function handle()
     {
+        // Delete user notification
         $notification = Notification::where('data->post_id', $this->postId)
             ->where('data->from_user_id', $this->auth->id)
             ->firstOrFail();
-
         $notification->delete();
+
+        // Decrement user notif count
+        $this->decrementNotifCount();
     }
 }

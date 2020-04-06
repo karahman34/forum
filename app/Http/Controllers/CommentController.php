@@ -61,8 +61,7 @@ class CommentController extends Controller
         }
 
         // Notif post author
-        $from = auth()->user();
-        $post->author()->select('id')->firstOrFail()->notify(new PostReactNotification($post->id, $from));
+        $post->author()->select('id')->firstOrFail()->notify(new PostReactNotification($post->id, 'comment'));
 
         return (new CommentResource($comment))
             ->additional([

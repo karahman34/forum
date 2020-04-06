@@ -2,9 +2,11 @@
 
 namespace App\Notifications;
 
+use App\NotifCount;
 use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Auth;
 
 class PostReactNotification extends Notification
 {
@@ -13,14 +15,21 @@ class PostReactNotification extends Notification
     /**
      * Post Id
      *
-     * @var int $postId
+     * @var int
      */
     public $postId;
 
     /**
+     * Action type
+     *
+     * @var string
+     */
+    public $action_type;
+
+    /**
      * User that fire the event
      *
-     * @var User $from
+     * @var User
      */
     public $from;
 
@@ -29,10 +38,11 @@ class PostReactNotification extends Notification
      *
      * @return void
      */
-    public function __construct(int $postId, User $from)
+    public function __construct(int $postId, string $action_type)
     {
         $this->postId = $postId;
-        $this->from = $from;
+        $this->action_type = $action_type;
+        $this->from = Auth::user();
     }
 
     /**
@@ -46,6 +56,16 @@ class PostReactNotification extends Notification
         return ['database', 'broadcast'];
     }
 
+    private function incrementNotifCount()
+    {
+        $notif = NotifCount::firstOrCreate(
+            ['user_id' => $this->from->id],
+            ['count' => 0]
+        );
+
+        $notif->increment('count');
+    }
+
     /**
      * Get the array representation of the notification.
      *
@@ -54,9 +74,12 @@ class PostReactNotification extends Notification
      */
     public function toArray($notifiable)
     {
+        $this->incrementNotifCount();
+
         return [
             'from_user_id' => $this->from->id,
             'post_id' => $this->postId,
+            'action_type' => $this->action_type,
             'href' => route('post.show', ['id' => $this->postId]),
         ];
     }
