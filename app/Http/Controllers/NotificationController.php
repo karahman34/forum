@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\NotificationsCollection;
 use App\NotifCount;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -94,6 +95,71 @@ class NotificationController extends Controller
         return response()->json([
             'ok' => true,
             'message' => 'Success to reset notification count.',
+        ], 202);
+    }
+
+    /**
+     * Mark notification as read
+     *
+     * @param   int  $id  
+     *
+     * @return  \Illuminate\Http\Response
+     */
+    public function markRead(int $id)
+    {
+        $auth = Auth::user();
+        $notif = $auth->notifications()->where('id', $id)->firstOrFail();
+
+        $notif->update([
+            'read_at' => Carbon::now()
+        ]);
+
+        return response()->json([
+            'ok' => true,
+            'message' => 'Success to mark notification.'
+        ]);
+    }
+
+    /**
+     * Unmark notification as read
+     *
+     * @param   int  $id  
+     *
+     * @return  \Illuminate\Http\Response
+     */
+    public function unMarkRead(int $id)
+    {
+        $auth = Auth::user();
+        $notif = $auth->notifications()->where('id', $id)->firstOrFail();
+
+        $notif->update([
+            'read_at' => null,
+        ]);
+
+        return response()->json([
+            'ok' => true,
+            'message' => 'Success to mark notification.'
+        ]);
+    }
+
+    /**
+     * Delete notification
+     *
+     * @param   string  $id  
+     *
+     * @return  \Illuminate\Http\Response
+     */
+    public function destroy(string $id)
+    {
+        $auth = Auth::user();
+        $notif = $auth->notifications()->where('id', $id)->firstOrFail();
+
+        // Delete
+        $notif->delete();
+
+        return response()->json([
+            'ok' => true,
+            'message' => 'Success to delete notification.'
         ], 202);
     }
 }

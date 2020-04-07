@@ -98,4 +98,8 @@ Route::prefix('notifications')->name('notification.')->group(function () {
     Route::get('/count', 'NotificationController@count')->name('count');
 
     Route::post('/count/reset', 'NotificationController@countReset')->name('count.reset');
+    Route::post('/mark-read', 'NotificationController@markRead')->name('mark-read');
+    Route::post('/unmark-read', 'NotificationController@unMarkRead')->name('unmark-read');
+
+    Route::delete('/{id}', 'NotificationController@destroy')->name('destroy');
 });
