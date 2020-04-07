@@ -37,6 +37,10 @@ Vue.component(
   'notification-count',
   require('./notifications/navbar-count.vue').default
 );
+Vue.component(
+  'notifications',
+  require('./notifications/notifications.vue').default
+);
 
 // Create vue instance
 const app = new Vue({

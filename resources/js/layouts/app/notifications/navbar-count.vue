@@ -36,8 +36,14 @@ export default {
       notificationCounts: null,
     };
   },
-  created() {
+  mounted() {
+    // Get current notifications count.
     this.getNotificationCounts();
+
+    // Listen for event
+    window.addEventListener('notifications-count-reset', () => {
+      this.notificationCounts = 0;
+    });
   },
   methods: {
     listenNotifications() {
