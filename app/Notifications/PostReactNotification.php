@@ -52,6 +52,8 @@ class PostReactNotification extends Notification
         $this->action_type = $action_type;
         $this->action_id = $action_id;
         $this->from = Auth::user();
+
+        $this->incrementNotifCount();
     }
 
     /**
@@ -65,6 +67,11 @@ class PostReactNotification extends Notification
         return ['database', 'broadcast'];
     }
 
+    /**
+     * Increment notification count
+     *
+     * @return  void
+     */
     private function incrementNotifCount()
     {
         $notif = NotifCount::firstOrCreate(
@@ -72,7 +79,7 @@ class PostReactNotification extends Notification
             ['count' => 0]
         );
 
-        $notif->increment('count');
+        $notif->increment('count', 1);
     }
 
     /**
@@ -83,8 +90,6 @@ class PostReactNotification extends Notification
      */
     public function toArray($notifiable)
     {
-        $this->incrementNotifCount();
-
         return [
             'from_user_id' => $this->from->id,
             'post_id' => $this->post->id,

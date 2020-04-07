@@ -273,8 +273,8 @@ class CommentController extends Controller
             $this->deleteCommentImages($comment->images->pluck('url')->toArray());
 
             // Delete notification from post author
-            $auth = auth()->user();
-            dispatch(new DeletePostNotificationJob($comment->post_id, $auth));
+            $post = $comment->post()->select('id', 'user_id', 'created_at', 'updated_at')->firstOrFail();
+            dispatch(new DeletePostNotificationJob($post));
 
             return response()->json([
                 'ok' => true,

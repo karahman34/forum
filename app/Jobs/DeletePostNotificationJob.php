@@ -4,22 +4,25 @@ namespace App\Jobs;
 
 use App\NotifCount;
 use App\Notification;
+use App\Post;
 use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Auth;
 
 class DeletePostNotificationJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
-     *  
-     * @var int
+     * Post
+     *
+     * @var Post
      */
-    public $postId;
+    public $post;
 
     /**
      *  
@@ -32,10 +35,10 @@ class DeletePostNotificationJob implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(int $postId, User $auth)
+    public function __construct(Post $post)
     {
-        $this->postId = $postId;
-        $this->auth = $auth;
+        $this->post = $post;
+        $this->auth = Auth::user();
     }
 
     /**
@@ -45,8 +48,8 @@ class DeletePostNotificationJob implements ShouldQueue
      */
     private function decrementNotifCount()
     {
-        $notif = NotifCount::where('user_id', $this->auth->id)->first();
-        if ($notif->count > 0) {
+        $notif = NotifCount::where('user_id', $this->post->author->id)->first();
+        if ($notif && $notif->count > 0) {
             $notif->update([
                 'count' => $notif->count - 1,
             ]);
@@ -61,10 +64,13 @@ class DeletePostNotificationJob implements ShouldQueue
     public function handle()
     {
         // Delete user notification
-        $notification = Notification::where('data->post_id', $this->postId)
+        $notification = Notification::where('data->post_id', $this->post->id)
             ->where('data->from_user_id', $this->auth->id)
-            ->firstOrFail();
-        $notification->delete();
+            ->first();
+
+        if ($notification) {
+            $notification->delete();
+        }
 
         // Decrement user notif count
         $this->decrementNotifCount();
