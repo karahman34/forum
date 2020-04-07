@@ -61,7 +61,12 @@ class CommentController extends Controller
         }
 
         // Notif post author
-        $post->author()->select('id')->firstOrFail()->notify(new PostReactNotification($post->id, 'comment'));
+        $post->author()
+            ->select('id')
+            ->firstOrFail()
+            ->notify(
+                new PostReactNotification($post, 'comment', $comment->id)
+            );
 
         return (new CommentResource($comment))
             ->additional([
