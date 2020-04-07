@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\NotificationsCollection;
 use App\NotifCount;
+use App\Notification;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -63,6 +64,23 @@ class NotificationController extends Controller
     }
 
     /**
+     * Get spesific notification by id
+     *
+     * @param   int  $id  
+     *
+     * @return  \Illuminate\Http\Response    
+     */
+    public function show(string $id)
+    {
+        $notif = Notification::findOrFail($id);
+
+        return response()->json([
+            'ok' => true,
+            'data' => $notif,
+        ]);
+    }
+
+    /**
      * Get user notification counts
      *
      * @return  \Illuminate\Http\Response
@@ -71,11 +89,16 @@ class NotificationController extends Controller
     {
         $auth = auth()->user();
         $notif = NotifCount::where('user_id', $auth->id)->first();
+        $count = 0;
+
+        if ($notif) {
+            $count = $notif->count;
+        }
 
         return response()->json([
             'ok' => true,
             'data' => [
-                'count' => $notif->count,
+                'count' => $count,
             ],
         ]);
     }
@@ -101,11 +124,11 @@ class NotificationController extends Controller
     /**
      * Mark notification as read
      *
-     * @param   int  $id  
+     * @param   string  $id  
      *
      * @return  \Illuminate\Http\Response
      */
-    public function markRead(int $id)
+    public function markRead(string $id)
     {
         $auth = Auth::user();
         $notif = $auth->notifications()->where('id', $id)->firstOrFail();
@@ -123,11 +146,11 @@ class NotificationController extends Controller
     /**
      * Unmark notification as read
      *
-     * @param   int  $id  
+     * @param   string  $id  
      *
      * @return  \Illuminate\Http\Response
      */
-    public function unMarkRead(int $id)
+    public function unMarkRead(string $id)
     {
         $auth = Auth::user();
         $notif = $auth->notifications()->where('id', $id)->firstOrFail();

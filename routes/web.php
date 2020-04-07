@@ -96,10 +96,11 @@ Route::prefix('notifications')->name('notification.')->group(function () {
     Route::get('/', 'NotificationController@index')->name('index');
     Route::get('/data', 'NotificationController@getNotifications')->name('data');
     Route::get('/count', 'NotificationController@count')->name('count');
+    Route::get('/{notif_id}', 'NotificationController@show')->name('show');
 
     Route::post('/count/reset', 'NotificationController@countReset')->name('count.reset');
-    Route::post('/mark-read', 'NotificationController@markRead')->name('mark-read');
-    Route::post('/unmark-read', 'NotificationController@unMarkRead')->name('unmark-read');
+    Route::post('/{notif_id}/mark-read', 'NotificationController@markRead')->name('mark-read');
+    Route::post('/{notif_id}/unmark-read', 'NotificationController@unMarkRead')->name('unmark-read');
 
-    Route::delete('/{id}', 'NotificationController@destroy')->name('destroy');
+    Route::delete('/{notif_id}', 'NotificationController@destroy')->name('destroy');
 });

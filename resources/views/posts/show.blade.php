@@ -65,8 +65,39 @@
         });
     }
 
+    function readNotif(notif_id) {
+      axios.post(`/notifications/${notif_id}/mark-read`)
+          .catch(() => ({}));
+    }
+
+    async function findNotif(notif_id) {
+      try {
+        const res = await axios.get(`/notifications/${notif_id}`)
+        const { ok, data } = res.data;
+
+        if (ok) {
+          return data;
+        }
+      } catch (err) {
+        return false;
+      }
+    }
+
+    function isFromNotif() {
+      const {search} = window.location;
+      const urlParams = new URLSearchParams(search);
+
+      const from = urlParams.get('from');
+      const notif_id = urlParams.get('notif_id');
+
+      if (from && from === 'notif' && notif_id) {
+        readNotif(notif_id);
+      }
+    }
+
     window.addEventListener('load', () => {
       incrementPostSeen();
+      isFromNotif();
     });
   </script>
 @endpush
