@@ -75,6 +75,23 @@ class CommentController extends Controller
     }
 
     /**
+     * Get spesific comment by id
+     *
+     * @param   int  $id  
+     *
+     * @return  \Illuminate\Http\Response    
+     */
+    public function show(int $id)
+    {
+        $comment = Comment::findOrFail($id);
+
+        return response()->json([
+            'ok' => true,
+            'data' => $comment,
+        ]);
+    }
+
+    /**
      * Update comment pin.
      *
      * @param   int     $id

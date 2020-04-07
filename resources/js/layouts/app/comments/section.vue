@@ -9,7 +9,9 @@
     ></comment-create>
 
     <!-- Loading -->
-    <div v-if="loading" id="comment-loading" class="has-text-centered">Getting comments data..</div>
+    <div v-if="loading" id="comment-loading" class="has-text-centered">
+      Getting comments data..
+    </div>
 
     <!-- Comment Section -->
     <div v-else id="comment-section">
@@ -31,7 +33,10 @@
           <div class="level-right">
             <div class="level-item">
               <!-- Comment Filter -->
-              <comment-filter :selected-sort.sync="selectedSort" @filter="sortComments"></comment-filter>
+              <comment-filter
+                :selected-sort.sync="selectedSort"
+                @filter="sortComments"
+              ></comment-filter>
             </div>
           </div>
         </div>
@@ -41,7 +46,10 @@
       <comment
         v-for="comment in comments"
         :key="comment.id"
+        :id="`comment-${comment.id}`"
         :auth="auth"
+        class="comment"
+        :class="[{ focus: focusFromNotif === comment.id }]"
         :comment="comment"
         :can-pin="postAuthor === 'y'"
         @delete="deleteComment"
@@ -61,13 +69,16 @@
 </template>
 
 <script>
+import Comment from './comment.vue';
 import Create from './create.vue';
 import Pagination from './pagination.vue';
+import VueScrollTo from 'vue-scrollto';
 
 export default {
   components: {
-    'comment-create': Create,
+    Comment,
     Pagination,
+    'comment-create': Create,
   },
   props: {
     postId: {
@@ -87,6 +98,7 @@ export default {
     return {
       loading: true,
       comments: [],
+      focusFromNotif: null,
       current_page: 1,
       last_page: null,
       prev_url: null,
@@ -105,6 +117,41 @@ export default {
 
       if (urlParams.has('sort')) {
         this.selectedSort = urlParams.get('sort');
+      }
+    },
+    async seeCommentFromNotif(notif_id) {
+      try {
+        const { search } = window.location;
+        const urlParams = new URLSearchParams(search);
+
+        const from = urlParams.get('from');
+        const notif_id = urlParams.get('notif_id');
+
+        if (from && from === 'notif' && notif_id) {
+          // Get notif
+          const notif = await findNotif(notif_id);
+          // Get comment
+          const res = await axios.get(`/comments/${notif.data.action_id}`);
+          const { ok, data } = res.data;
+          if (ok) {
+            // Set focus comment
+            this.focusFromNotif = data.id;
+            // Push comment if not exist
+            if (!this.comments.find(c => c.id === data.id)) {
+              this.comments.push(data);
+            }
+            // Scroll to comment el
+            VueScrollTo.scrollTo(`#comment-${data.id}`, {
+              offset: -110,
+            });
+            // Remove focus after 1 second
+            setTimeout(() => {
+              this.focusFromNotif = null;
+            }, 1500);
+          }
+        }
+      } catch (err) {
+        return false;
       }
     },
     async getComments() {
@@ -127,6 +174,8 @@ export default {
         this.current_page = meta.current_page;
         this.prev_url = links.prev === null ? false : true;
         this.next_url = links.next === null ? false : true;
+
+        this.seeCommentFromNotif();
       } catch (err) {
         toast({
           type: 'is-danger',

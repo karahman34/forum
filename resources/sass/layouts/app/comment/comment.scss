@@ -3,6 +3,15 @@
   margin-bottom: 10px;
 }
 
+.comment {
+  transition: background-color 1.5s;
+}
+
+.comment.focus {
+  border-radius: 10px;
+  background-color: rgba($color: $primary, $alpha: 0.2);
+}
+
 .comment-container {
   padding: 10px 0px;
   border-top: 1px solid rgba(128, 128, 128, 0.5);

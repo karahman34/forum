@@ -2938,8 +2938,11 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _create_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./create.vue */ "./resources/js/layouts/app/comments/create.vue");
-/* harmony import */ var _pagination_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./pagination.vue */ "./resources/js/layouts/app/comments/pagination.vue");
+/* harmony import */ var _comment_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./comment.vue */ "./resources/js/layouts/app/comments/comment.vue");
+/* harmony import */ var _create_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./create.vue */ "./resources/js/layouts/app/comments/create.vue");
+/* harmony import */ var _pagination_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./pagination.vue */ "./resources/js/layouts/app/comments/pagination.vue");
+/* harmony import */ var vue_scrollto__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue-scrollto */ "./node_modules/vue-scrollto/vue-scrollto.js");
+/* harmony import */ var vue_scrollto__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(vue_scrollto__WEBPACK_IMPORTED_MODULE_4__);
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -3008,12 +3011,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    'comment-create': _create_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
-    Pagination: _pagination_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
+    Comment: _comment_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    Pagination: _pagination_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
+    'comment-create': _create_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   props: {
     postId: {
@@ -3033,6 +3047,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     return {
       loading: true,
       comments: [],
+      focusFromNotif: null,
       current_page: 1,
       last_page: null,
       prev_url: null,
@@ -3053,60 +3068,133 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.selectedSort = urlParams.get('sort');
       }
     },
-    getComments: function getComments() {
+    seeCommentFromNotif: function seeCommentFromNotif(notif_id) {
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-        var res, _res$data, data, meta, links;
+        var search, urlParams, from, _notif_id, notif, res, _res$data, ok, data;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.prev = 0;
-                // Turn on loading
-                _this.loading = true; // Fetch comments
+                search = window.location.search;
+                urlParams = new URLSearchParams(search);
+                from = urlParams.get('from');
+                _notif_id = urlParams.get('notif_id');
 
-                _context.next = 4;
-                return axios.get("/posts/".concat(_this.postId, "/comments"), {
+                if (!(from && from === 'notif' && _notif_id)) {
+                  _context.next = 14;
+                  break;
+                }
+
+                _context.next = 8;
+                return findNotif(_notif_id);
+
+              case 8:
+                notif = _context.sent;
+                _context.next = 11;
+                return axios.get("/comments/".concat(notif.data.action_id));
+
+              case 11:
+                res = _context.sent;
+                _res$data = res.data, ok = _res$data.ok, data = _res$data.data;
+
+                if (ok) {
+                  // Set focus comment
+                  _this.focusFromNotif = data.id; // Push comment if not exist
+
+                  if (!_this.comments.find(function (c) {
+                    return c.id === data.id;
+                  })) {
+                    _this.comments.push(data);
+                  } // Scroll to comment el
+
+
+                  vue_scrollto__WEBPACK_IMPORTED_MODULE_4___default.a.scrollTo("#comment-".concat(data.id), {
+                    offset: -110
+                  }); // Remove focus after 1 second
+
+                  setTimeout(function () {
+                    _this.focusFromNotif = null;
+                  }, 1500);
+                }
+
+              case 14:
+                _context.next = 19;
+                break;
+
+              case 16:
+                _context.prev = 16;
+                _context.t0 = _context["catch"](0);
+                return _context.abrupt("return", false);
+
+              case 19:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[0, 16]]);
+      }))();
+    },
+    getComments: function getComments() {
+      var _this2 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+        var res, _res$data2, data, meta, links;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.prev = 0;
+                // Turn on loading
+                _this2.loading = true; // Fetch comments
+
+                _context2.next = 4;
+                return axios.get("/posts/".concat(_this2.postId, "/comments"), {
                   params: {
-                    page: _this.current_page,
-                    sort: _this.selectedSort
+                    page: _this2.current_page,
+                    sort: _this2.selectedSort
                   }
                 });
 
               case 4:
-                res = _context.sent;
+                res = _context2.sent;
                 // Fetch Result
-                _res$data = res.data, data = _res$data.data, meta = _res$data.meta, links = _res$data.links;
-                _this.total = meta.total;
-                _this.comments = data;
-                _this.last_page = meta.last_page;
-                _this.current_page = meta.current_page;
-                _this.prev_url = links.prev === null ? false : true;
-                _this.next_url = links.next === null ? false : true;
-                _context.next = 17;
+                _res$data2 = res.data, data = _res$data2.data, meta = _res$data2.meta, links = _res$data2.links;
+                _this2.total = meta.total;
+                _this2.comments = data;
+                _this2.last_page = meta.last_page;
+                _this2.current_page = meta.current_page;
+                _this2.prev_url = links.prev === null ? false : true;
+                _this2.next_url = links.next === null ? false : true;
+
+                _this2.seeCommentFromNotif();
+
+                _context2.next = 18;
                 break;
 
-              case 14:
-                _context.prev = 14;
-                _context.t0 = _context["catch"](0);
+              case 15:
+                _context2.prev = 15;
+                _context2.t0 = _context2["catch"](0);
                 toast({
                   type: 'is-danger',
                   message: 'Failed to get comments data.'
                 });
 
-              case 17:
-                _context.prev = 17;
-                _this.loading = false;
-                return _context.finish(17);
+              case 18:
+                _context2.prev = 18;
+                _this2.loading = false;
+                return _context2.finish(18);
 
-              case 20:
+              case 21:
               case "end":
-                return _context.stop();
+                return _context2.stop();
             }
           }
-        }, _callee, null, [[0, 14, 17, 20]]);
+        }, _callee2, null, [[0, 15, 18, 21]]);
       }))();
     },
     commentCreatedHandler: function commentCreatedHandler(comment) {
@@ -17768,7 +17856,7 @@ var render = function() {
               staticClass: "has-text-centered",
               attrs: { id: "comment-loading" }
             },
-            [_vm._v("Getting comments data..")]
+            [_vm._v("\n    Getting comments data..\n  ")]
           )
         : _c(
             "div",
@@ -17815,7 +17903,10 @@ var render = function() {
               _vm._l(_vm.comments, function(comment) {
                 return _c("comment", {
                   key: comment.id,
+                  staticClass: "comment",
+                  class: [{ focus: _vm.focusFromNotif === comment.id }],
                   attrs: {
+                    id: "comment-" + comment.id,
                     auth: _vm.auth,
                     comment: comment,
                     "can-pin": _vm.postAuthor === "y"
@@ -19190,6 +19281,534 @@ function normalizeComponent (
     options: options
   }
 }
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-scrollto/vue-scrollto.js":
+/*!***************************************************!*\
+  !*** ./node_modules/vue-scrollto/vue-scrollto.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*!
+  * vue-scrollto v2.17.1
+  * (c) 2019 Randjelovic Igor
+  * @license MIT
+  */
+(function (global, factory) {
+   true ? module.exports = factory() :
+  undefined;
+}(this, function () { 'use strict';
+
+  function _typeof(obj) {
+    if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+      _typeof = function (obj) {
+        return typeof obj;
+      };
+    } else {
+      _typeof = function (obj) {
+        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+      };
+    }
+
+    return _typeof(obj);
+  }
+
+  function _extends() {
+    _extends = Object.assign || function (target) {
+      for (var i = 1; i < arguments.length; i++) {
+        var source = arguments[i];
+
+        for (var key in source) {
+          if (Object.prototype.hasOwnProperty.call(source, key)) {
+            target[key] = source[key];
+          }
+        }
+      }
+
+      return target;
+    };
+
+    return _extends.apply(this, arguments);
+  }
+
+  /**
+   * https://github.com/gre/bezier-easing
+   * BezierEasing - use bezier curve for transition easing function
+   * by Gaëtan Renaudeau 2014 - 2015 – MIT License
+   */
+
+  // These values are established by empiricism with tests (tradeoff: performance VS precision)
+  var NEWTON_ITERATIONS = 4;
+  var NEWTON_MIN_SLOPE = 0.001;
+  var SUBDIVISION_PRECISION = 0.0000001;
+  var SUBDIVISION_MAX_ITERATIONS = 10;
+
+  var kSplineTableSize = 11;
+  var kSampleStepSize = 1.0 / (kSplineTableSize - 1.0);
+
+  var float32ArraySupported = typeof Float32Array === 'function';
+
+  function A (aA1, aA2) { return 1.0 - 3.0 * aA2 + 3.0 * aA1; }
+  function B (aA1, aA2) { return 3.0 * aA2 - 6.0 * aA1; }
+  function C (aA1)      { return 3.0 * aA1; }
+
+  // Returns x(t) given t, x1, and x2, or y(t) given t, y1, and y2.
+  function calcBezier (aT, aA1, aA2) { return ((A(aA1, aA2) * aT + B(aA1, aA2)) * aT + C(aA1)) * aT; }
+
+  // Returns dx/dt given t, x1, and x2, or dy/dt given t, y1, and y2.
+  function getSlope (aT, aA1, aA2) { return 3.0 * A(aA1, aA2) * aT * aT + 2.0 * B(aA1, aA2) * aT + C(aA1); }
+
+  function binarySubdivide (aX, aA, aB, mX1, mX2) {
+    var currentX, currentT, i = 0;
+    do {
+      currentT = aA + (aB - aA) / 2.0;
+      currentX = calcBezier(currentT, mX1, mX2) - aX;
+      if (currentX > 0.0) {
+        aB = currentT;
+      } else {
+        aA = currentT;
+      }
+    } while (Math.abs(currentX) > SUBDIVISION_PRECISION && ++i < SUBDIVISION_MAX_ITERATIONS);
+    return currentT;
+  }
+
+  function newtonRaphsonIterate (aX, aGuessT, mX1, mX2) {
+   for (var i = 0; i < NEWTON_ITERATIONS; ++i) {
+     var currentSlope = getSlope(aGuessT, mX1, mX2);
+     if (currentSlope === 0.0) {
+       return aGuessT;
+     }
+     var currentX = calcBezier(aGuessT, mX1, mX2) - aX;
+     aGuessT -= currentX / currentSlope;
+   }
+   return aGuessT;
+  }
+
+  function LinearEasing (x) {
+    return x;
+  }
+
+  var src = function bezier (mX1, mY1, mX2, mY2) {
+    if (!(0 <= mX1 && mX1 <= 1 && 0 <= mX2 && mX2 <= 1)) {
+      throw new Error('bezier x values must be in [0, 1] range');
+    }
+
+    if (mX1 === mY1 && mX2 === mY2) {
+      return LinearEasing;
+    }
+
+    // Precompute samples table
+    var sampleValues = float32ArraySupported ? new Float32Array(kSplineTableSize) : new Array(kSplineTableSize);
+    for (var i = 0; i < kSplineTableSize; ++i) {
+      sampleValues[i] = calcBezier(i * kSampleStepSize, mX1, mX2);
+    }
+
+    function getTForX (aX) {
+      var intervalStart = 0.0;
+      var currentSample = 1;
+      var lastSample = kSplineTableSize - 1;
+
+      for (; currentSample !== lastSample && sampleValues[currentSample] <= aX; ++currentSample) {
+        intervalStart += kSampleStepSize;
+      }
+      --currentSample;
+
+      // Interpolate to provide an initial guess for t
+      var dist = (aX - sampleValues[currentSample]) / (sampleValues[currentSample + 1] - sampleValues[currentSample]);
+      var guessForT = intervalStart + dist * kSampleStepSize;
+
+      var initialSlope = getSlope(guessForT, mX1, mX2);
+      if (initialSlope >= NEWTON_MIN_SLOPE) {
+        return newtonRaphsonIterate(aX, guessForT, mX1, mX2);
+      } else if (initialSlope === 0.0) {
+        return guessForT;
+      } else {
+        return binarySubdivide(aX, intervalStart, intervalStart + kSampleStepSize, mX1, mX2);
+      }
+    }
+
+    return function BezierEasing (x) {
+      // Because JavaScript number are imprecise, we should guarantee the extremes are right.
+      if (x === 0) {
+        return 0;
+      }
+      if (x === 1) {
+        return 1;
+      }
+      return calcBezier(getTForX(x), mY1, mY2);
+    };
+  };
+
+  var easings = {
+    ease: [0.25, 0.1, 0.25, 1.0],
+    linear: [0.0, 0.0, 1.0, 1.0],
+    'ease-in': [0.42, 0.0, 1.0, 1.0],
+    'ease-out': [0.0, 0.0, 0.58, 1.0],
+    'ease-in-out': [0.42, 0.0, 0.58, 1.0]
+  };
+
+  // https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md#feature-detection
+  var supportsPassive = false;
+
+  try {
+    var opts = Object.defineProperty({}, 'passive', {
+      get: function get() {
+        supportsPassive = true;
+      }
+    });
+    window.addEventListener('test', null, opts);
+  } catch (e) {}
+
+  var _ = {
+    $: function $(selector) {
+      if (typeof selector !== 'string') {
+        return selector;
+      }
+
+      return document.querySelector(selector);
+    },
+    on: function on(element, events, handler) {
+      var opts = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {
+        passive: false
+      };
+
+      if (!(events instanceof Array)) {
+        events = [events];
+      }
+
+      for (var i = 0; i < events.length; i++) {
+        element.addEventListener(events[i], handler, supportsPassive ? opts : false);
+      }
+    },
+    off: function off(element, events, handler) {
+      if (!(events instanceof Array)) {
+        events = [events];
+      }
+
+      for (var i = 0; i < events.length; i++) {
+        element.removeEventListener(events[i], handler);
+      }
+    },
+    cumulativeOffset: function cumulativeOffset(element) {
+      var top = 0;
+      var left = 0;
+
+      do {
+        top += element.offsetTop || 0;
+        left += element.offsetLeft || 0;
+        element = element.offsetParent;
+      } while (element);
+
+      return {
+        top: top,
+        left: left
+      };
+    }
+  };
+
+  var abortEvents = ['mousedown', 'wheel', 'DOMMouseScroll', 'mousewheel', 'keyup', 'touchmove'];
+  var defaults = {
+    container: 'body',
+    duration: 500,
+    easing: 'ease',
+    offset: 0,
+    force: true,
+    cancelable: true,
+    onStart: false,
+    onDone: false,
+    onCancel: false,
+    x: false,
+    y: true
+  };
+  function setDefaults(options) {
+    defaults = _extends({}, defaults, options);
+  }
+  var scroller = function scroller() {
+    var element; // element to scroll to
+
+    var container; // container to scroll
+
+    var duration; // duration of the scrolling
+
+    var easing; // easing to be used when scrolling
+
+    var offset; // offset to be added (subtracted)
+
+    var force; // force scroll, even if element is visible
+
+    var cancelable; // indicates if user can cancel the scroll or not.
+
+    var onStart; // callback when scrolling is started
+
+    var onDone; // callback when scrolling is done
+
+    var onCancel; // callback when scrolling is canceled / aborted
+
+    var x; // scroll on x axis
+
+    var y; // scroll on y axis
+
+    var initialX; // initial X of container
+
+    var targetX; // target X of container
+
+    var initialY; // initial Y of container
+
+    var targetY; // target Y of container
+
+    var diffX; // difference
+
+    var diffY; // difference
+
+    var abort; // is scrolling aborted
+
+    var abortEv; // event that aborted scrolling
+
+    var abortFn = function abortFn(e) {
+      if (!cancelable) return;
+      abortEv = e;
+      abort = true;
+    };
+
+    var easingFn;
+    var timeStart; // time when scrolling started
+
+    var timeElapsed; // time elapsed since scrolling started
+
+    var progress; // progress
+
+    function scrollTop(container) {
+      var scrollTop = container.scrollTop;
+
+      if (container.tagName.toLowerCase() === 'body') {
+        // in firefox body.scrollTop always returns 0
+        // thus if we are trying to get scrollTop on a body tag
+        // we need to get it from the documentElement
+        scrollTop = scrollTop || document.documentElement.scrollTop;
+      }
+
+      return scrollTop;
+    }
+
+    function scrollLeft(container) {
+      var scrollLeft = container.scrollLeft;
+
+      if (container.tagName.toLowerCase() === 'body') {
+        // in firefox body.scrollLeft always returns 0
+        // thus if we are trying to get scrollLeft on a body tag
+        // we need to get it from the documentElement
+        scrollLeft = scrollLeft || document.documentElement.scrollLeft;
+      }
+
+      return scrollLeft;
+    }
+
+    function step(timestamp) {
+      if (abort) return done();
+      if (!timeStart) timeStart = timestamp;
+      timeElapsed = timestamp - timeStart;
+      progress = Math.min(timeElapsed / duration, 1);
+      progress = easingFn(progress);
+      topLeft(container, initialY + diffY * progress, initialX + diffX * progress);
+      timeElapsed < duration ? window.requestAnimationFrame(step) : done();
+    }
+
+    function done() {
+      if (!abort) topLeft(container, targetY, targetX);
+      timeStart = false;
+
+      _.off(container, abortEvents, abortFn);
+
+      if (abort && onCancel) onCancel(abortEv, element);
+      if (!abort && onDone) onDone(element);
+    }
+
+    function topLeft(element, top, left) {
+      if (y) element.scrollTop = top;
+      if (x) element.scrollLeft = left;
+
+      if (element.tagName.toLowerCase() === 'body') {
+        // in firefox body.scrollTop doesn't scroll the page
+        // thus if we are trying to scrollTop on a body tag
+        // we need to scroll on the documentElement
+        if (y) document.documentElement.scrollTop = top;
+        if (x) document.documentElement.scrollLeft = left;
+      }
+    }
+
+    function scrollTo(target, _duration) {
+      var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+      if (_typeof(_duration) === 'object') {
+        options = _duration;
+      } else if (typeof _duration === 'number') {
+        options.duration = _duration;
+      }
+
+      element = _.$(target);
+
+      if (!element) {
+        return console.warn('[vue-scrollto warn]: Trying to scroll to an element that is not on the page: ' + target);
+      }
+
+      container = _.$(options.container || defaults.container);
+      duration = options.duration || defaults.duration;
+      easing = options.easing || defaults.easing;
+      offset = options.offset || defaults.offset;
+      force = options.hasOwnProperty('force') ? options.force !== false : defaults.force;
+      cancelable = options.hasOwnProperty('cancelable') ? options.cancelable !== false : defaults.cancelable;
+      onStart = options.onStart || defaults.onStart;
+      onDone = options.onDone || defaults.onDone;
+      onCancel = options.onCancel || defaults.onCancel;
+      x = options.x === undefined ? defaults.x : options.x;
+      y = options.y === undefined ? defaults.y : options.y;
+
+      var cumulativeOffsetContainer = _.cumulativeOffset(container);
+
+      var cumulativeOffsetElement = _.cumulativeOffset(element);
+
+      if (typeof offset === 'function') {
+        offset = offset(element, container);
+      }
+
+      initialY = scrollTop(container);
+      targetY = cumulativeOffsetElement.top - cumulativeOffsetContainer.top + offset;
+      initialX = scrollLeft(container);
+      targetX = cumulativeOffsetElement.left - cumulativeOffsetContainer.left + offset;
+      abort = false;
+      diffY = targetY - initialY;
+      diffX = targetX - initialX;
+
+      if (!force) {
+        // When the container is the default (body) we need to use the viewport
+        // height, not the entire body height
+        var containerHeight = container.tagName.toLowerCase() === 'body' ? document.documentElement.clientHeight || window.innerHeight : container.offsetHeight;
+        var containerTop = initialY;
+        var containerBottom = containerTop + containerHeight;
+        var elementTop = targetY - offset;
+        var elementBottom = elementTop + element.offsetHeight;
+
+        if (elementTop >= containerTop && elementBottom <= containerBottom) {
+          // make sure to call the onDone callback even if there is no need to
+          // scroll the container. Fixes #111 (ref #118)
+          if (onDone) onDone(element);
+          return;
+        }
+      }
+
+      if (onStart) onStart(element);
+
+      if (!diffY && !diffX) {
+        if (onDone) onDone(element);
+        return;
+      }
+
+      if (typeof easing === 'string') {
+        easing = easings[easing] || easings['ease'];
+      }
+
+      easingFn = src.apply(src, easing);
+
+      _.on(container, abortEvents, abortFn, {
+        passive: true
+      });
+
+      window.requestAnimationFrame(step);
+      return function () {
+        abortEv = null;
+        abort = true;
+      };
+    }
+
+    return scrollTo;
+  };
+
+  var _scroller = scroller();
+
+  var bindings = []; // store binding data
+
+  function deleteBinding(el) {
+    for (var i = 0; i < bindings.length; ++i) {
+      if (bindings[i].el === el) {
+        bindings.splice(i, 1);
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  function findBinding(el) {
+    for (var i = 0; i < bindings.length; ++i) {
+      if (bindings[i].el === el) {
+        return bindings[i];
+      }
+    }
+  }
+
+  function getBinding(el) {
+    var binding = findBinding(el);
+
+    if (binding) {
+      return binding;
+    }
+
+    bindings.push(binding = {
+      el: el,
+      binding: {}
+    });
+    return binding;
+  }
+
+  function handleClick(e) {
+    e.preventDefault();
+    var ctx = getBinding(this).binding;
+
+    if (typeof ctx.value === 'string') {
+      return _scroller(ctx.value);
+    }
+
+    _scroller(ctx.value.el || ctx.value.element, ctx.value);
+  }
+
+  var VueScrollTo = {
+    bind: function bind(el, binding) {
+      getBinding(el).binding = binding;
+
+      _.on(el, 'click', handleClick);
+    },
+    unbind: function unbind(el) {
+      deleteBinding(el);
+
+      _.off(el, 'click', handleClick);
+    },
+    update: function update(el, binding) {
+      getBinding(el).binding = binding;
+    },
+    scrollTo: _scroller,
+    bindings: bindings
+  };
+
+  var install = function install(Vue, options) {
+    if (options) setDefaults(options);
+    Vue.directive('scroll-to', VueScrollTo);
+    Vue.prototype.$scrollTo = VueScrollTo.scrollTo;
+  };
+
+  if (typeof window !== 'undefined' && window.Vue) {
+    window.VueScrollTo = VueScrollTo;
+    window.VueScrollTo.setDefaults = setDefaults;
+    window.Vue.use(install);
+  }
+
+  VueScrollTo.install = install;
+
+  return VueScrollTo;
+
+}));
 
 
 /***/ }),
@@ -31281,7 +31900,6 @@ Vue.component('post-form', __webpack_require__(/*! ./posts/form.vue */ "./resour
 Vue.component('post-filter', __webpack_require__(/*! ./posts/postFilter.vue */ "./resources/js/layouts/app/posts/postFilter.vue")["default"]);
 Vue.component('post-menus', __webpack_require__(/*! ./posts/menus.vue */ "./resources/js/layouts/app/posts/menus.vue")["default"]); // Comments
 
-Vue.component('comment', __webpack_require__(/*! ./comments/comment.vue */ "./resources/js/layouts/app/comments/comment.vue")["default"]);
 Vue.component('comment-section', __webpack_require__(/*! ./comments/section.vue */ "./resources/js/layouts/app/comments/section.vue")["default"]);
 Vue.component('comment-filter', __webpack_require__(/*! ./comments/filter.vue */ "./resources/js/layouts/app/comments/filter.vue")["default"]);
 Vue.component('comment-create', __webpack_require__(/*! ./comments/create.vue */ "./resources/js/layouts/app/comments/create.vue")["default"]);

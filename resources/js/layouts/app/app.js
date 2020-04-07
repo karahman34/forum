@@ -26,7 +26,6 @@ Vue.component('post-filter', require('./posts/postFilter.vue').default);
 Vue.component('post-menus', require('./posts/menus.vue').default);
 
 // Comments
-Vue.component('comment', require('./comments/comment.vue').default);
 Vue.component('comment-section', require('./comments/section.vue').default);
 Vue.component('comment-filter', require('./comments/filter.vue').default);
 Vue.component('comment-create', require('./comments/create.vue').default);

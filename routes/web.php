@@ -54,6 +54,7 @@ Route::prefix('posts')->name('post.')->group(function () {
 */
 Route::prefix('comments')->name('comment.')->group(function () {
     Route::middleware(['auth'])->group(function () {
+        Route::get('/{id}', 'CommentController@show')->name('show');
         Route::get('/{id}/edit', 'CommentController@edit')->name('edit');
 
         Route::post('/{id}/pin', 'CommentController@pin')->name('pin');
