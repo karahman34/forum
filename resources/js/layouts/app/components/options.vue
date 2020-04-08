@@ -1,5 +1,5 @@
 <template>
-  <div class="dropdown is-hoverable" :class="{'is-right': right}">
+  <div class="dropdown is-hoverable" :class="{ 'is-right': right }">
     <!-- The Dots Trigger -->
     <div class="dropdown-trigger">
       <span class="options-dropdown-trigger"></span>

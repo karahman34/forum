@@ -25,88 +25,97 @@
 
         <!-- Content -->
         <div v-else class="notification-content">
-          <div
-            v-if="!notifications.length"
-            class="has-text-centered"
-            style="padding: 8px;"
-          >
+          <div v-if="!notifications.length" class="has-text-centered" style="padding: 8px;">
             <span>You have no notification.</span>
           </div>
 
           <!-- Media -->
-          <div
-            v-else
-            v-for="notification in notifications"
-            :key="notification.id"
-            class="media notifications"
-          >
-            <!-- Media Left -->
-            <figure class="media-left">
-              <p class="image is-48x48">
-                <img
-                  class="is-rounded"
-                  :src="notification.data.user_emitter.avatar"
-                  alt="notification.data.user_emitter.avatar"
-                />
-              </p>
-            </figure>
+          <template v-else>
+            <div
+              v-for="notification in notifications"
+              :key="notification.id"
+              class="media notifications"
+            >
+              <!-- Media Left -->
+              <figure class="media-left">
+                <p class="image is-48x48">
+                  <img
+                    class="is-rounded"
+                    :src="notification.data.user_emitter.avatar"
+                    alt="notification.data.user_emitter.avatar"
+                  />
+                </p>
+              </figure>
 
-            <!-- Media Content -->
-            <div class="media-content">
-              <div class="content">
-                <!-- Notif Message -->
-                <a
-                  :href="
-                    `${notification.data.href}?from=notif&notif_id=${notification.id}`
-                  "
-                  class="notification-message has-text-grey-darker"
-                  >{{ notification.data.message }}</a
-                >
+              <!-- Media Content -->
+              <div class="media-content">
+                <div class="content">
+                  <!-- Notif Message -->
+                  <a
+                    :href="
+                      `${notification.data.href}?from=notif&notif_id=${notification.id}`
+                    "
+                    class="notification-message has-text-grey-darker"
+                  >
+                    <!-- New notif mark -->
+                    <div
+                      v-if="notification.read_at === null"
+                      class="new-notification-mark has-background-primary"
+                    ></div>
+                    {{ notification.data.message }}
+                  </a>
 
-                <!-- Notif Footer -->
-                <nav class="level is-mobile">
-                  <!-- Left -->
-                  <div class="level-left">
-                    <!-- Notif Unread Mark -->
-                    <div class="level-item">
-                      <div
-                        class="unread-mark"
-                        :class="[{ show: notification.read_at === null }]"
-                      ></div>
+                  <!-- Notif Footer -->
+                  <nav class="level is-mobile">
+                    <!-- Left -->
+                    <div class="level-left">
+                      <!-- Notif Time -->
+                      <div class="level-item dense has-text-grey">
+                        <i class="mdi mdi-clock icon"></i>
+                        <span v-text="notification.created_at"></span>
+                      </div>
+
+                      <!-- Menu Options -->
+                      <div class="level-item">
+                        <options style="margin-left:8px;">
+                          <menus
+                            :notification="notification"
+                            @markRead="(v) => notification.read_at = v"
+                          ></menus>
+                        </options>
+                      </div>
                     </div>
+                  </nav>
+                </div>
+              </div>
 
-                    <!-- Notif Time -->
-                    <div class="level-item dense has-text-grey">
-                      <span v-text="notification.created_at"></span>
-                    </div>
-                  </div>
-                </nav>
+              <!-- Media Right -->
+              <div class="media-right">
+                <!-- Delete -->
+                <delete-button
+                  class="is-block"
+                  :notification="notification"
+                  @delete="deleteNotification"
+                ></delete-button>
               </div>
             </div>
 
-            <!-- Media Right -->
-            <div class="media-right">
-              <delete-button
-                :notification="notification"
-                @delete="deleteNotification"
-              ></delete-button>
-            </div>
-          </div>
-
-          <!-- Footer -->
-          <div
-            class="has-text-grey has-text-centered"
-            style="padding: 10px;cursor:pointer;"
-            :class="{ 'is-hidden': nextPage === null }"
-          >
-            <span v-if="!getMoreLoading" @click="getMoreNotifications"
-              >See more notifications</span
+            <!-- Footer -->
+            <div
+              id="notification-footer"
+              class="has-text-grey has-text-centered"
+              :class="{
+                'is-hidden': nextPage === null,
+                loading: getMoreLoading,
+              }"
             >
-            <div v-else>
-              <span>Getting more notification..</span>
-              <i class="mdi mdi-loading mdi-spin" style="margin-left:2px;"></i>
+              <span v-if="!getMoreLoading" @click="getMoreNotifications">See more notifications</span>
+              <div v-else>
+                <span>Getting more notification..</span>
+                <i class="mdi mdi-loading mdi-spin" style="margin-left:2px;"></i>
+              </div>
             </div>
-          </div>
+          </template>
         </div>
       </div>
     </div>
@@ -114,10 +123,14 @@
 </template>
 
 <script>
+import Menus from './menus.vue';
+import Options from '../components/options.vue';
 import DeleteButton from './delete-button.vue';
 
 export default {
   components: {
+    Menus,
+    Options,
     DeleteButton,
   },
   data() {
@@ -197,7 +210,11 @@ export default {
         this.getMoreLoading = true;
 
         // Call API
-        const res = await axios.get(this.nextPage);
+        const res = await axios.get(this.nextPage, {
+          params: {
+            tab: this.navigations.find(nav => nav.active).value,
+          },
+        });
         const { ok, data, links } = res.data;
 
         if (ok) {
@@ -244,6 +261,20 @@ export default {
   padding: 0px !important;
 }
 
+.media-content {
+  overflow: visible;
+}
+
+.media {
+  border-bottom: 1px solid rgba(128, 128, 128, 0.25);
+}
+
+.level-item {
+  .icon {
+    margin-right: 4px;
+  }
+}
+
 .level-item.dense {
   margin-right: 4px !important;
 }
@@ -271,19 +302,27 @@ export default {
   button.delete {
     margin-top: 2px;
   }
-}
 
-.notifications {
-  .unread-mark {
-    display: none;
+  .notification-message {
+    margin-left: 4.5px;
+  }
+
+  .new-notification-mark {
+    display: inline-block;
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background-color: #00d1b2;
+    margin-left: 3px;
+    margin-right: 3px;
   }
+}
 
-  .unread-mark.show {
-    display: block;
+#notification-footer {
+  cursor: pointer;
+  padding: 5px 0px;
+
+  .loading {
+    cursor: progress;
   }
 }
 </style>
