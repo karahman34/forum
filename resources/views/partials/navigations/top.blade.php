@@ -36,6 +36,9 @@
 
         {{-- Authorize Menus --}}
         @auth
+          {{-- Search --}}
+          <search-navbar></search-navbar>
+
           {{-- Notification Count --}}
           <notification-count :auth="{{ auth()->user() }}"></notification-count>
 
