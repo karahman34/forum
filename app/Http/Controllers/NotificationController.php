@@ -74,6 +74,8 @@ class NotificationController extends Controller
     {
         $notif = Notification::findOrFail($id);
 
+        $this->authorize('view', $notif);
+
         return response()->json([
             'ok' => true,
             'data' => $notif,
@@ -150,7 +152,7 @@ class NotificationController extends Controller
      *
      * @return  \Illuminate\Http\Response
      */
-    public function unMarkRead(string $id)
+    public function markUnRead(string $id)
     {
         $auth = Auth::user();
         $notif = $auth->notifications()->where('id', $id)->firstOrFail();

@@ -93,7 +93,7 @@ Route::prefix('tags')->name('tag.')->group(function () {
 | Notifications Routes
 |--------------------------------------------------------------------------
 */
-Route::prefix('notifications')->name('notification.')->group(function () {
+Route::prefix('notifications')->name('notification.')->middleware(['auth'])->group(function () {
     Route::get('/', 'NotificationController@index')->name('index');
     Route::get('/data', 'NotificationController@getNotifications')->name('data');
     Route::get('/count', 'NotificationController@count')->name('count');
@@ -101,7 +101,7 @@ Route::prefix('notifications')->name('notification.')->group(function () {
 
     Route::post('/count/reset', 'NotificationController@countReset')->name('count.reset');
     Route::post('/{notif_id}/mark-read', 'NotificationController@markRead')->name('mark-read');
-    Route::post('/{notif_id}/mark-unread', 'NotificationController@unMarkRead')->name('mark-unread');
+    Route::post('/{notif_id}/mark-unread', 'NotificationController@markUnRead')->name('mark-unread');
 
     Route::delete('/{notif_id}', 'NotificationController@destroy')->name('destroy');
 });
