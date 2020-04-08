@@ -1987,6 +1987,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -17421,6 +17422,7 @@ var render = function() {
             _vm._v(" "),
             _vm.auth !== null && _vm.comment.user_id === _vm.auth.id
               ? _c("menus", {
+                  staticStyle: { "margin-right": "11px" },
                   attrs: { comment: _vm.comment },
                   on: {
                     deleted: function(comment) {

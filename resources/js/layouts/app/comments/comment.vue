@@ -41,6 +41,7 @@
         <menus
           v-if="auth !== null && comment.user_id === auth.id"
           :comment="comment"
+          style="margin-right:11px;"
           @deleted="(comment) => $emit('delete', comment)"
         ></menus>
       </span>
