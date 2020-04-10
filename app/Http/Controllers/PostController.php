@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Comment;
 use App\Http\Requests\PostRequest;
 use App\Http\Resources\CommentsCollection;
+use App\Http\Resources\PostsCollection;
 use App\Image;
 use App\Post;
 use App\PostSeen;
@@ -15,7 +16,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
@@ -45,16 +45,17 @@ class PostController extends Controller
             'user_id',
             'title',
             'posts.created_at',
+            'posts.updated_at',
             'post_seens.count as seens_count',
         )
-                ->with([
-                    'author:id,username,avatar',
-                    'tags:name',
-                ])
-                ->join('post_seens', 'posts.id', 'post_seens.post_id')
-                ->withCount(['comments', 'savedFromUser AS saved' => function (Builder $query) use ($userId) {
-                    $query->where('saved_posts.user_id', $userId);
-                }]);
+            ->with([
+                'author:id,username,avatar',
+                'tags:name',
+            ])
+            ->join('post_seens', 'posts.id', 'post_seens.post_id')
+            ->withCount(['comments', 'savedFromUser AS saved' => function (Builder $query) use ($userId) {
+                $query->where('saved_posts.user_id', $userId);
+            }]);
 
         // Apply search
         if ($q !== null) {
@@ -65,17 +66,17 @@ class PostController extends Controller
         if ($popular == '1') {
             $now = Carbon::now();
             $weekBefore = Carbon::now()->subDays(7);
- 
+
             $query->whereBetween('posts.created_at', [$weekBefore, $now])
-                    ->orderBy('post_seens.count', 'DESC');
+                ->orderBy('post_seens.count', 'DESC');
         }
 
         // Apply tags filter
         if ($tags !== null) {
             $tags = explode(',', $tags);
             $query->join('post_tags', 'post_tags.post_id', 'posts.id')
-                    ->join('tags', 'tags.id', 'post_tags.tag_id')
-                    ->whereIn('tags.name', $tags);
+                ->join('tags', 'tags.id', 'post_tags.tag_id')
+                ->whereIn('tags.name', $tags);
         }
 
         // Apply sort query
@@ -83,9 +84,16 @@ class PostController extends Controller
             $sort = ($sort === 'new') ? 'desc' : 'asc';
             $query->orderBy('posts.created_at', $sort);
         }
-        
+
         // Get the posts
         $posts = $query->paginate($limit);
+
+        if ($request->wantsJson()) {
+            return (new PostsCollection($posts))
+                ->additional([
+                    'ok' => true,
+                ]);
+        }
 
         return view('welcome', compact('posts'));
     }
@@ -237,8 +245,8 @@ class PostController extends Controller
             'tags:name',
             'seen:post_id,count'
         ])
-        ->withCount('comments')
-        ->findOrFail($id);
+            ->withCount('comments')
+            ->findOrFail($id);
 
         // Set title
         $title = $qResult->title;
@@ -286,8 +294,8 @@ class PostController extends Controller
     {
         $sort = $request->get('sort', null);
         $query = Comment::with(['images:url,imageable_id,imageable_type', 'user:id,username,avatar'])
-                                ->where('post_id', $id)
-                                ->orderBy('pinned', 'asc');
+            ->where('post_id', $id)
+            ->orderBy('pinned', 'asc');
 
         // Apply sort
         if ($sort !== null) {
@@ -376,7 +384,7 @@ class PostController extends Controller
         $oldImages = $request->get('old_images', []);
         // Get post images
         $postImages = $post->images;
-        
+
         // Array containing url of images
         $imageWillDelete = [];
 
@@ -449,7 +457,7 @@ class PostController extends Controller
 
         // Check authorization
         $this->authorize('update', $post);
-        
+
         if ($post->delete()) {
             // Get post images
             $postImages = $post->images->pluck('url')->toArray();

@@ -38,3 +38,11 @@ body {
 .select.primary:not(.is-multiple):not(.is-loading)::after {
   border-color: $primary;
 }
+
+.mdi.normal-size {
+  font-size: 21px;
+}
+
+.mdi.big-size {
+  font-size: 34px;
+}

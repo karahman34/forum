@@ -41,6 +41,7 @@ Route::prefix('posts')->name('post.')->group(function () {
         Route::delete('/{id}', 'PostController@destroy')->name('destroy');
     });
 
+    Route::get('/', 'PostController@index')->name('index');
     Route::get('/{id}', 'PostController@show')->name('show');
     Route::get('/{id}/comments', 'PostController@getComments')->name('comments');
 
@@ -81,6 +82,7 @@ Route::prefix('users')->name('user.')->group(function () {
         Route::put('/{username}/password', 'UserController@updatePassword')->name('update_password');
     });
 
+    Route::get('/', 'UserController@index')->name('index');
     Route::get('/{username}', 'UserController@show')->name('profile');
 });
 
@@ -105,3 +107,10 @@ Route::prefix('notifications')->name('notification.')->middleware(['auth'])->gro
 
     Route::delete('/{notif_id}', 'NotificationController@destroy')->name('destroy');
 });
+
+/*
+|--------------------------------------------------------------------------
+| Search Routes
+|--------------------------------------------------------------------------
+*/
+Route::view('/search', 'search');

@@ -25,11 +25,7 @@
     </div>
 
     <!-- Delete -->
-    <div
-      v-if="auth !== null && auth.id === post.user_id"
-      class="dropdown-item"
-      @click="deletePost"
-    >
+    <div v-if="auth !== null && auth.id === post.user_id" class="dropdown-item" @click="deletePost">
       <!-- Save Loading Icon -->
       <i v-if="deleteLoading" class="mdi mdi-loading mdi-spin loading-icon"></i>
 

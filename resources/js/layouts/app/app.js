@@ -13,10 +13,18 @@ require('./_global');
 // Define Vue
 window.Vue = require('vue');
 
-// Search In Navbar
+// Search
 Vue.component(
   'search-navbar',
-  require('./components/search-navbar.vue').default
+  require('./components/search/search-navbar.vue').default
+);
+Vue.component(
+  'search-users-result',
+  require('./components/search/users-result.vue').default
+);
+Vue.component(
+  'search-posts-result',
+  require('./components/search/posts-result.vue').default
 );
 
 // Images

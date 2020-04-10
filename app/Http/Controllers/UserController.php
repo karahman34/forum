@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Post;
+use App\Http\Resources\UsersCollection;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -10,6 +10,26 @@ use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
+    public function index(Request $request)
+    {
+        $limit = $request->get('limit', 15);
+        $q = $request->get('q', null);
+
+        $query = User::select('id', 'username', 'avatar')
+            ->withCount(['posts']);
+
+        if ($q !== null) {
+            $query->where('username', 'like', "%{$q}%");
+        }
+
+        $users = $query->paginate($limit);
+
+        return (new UsersCollection($users))
+            ->additional([
+                'ok' => true,
+            ]);
+    }
+
     /**
      * Get user by username
      *
@@ -20,13 +40,13 @@ class UserController extends Controller
     public function show(string $username)
     {
         $user = User::select('id', 'avatar', 'username', 'created_at')
-                        ->where('username', $username)
-                        ->firstOrFail();
+            ->where('username', $username)
+            ->firstOrFail();
 
         $posts = $user->posts()
-                        ->with(['tags:name'])
-                        ->withCount(['comments', 'seen'])
-                        ->paginate(12);
+            ->with(['tags:name'])
+            ->withCount(['comments', 'seen'])
+            ->paginate(12);
 
         $title = $user->username . " Profile";
 
@@ -46,9 +66,9 @@ class UserController extends Controller
         $this->authorize('savedPosts', $user);
 
         $saved_posts = $user->savedPosts()
-                            ->select('posts.id', 'posts.user_id', 'title', 'posts.created_at')
-                            ->with(['author:id,username,avatar', 'tags:name'])
-                            ->paginate(14);
+            ->select('posts.id', 'posts.user_id', 'title', 'posts.created_at')
+            ->with(['author:id,username,avatar', 'tags:name'])
+            ->paginate(14);
 
         foreach ($saved_posts as &$post) {
             $post['saved'] = 1;
@@ -67,13 +87,13 @@ class UserController extends Controller
     public function edit(string $username)
     {
         $user = User::select('id', 'avatar', 'email', 'username')
-                        ->where('username', $username)
-                        ->firstOrFail();
-                
+            ->where('username', $username)
+            ->firstOrFail();
+
         // Authorize
         $this->authorize('update', $user);
 
-        $title = 'Edit '. $user->username;
+        $title = 'Edit ' . $user->username;
 
         return view('users.edit', compact('user', 'title'));
     }
@@ -120,15 +140,15 @@ class UserController extends Controller
 
         // Get user
         $user = User::select('id', 'username', 'email', 'avatar')
-                        ->where('id', $id)
-                        ->firstOrFail();
+            ->where('id', $id)
+            ->firstOrFail();
 
         // Authorize
         $this->authorize('update', $user);
 
         // Get the payload
         $payload = $request->only('username', 'email');
-        
+
         // Update Avatar
         if ($request->has('avatar')) {
             $avatar = $this->updateUserAvatar($request, $user);
