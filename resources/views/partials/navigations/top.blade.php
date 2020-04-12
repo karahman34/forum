@@ -45,16 +45,23 @@
           {{-- Special menu only on mobile --}}
           <span class="is-inline-mobile is-hidden-tablet">
             {{-- Popular --}}
-            <a href="{{ route('welcome') }}" class="navbar-item">Popular this week</a>
+            <a href="{{ route('welcome') }}" class="navbar-item">
+              <i class="mdi mdi-star"></i>
+              <span>Popular this week</span>  
+            </a>
             {{-- Saved Posts --}}
-            <a href="{{ route('user.saved_posts') }}" class="navbar-item">Saved Posts</a>
+            <a href="{{ route('user.saved_posts') }}" class="navbar-item">
+              <i class="mdi mdi-folder-zip-outline"></i>
+              Saved Posts
+            </a>
           </span>
 
           {{-- Dropdown --}}
           <div class="navbar-item has-dropdown is-hoverable">
             {{-- Dropdown Activator --}}
             <a class="navbar-link dropdown-toggle">
-              {{ Auth::user()->username }}
+              <img id="user-avatar" src="{{ Auth::user()->getAvatar() }}" style="vertical-align: middle">
+              <span>{{ Auth::user()->username }}</span>
             </a>
 
             {{-- Dropdown Structure --}}

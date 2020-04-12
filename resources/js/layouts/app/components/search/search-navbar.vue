@@ -1,10 +1,12 @@
 <template>
-  <a class="navbar-item">
-    <!-- Search Icon -->
-    <span style="cursor:pointer;" @click="openModal">
-      <i class="mdi mdi-magnify"></i>
-      <span class="is-hidden-desktop">Search</span>
-    </span>
+  <div>
+    <a class="navbar-item" @click="openModal">
+      <!-- Search Icon -->
+      <span style="cursor:pointer;">
+        <i class="mdi mdi-magnify"></i>
+        <span class="is-hidden-desktop">Search</span>
+      </span>
+    </a>
 
     <!-- Modal -->
     <div class="modal section" :class="{'is-active': modalActive}">
@@ -38,7 +40,7 @@
       <!-- Close Modal -->
       <button class="modal-close is-large" aria-label="close" @click="closeModal"></button>
     </div>
-  </a>
+  </div>
 </template>
 
 <script>
@@ -69,8 +71,17 @@ export default {
   cursor: pointer !important;
 }
 
+.navbar-item {
+  height: 100%;
+}
+
 .mdi-magnify {
-  font-size: 20px;
-  cursor: pointer;
+  font-size: 18px;
+}
+
+@media screen and (min-width: 1024px) {
+  .mdi-magnify {
+    font-size: 20px;
+  }
 }
 </style>

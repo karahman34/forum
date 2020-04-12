@@ -11,6 +11,7 @@
     </span>
     <!-- Mobile -->
     <span id="mobile">
+      <i class="mdi mdi-bell-outline"></i>
       <span>Notifications</span>
       <!-- Loading -->
       <i v-if="notificationCounts === null" class="mdi mdi-loading mdi-spin"></i>

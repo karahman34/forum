@@ -12404,6 +12404,15 @@ body {
   border-color: #00d1b2 !important;
 }
 
+.navbar .navbar-link #user-avatar {
+  border-radius: 50% !important;
+  width: 27px;
+  height: 27px;
+  margin-right: 7px;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
 #left-nav {
   border-right: 1px solid rgba(128, 128, 128, 0.25);
   height: 100% !important;

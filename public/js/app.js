@@ -3647,6 +3647,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -4224,6 +4226,7 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//
 //
 //
 //
@@ -7735,7 +7738,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../../node_module
 
 
 // module
-exports.push([module.i, "#search-submit[data-v-2246a405] {\n  z-index: 99999;\n  cursor: pointer !important;\n}\n.mdi-magnify[data-v-2246a405] {\n  font-size: 20px;\n  cursor: pointer;\n}", ""]);
+exports.push([module.i, "#search-submit[data-v-2246a405] {\n  z-index: 99999;\n  cursor: pointer !important;\n}\n.navbar-item[data-v-2246a405] {\n  height: 100%;\n}\n.mdi-magnify[data-v-2246a405] {\n  font-size: 18px;\n}\n@media screen and (min-width: 1024px) {\n.mdi-magnify[data-v-2246a405] {\n    font-size: 20px;\n}\n}", ""]);
 
 // exports
 
@@ -19100,16 +19103,10 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("a", { staticClass: "navbar-item" }, [
-    _c(
-      "span",
-      { staticStyle: { cursor: "pointer" }, on: { click: _vm.openModal } },
-      [
-        _c("i", { staticClass: "mdi mdi-magnify" }),
-        _vm._v(" "),
-        _c("span", { staticClass: "is-hidden-desktop" }, [_vm._v("Search")])
-      ]
-    ),
+  return _c("div", [
+    _c("a", { staticClass: "navbar-item", on: { click: _vm.openModal } }, [
+      _vm._m(0)
+    ]),
     _vm._v(" "),
     _c(
       "div",
@@ -19134,7 +19131,7 @@ var render = function() {
               },
               [
                 _c("div", { staticClass: "field" }, [
-                  _vm._m(0),
+                  _vm._m(1),
                   _vm._v(" "),
                   _c("p", { staticClass: "control has-icons-left" }, [
                     _c("input", {
@@ -19163,7 +19160,7 @@ var render = function() {
                       }
                     }),
                     _vm._v(" "),
-                    _vm._m(1)
+                    _vm._m(2)
                   ])
                 ])
               ]
@@ -19181,6 +19178,16 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticStyle: { cursor: "pointer" } }, [
+      _c("i", { staticClass: "mdi mdi-magnify" }),
+      _vm._v(" "),
+      _c("span", { staticClass: "is-hidden-desktop" }, [_vm._v("Search")])
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -19505,6 +19512,8 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("span", { attrs: { id: "mobile" } }, [
+        _c("i", { staticClass: "mdi mdi-bell-outline" }),
+        _vm._v(" "),
         _c("span", [_vm._v("Notifications")]),
         _vm._v(" "),
         _vm.notificationCounts === null
