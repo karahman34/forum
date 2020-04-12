@@ -30,10 +30,12 @@
               </div>
             @endforeach
 
-            <div class="column is-12-mobile has-text-centered">
-            {{-- Pagination --}}
-            {{ $posts->onEachSide(4)->links('components.pagination') }}
-          </div>
+            <div class="column is-12">
+                @if (count($posts) > 1)
+                  {{-- Pagination --}}
+                  {{ $posts->onEachSide(4)->links('components.pagination') }}
+                @endif
+              </div>
           @endif
         </div>
       </div>

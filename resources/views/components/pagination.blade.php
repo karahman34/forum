@@ -1,4 +1,5 @@
-<nav class="pagination with-shadow is-rounded is-centered" role="navigation" aria-label="pagination">
+@if ($paginator->hasPages())
+  <nav class="pagination with-shadow is-rounded is-centered" role="navigation" aria-label="pagination">
   {{-- Previous Page Link --}}
   @if (!$paginator->onFirstPage())
     <a href="{{ $paginator->previousPageUrl() }}" class="pagination-previous">Previous</a>
@@ -36,3 +37,4 @@
     @endforeach
   </ul>
 </nav>
+@endif
